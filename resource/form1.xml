@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<myform1 title="Form1">
+	<listOptions>
+        <option name="PlaySound" label="Play Sound" type="dropdawn" defaultOption="ON" tooltip="select between ON and OFF">
+            <dropdownOption>
+                <option as="ON"/>
+                <option as="OFF"/>
+                <option as="showvars"/>
+            </dropdownOption >
+        </option>
+        <option name="TradingHourStart" label="Trading Hour Start" type="spinner" defaultOption="1" tooltip="select a number between 1 and 99">
+            <spinnerOption>
+                <option min="1"/>
+                <option max="199"/>
+                <option as="showvars"/>
+            </spinnerOption >
+        </option>
+        <option name="LotReductionFactor" label="Lot Reduction Factor" type="text" defaultOption="" tooltip="type a reduction factor">
+        </option>
+        <option name="BuySellordersincludeTPSL" label="BuySell orders include TPSL" type="check" defaultOption="unchecked" tooltip="check if applies">
+        </option>
+        <option name="MM" label="M Management" type="dropdawn" defaultOption="half" tooltip="select between half and full">
+            <dropdownOption>
+                <option as="half"/>
+                <option as="full"/>
+            </dropdownOption>
+            <suboption name="half" label="select half  option type">
+                <dropdownOption>
+                    <option as=""/>
+                    <option as="one"/>
+                    <option as="two"/>
+                </dropdownOption >    
+            </suboption>
+            <suboption name="full" label="select full  option type">
+                <dropdownOption>
+                    <option as=""/>
+                    <option as="ten"/>
+                    <option as="eleven"/>
+                </dropdownOption>    
+            </suboption>
+        </option>
+    </listOptions>
+	<languages>
+		<language name="English">
+			<entry name="title">
+				<label>Form1</label>
+			</entry>
+			<entry name="ok">
+				<label>Ok</label>
+			</entry>
+			<entry name="cancel">
+				<label>Cancel</label>
+			</entry>
+			<entry name="load-error">
+				<label>
+					Failed to load data. Please refresh the page and try again
+				</label>
+			</entry>
+			<entry name="PlaySound">
+				<label>Play Sound</label>
+				<tooltip>Select between ON and OFF</tooltip>
+			</entry>
+			<entry name="ON" type="option">
+				<label >ON</label>
+			</entry>
+			<entry name="OFF" type="option">
+				<label >OFF</label>
+			</entry>
+			<entry name="TradingHourStart">
+				<label>Trading Hour Start</label>
+				<tooltip >Select a number between 1 and 99</tooltip>
+			</entry>
+			<entry name="LotReductionFactor">
+				<label>Lot Reduction Factor</label>
+				<tooltip >Type a reduction factor</tooltip>
+			</entry>
+			<entry name="BuySellordersincludeTPSL">
+				<label>BuySell orders include TPSL</label>
+				<tooltip>Check if applies</tooltip>
+			</entry>
+			<entry name="MM">
+				<label>M Management</label>
+				<tooltip>Select between half and full</tooltip>
+			</entry>
+			<entry name="half">
+				<label>Select half option type</label>
+				<tooltip>half</tooltip>
+			</entry>
+			<entry name="full" type="option">
+				<label >Select full option type</label>
+				<tooltip >full</tooltip>
+			</entry>
+			<entry name="one" type="option">
+				<label >one</label>
+			</entry>
+			<entry name="two" type="option">
+				<label >two</label>
+			</entry>
+			<entry name="ten" type="option">
+				<label >ten</label>
+			</entry>
+			<entry name="eleven" type="option">
+				<label >eleven</label>
+			</entry>
+		</language>
+		<language name="Francais">
+			<entry name="title">
+				<label>Formulaire1</label>
+			</entry>
+			<entry name="ok">
+				<label>Ok</label>
+			</entry>
+			<entry name="cancel">
+				<label>Annuler</label>
+			</entry>
+			<entry name="load-error">
+				<label>Impossible de charger les données. S'il vous plaît rafraîchir
+					la page et réessayez</label>
+			</entry>
+			<entry name="PlaySound">
+				<label >Jouer un son</label>
+				<tooltip >choisir entre ON et OFF</tooltip>
+			</entry>
+			<entry name="ON" type="option">
+				<label >COURANT</label>
+			</entry>
+			<entry name="OFF" type="option">
+				<label>VIDE</label>
+			</entry>
+			<entry name="TradingHourStart">
+				<label >Début Heure de négociation</label>
+				<tooltip >Sélectionnez un certain nombre entre le 1 er et 99
+				</tooltip>
+			</entry>
+			<entry name="LotReductionFactor">
+				<label >Facteur de réduction Lot</label>
+				<tooltip >Tapez un facteur de réduction</tooltip>
+			</entry>
+			<entry name="BuySellordersincludeTPSL">
+				<label >Usagé neuf commandes comprennent TPSL</label>
+				<tooltip >Vérifier si s'applique</tooltip>
+			</entry>
+			<entry name="MM">
+				<label >M Management</label>
+				<tooltip>Choisir entre moitié et complète</tooltip>
+			</entry>
+			<entry name="half" type="option">
+				<label >Sélectionner le type de formule en demi</label>
+				<tooltip >moitié</tooltip>
+			</entry>
+			<entry name="full"  type="option">
+				<label >Sélectionner le type complet de l'option</label>
+				<tooltip>complète</tooltip>
+			</entry>
+			<entry name="one" type="option">
+				<label >un</label>
+			</entry>
+			<entry name="two" type="option">
+				<label >deux</label>
+			</entry>
+			<entry name="ten"  type="option">
+				<label>dix</label>
+			</entry>
+			<entry name="eleven" type="option">
+				<label >onze</label>
+			</entry>
+		</language>
+	</languages>
+</myform1>
