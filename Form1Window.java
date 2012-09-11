@@ -2,14 +2,12 @@ import java.awt.EventQueue;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.JCheckBox;
-
 import org.forms.Form1;
 import org.forms.FormGenerator;
 import org.forms.form1.dropdown.DropDownOption;
