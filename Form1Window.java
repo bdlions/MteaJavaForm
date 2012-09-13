@@ -2,6 +2,8 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -32,6 +34,7 @@ public class Form1Window extends JFrame {
 	private JTextField textFieldLotReduction;
 	private FormGenerator formGenerator;
 	private JPanel contentPane;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -39,8 +42,8 @@ public class Form1Window extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					//Form1Window frame = new Form1Window("English");
-					Form1Window frame = new Form1Window("Francais");
+					Form1Window frame = new Form1Window("English");
+					//Form1Window frame = new Form1Window("Francais");
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -96,61 +99,19 @@ public class Form1Window extends JFrame {
 		formGenerator.setLanguage(language);
 		formGenerator.generateForm1();
 		
-		
-		
 		Hashtable syntaxMap = formGenerator.getSyntaxMapForm1();
 		
 		LanguageEntry titleEntry = (LanguageEntry)syntaxMap.get("title");
 		String title = titleEntry.getLabel();
 		setTitle(title);
 		
-		
-		LanguageEntry playSoundEntry = (LanguageEntry)syntaxMap.get("PlaySound");
-		
-		JLabel lblNewLabel = new JLabel(playSoundEntry.getLabel());
-		JComboBox comboBoxPlaySound = new JComboBox(getOptions("PlaySound").toArray());
-		
-		addComponent(layout, horizontalParallelGroup, verticalSequentialGroup, lblNewLabel, comboBoxPlaySound);
-		
-		LanguageEntry tradingHourStart = (LanguageEntry)syntaxMap.get("TradingHourStart");
-		JLabel label = new JLabel(tradingHourStart.getLabel());
-		JComboBox comboBoxTradingHour = new JComboBox(getOptions("TradingHourStart").toArray());
-		
-		addComponent(layout, horizontalParallelGroup, verticalSequentialGroup, label, comboBoxTradingHour);
-		
-		LanguageEntry lotReductionFactor = (LanguageEntry)syntaxMap.get("LotReductionFactor");
-		JLabel label_1 = new JLabel(lotReductionFactor.getLabel());
-		textFieldLotReduction = new JTextField();
-		
-		addComponent(layout, horizontalParallelGroup, verticalSequentialGroup, label_1, textFieldLotReduction);
-		
-		
-		LanguageEntry buySellordersincludeTPSL = (LanguageEntry)syntaxMap.get("BuySellordersincludeTPSL");
-		JLabel label_2 = new JLabel(buySellordersincludeTPSL.getLabel());
-		JCheckBox chckbxNewCheckBoxBuySell = new JCheckBox();
-		addComponent(layout, horizontalParallelGroup, verticalSequentialGroup, label_2, chckbxNewCheckBoxBuySell);
-		
-		
-		LanguageEntry mm = (LanguageEntry)syntaxMap.get("MM");
-		JLabel label_3 = new JLabel(mm.getLabel());
-		JComboBox comboBoxMM = new JComboBox(getOptions("MM").toArray());
-		
-		addComponent(layout, horizontalParallelGroup, verticalSequentialGroup, label_3, comboBoxMM);
-		
-
-		LanguageEntry half = (LanguageEntry)syntaxMap.get("half");
-		JLabel label_4 = new JLabel(half.getLabel());
-
-		JComboBox comboBoxHalfOption = new JComboBox(getOptions("half").toArray());
-
-		addComponent(layout, horizontalParallelGroup, verticalSequentialGroup, label_4, comboBoxHalfOption);
+		for(Option option : formGenerator.getForm1().getListOptions().getOption())
+		{
+			addComponent(layout, horizontalParallelGroup, verticalSequentialGroup, option);
+		}
 		
 		this.pack();
 	}
-	
-	
-	
-	
 	
 	public List<String> getOptions(String name)
 	{
@@ -161,52 +122,205 @@ public class Form1Window extends JFrame {
 		
 		for(Option option:form1.getListOptions().getOption())
 		{
-			if(option.getName().equals(name))
+			options = getOptionsAndSub(option, name);
+			
+			if(options.size() > 0)
 			{
-				for(DropDownOption dropDownOption: option.getDropdownOption())
-				{
-					for(DropDownOptionElement dropDownOptionElement: dropDownOption.getOption())
-					{
-						options.add(dropDownOptionElement.getAs());
-					}
-				}
-				for(SpinnerOption spinnerOption: option.getSpinnerOption())
-				{
-					for(SpinnerOptionElement spinnerOptionElement:spinnerOption.getOption())
-					{
-						int min = spinnerOptionElement.getMin();
-						int max = spinnerOptionElement.getMax();
-						
-						for(int i = min; i <= max; i++)
-						{
-							options.add(i + "");
-						}
-						
-						options.add(spinnerOptionElement.getAs());
-					}
-				}
+				return options;
 			}
 		}
 		
 		return options;
 	}
 	
-	
-	private void addComponent(GroupLayout layout, ParallelGroup horizontalParallelGroup, SequentialGroup verticalSequential, Component leftComponent, Component rightComponent)
+	public List<String> getOptionsAndSub(Option option, String name)
 	{
-		SequentialGroup componentSequential2 = layout.createSequentialGroup();
+		Hashtable syntaxMap = formGenerator.getSyntaxMapForm1();
+		LanguageEntry languageEntry = (LanguageEntry)syntaxMap.get(name);
+		
+		List<String> options = new ArrayList<String>();
+		if(option.getName().equals(name))
+		{
+			for(DropDownOption dropDownOption: option.getDropdownOption())
+			{
+				for(DropDownOptionElement dropDownOptionElement: dropDownOption.getOption())
+				{
+					if(syntaxMap.containsKey(dropDownOptionElement.getAs()))
+					{
+						languageEntry = (LanguageEntry)syntaxMap.get(dropDownOptionElement.getAs());
+						options.add(languageEntry.getLabel());
+					}
+					if(dropDownOptionElement.getAs().equals("showvars"))
+					{
+						options.add("will add some variables later");
+					}
+				}
+			}
+			for(SpinnerOption spinnerOption: option.getSpinnerOption())
+			{
+				for(SpinnerOptionElement spinnerOptionElement:spinnerOption.getOption())
+				{
+					int min = spinnerOptionElement.getMin();
+					int max = spinnerOptionElement.getMax();
+					
+					for(int i = min; i <= max; i++)
+					{
+						options.add(i + "");
+					}
+					if(spinnerOptionElement.getAs() != null && syntaxMap.containsKey(spinnerOptionElement.getAs()))
+					{
+						languageEntry = (LanguageEntry)syntaxMap.get(spinnerOptionElement.getAs());
+						options.add(languageEntry.getLabel());
+					}
+					if(spinnerOptionElement.getAs() != null && spinnerOptionElement.getAs().equals("showvars"))
+					{
+						options.add("will add some variables later");
+					}
+					
+				}
+			}
+			return options;
+		}
+		else if(option.getSuboption().size() > 0)
+		{
+			for(Option subOption: option.getSuboption())
+			{
+				return getOptionsAndSub(subOption, name);
+			}
+		}
+		
+		return options;
+	}
+	
+	private void addComponent(GroupLayout layout, ParallelGroup horizontalParallelGroup, 
+			SequentialGroup verticalSequentialGroup, Option option)
+	{
+		
+		String type = option.getType();
+		String name = option.getName();
+		String labelText = option.getLabel();
+		String tooltip = option.getTooltip();
+		String defaultOption = option.getDefaultOption();
+		
+		Hashtable syntaxMap = formGenerator.getSyntaxMapForm1();
+		
+		LanguageEntry languageEntry = (LanguageEntry)syntaxMap.get(name);
+		JLabel leftComponent = new JLabel(languageEntry.getLabel());
+		
+		Component rightComponent = null;
+		
+		if( type.equalsIgnoreCase("text"))
+		{
+			JTextField textField = new JTextField(defaultOption);
+			textField.setToolTipText(tooltip);
+			
+			rightComponent = textField;
+		}
+		else if( type.equalsIgnoreCase("dropdown") || type.equalsIgnoreCase("spinner"))
+		{
+			JComboBox comboBox = new JComboBox(getOptions(name).toArray());
+			comboBox.setName(name);
+			comboBox.setToolTipText(languageEntry.getTooltip());
+			comboBox.setSelectedItem(defaultOption);
+			comboBox.addActionListener(new ActionListener() 
+			{
+				
+				@Override
+				public void actionPerformed(ActionEvent e) 
+				{
+					// TODO Auto-generated method stub
+					JComboBox combo = (JComboBox)e.getSource();
+					String comboName = combo.getName();
+					
+					for(Option option : formGenerator.getForm1().getListOptions().getOption())
+					{
+						if(option.getName().equals(comboName))
+						{
+							Option newSubOption = null;
+							JComboBox subOptionCombo = null;
+							for(Option subOption: option.getSuboption())
+							{
+								if(subOption.getLabel().equals(combo.getSelectedItem().toString()))
+								{
+									newSubOption = subOption;
+									combo.setName(option.getName());
+								}
+								for (Component component:contentPane.getComponents())
+								{
+									if(subOption.getName().equals(component.getName()))
+									{
+										subOptionCombo = (JComboBox) component;
+									}
+									
+								}
+							}
+							
+							
+							if(newSubOption != null)
+							{
+								subOptionCombo.removeAllItems();
+								
+								for(DropDownOption dropDownOption: newSubOption.getDropdownOption())
+								{
+									for(DropDownOptionElement dropDownOptionElement:dropDownOption.getOption())
+									{
+										subOptionCombo.addItem(dropDownOptionElement.getAs());
+									}
+								}
+								
+								subOptionCombo.setName(newSubOption.getName());
+								subOptionCombo.setToolTipText(newSubOption.getTooltip());
+								subOptionCombo.setSelectedItem(newSubOption.getDefaultOption());
+								
+								subOptionCombo.revalidate();
+							}
+						}
+						
+					}
+				}
+			});
+			rightComponent = comboBox;
+		}
+		else if( type.equalsIgnoreCase("check"))
+		{
+			JCheckBox checkBox = new JCheckBox();
+			checkBox.setToolTipText(tooltip);
+			
+			if(defaultOption.equals("checked"))
+			{
+				checkBox.setSelected(true);
+			}
+			
+			rightComponent = checkBox;
+		}
 		
 		
-		componentSequential2.addComponent(leftComponent);
-		componentSequential2.addComponent(rightComponent);
+		if(leftComponent != null && rightComponent != null)
+		{
 		
-		horizontalParallelGroup.addGroup(componentSequential2);
+			SequentialGroup componentSequential2 = layout.createSequentialGroup();
+			
+			componentSequential2.addComponent(leftComponent);
+			componentSequential2.addComponent(rightComponent, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE);
+			
+			horizontalParallelGroup.addGroup(componentSequential2);
+			
+			
+			ParallelGroup verticlaParallelGroupFinal2 = layout.createParallelGroup(GroupLayout.Alignment.BASELINE);
+			verticalSequentialGroup.addGroup(verticlaParallelGroupFinal2);
+			verticlaParallelGroupFinal2.addComponent(leftComponent);
+			verticlaParallelGroupFinal2.addComponent(rightComponent);
+		}
 		
-		
-		ParallelGroup verticlaParallelGroupFinal2 = layout.createParallelGroup(GroupLayout.Alignment.BASELINE);
-		verticalSequential.addGroup(verticlaParallelGroupFinal2);
-		verticlaParallelGroupFinal2.addComponent(leftComponent);
-		verticlaParallelGroupFinal2.addComponent(rightComponent);
-		
+		if(option.getSuboption().size() > 0)
+		{
+			for(Option subOption: option.getSuboption())
+			{
+				if(subOption.getName().equals(defaultOption))
+				{
+					addComponent(layout, horizontalParallelGroup, verticalSequentialGroup, subOption);
+				}
+			}
+		}
 	}
 }

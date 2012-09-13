@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <myform1 title="Form1">
 	<listOptions>
-        <option name="PlaySound" label="Play Sound" type="dropdawn" defaultOption="ON" tooltip="select between ON and OFF">
+        <option name="PlaySound" label="Play Sound" type="dropdown" defaultOption="ON" tooltip="select between ON and OFF">
             <dropdownOption>
                 <option as="ON"/>
                 <option as="OFF"/>
@@ -15,23 +15,23 @@
                 <option as="showvars"/>
             </spinnerOption >
         </option>
-        <option name="LotReductionFactor" label="Lot Reduction Factor" type="text" defaultOption="" tooltip="type a reduction factor">
+        <option name="LotReductionFactor" label="Lot Reduction Factor" type="text" defaultOption="Default value from object" tooltip="type a reduction factor">
         </option>
-        <option name="BuySellordersincludeTPSL" label="BuySell orders include TPSL" type="check" defaultOption="unchecked" tooltip="check if applies">
+        <option name="BuySellordersincludeTPSL" label="BuySell orders include TPSL" type="check" defaultOption="checked" tooltip="check if applies">
         </option>
-        <option name="MM" label="M Management" type="dropdawn" defaultOption="half" tooltip="select between half and full">
+        <option name="MM" label="M Management" type="dropdown" defaultOption="half" tooltip="select between half and full">
             <dropdownOption>
                 <option as="half"/>
                 <option as="full"/>
             </dropdownOption>
-            <suboption name="half" label="select half  option type">
+            <suboption name="half" label="Select half option type" type="dropdown" defaultOption="one">
                 <dropdownOption>
                     <option as=""/>
                     <option as="one"/>
                     <option as="two"/>
                 </dropdownOption >    
             </suboption>
-            <suboption name="full" label="select full  option type">
+            <suboption name="full" label="Select full option type" type="dropdown" defaultOption="ten">
                 <dropdownOption>
                     <option as=""/>
                     <option as="ten"/>

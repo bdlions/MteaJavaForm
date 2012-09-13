@@ -10,12 +10,17 @@ import org.forms.FormGenerator;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.ButtonGroup;
 
 
 public class Application {
 
 	private JFrame frame;
-
+	private final ButtonGroup buttonGroup = new ButtonGroup();
+	private JCheckBoxMenuItem chckbxmntmEnglish;
+	private JCheckBoxMenuItem chckbxmntmFrancis;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -61,7 +66,12 @@ public class Application {
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
-				Form1Window form1Window = new Form1Window("English");
+				String lanugage = "English";
+				if(chckbxmntmFrancis.isSelected())
+				{
+					lanugage = "Francais";
+				}
+				Form1Window form1Window = new Form1Window(lanugage);
 				form1Window.setVisible(true);
 				form1Window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			}
@@ -73,12 +83,28 @@ public class Application {
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
-				Form2Window form2Window = new Form2Window("English");
+				String lanugage = "English";
+				if(chckbxmntmFrancis.isSelected())
+				{
+					lanugage = "Francais";
+				}
+				Form2Window form2Window = new Form2Window(lanugage);
 				form2Window.setVisible(true);
 				form2Window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			}
 		});
 		mnOpen.add(mntmForm_1);
+		
+		JMenu mnLanguage = new JMenu("Language");
+		menuBar.add(mnLanguage);
+		
+		chckbxmntmEnglish = new JCheckBoxMenuItem("English");
+		buttonGroup.add(chckbxmntmEnglish);
+		mnLanguage.add(chckbxmntmEnglish);
+		
+		chckbxmntmFrancis = new JCheckBoxMenuItem("Francis");
+		buttonGroup.add(chckbxmntmFrancis);
+		mnLanguage.add(chckbxmntmFrancis);
 		
 		
 		
