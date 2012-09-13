@@ -1,14 +1,21 @@
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.ParallelGroup;
+import javax.swing.GroupLayout.SequentialGroup;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.JCheckBox;
+import javax.swing.border.EmptyBorder;
 
 import org.forms.Form1;
 import org.forms.FormGenerator;
@@ -22,10 +29,9 @@ import org.forms.languages.LanguageEntry;
 
 public class Form1Window extends JFrame {
 
-	private JPanel contentPane;
 	private JTextField textFieldLotReduction;
 	private FormGenerator formGenerator;
-
+	private JPanel contentPane;
 	/**
 	 * Launch the application.
 	 */
@@ -48,18 +54,49 @@ public class Form1Window extends JFrame {
 	 */
 	public Form1Window(String language)
 	{
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setLayout(new BorderLayout(0, 0));
+		setContentPane(contentPane);
+		
+		//-----------------Adding group layout-------------------//
+		
+		//Creating group layout
+		GroupLayout layout = new GroupLayout(contentPane);
+		//setting the grouplaoyt in content pane
+		contentPane.setLayout(layout);
+		contentPane.setPreferredSize(new Dimension(500, 400));
+		
+		//setting gaps in container
+		layout.setAutoCreateGaps(true);
+		layout.setAutoCreateContainerGaps(true);
+		
+		//horizontal and vertical group
+		ParallelGroup horizontalGroup = layout.createParallelGroup(GroupLayout.Alignment.LEADING);
+		layout.setHorizontalGroup(horizontalGroup);
+		
+		SequentialGroup horizontalSequentialGroup = layout.createSequentialGroup();
+		horizontalGroup.addGroup(horizontalSequentialGroup);
+		
+		ParallelGroup horizontalParallelGroup = layout.createParallelGroup(GroupLayout.Alignment.LEADING);
+		horizontalSequentialGroup.addGroup(horizontalParallelGroup);
+		
+		
+		ParallelGroup verticalGroup = layout.createParallelGroup(GroupLayout.Alignment.BASELINE);
+		layout.setVerticalGroup(verticalGroup);
+		
+		SequentialGroup verticalSequentialGroup = layout.createSequentialGroup();
+		verticalGroup.addGroup(verticalSequentialGroup);
+		
+		//-----------------Adding group layout-------------------//
+				
+		
 		//setting language in formgenerator
 		formGenerator = new FormGenerator();
 		formGenerator.setLanguage(language);
 		formGenerator.generateForm1();
 		
 		
-		initComponent();
-	}
-	
-	
-	private void initComponent()
-	{
 		
 		Hashtable syntaxMap = formGenerator.getSyntaxMapForm1();
 		
@@ -67,67 +104,52 @@ public class Form1Window extends JFrame {
 		String title = titleEntry.getLabel();
 		setTitle(title);
 		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 625, 380);
-		getContentPane().setLayout(null);
 		
 		LanguageEntry playSoundEntry = (LanguageEntry)syntaxMap.get("PlaySound");
+		
 		JLabel lblNewLabel = new JLabel(playSoundEntry.getLabel());
-		lblNewLabel.setBounds(44, 42, 289, 16);
-		getContentPane().add(lblNewLabel);
+		JComboBox comboBoxPlaySound = new JComboBox(getOptions("PlaySound").toArray());
+		
+		addComponent(layout, horizontalParallelGroup, verticalSequentialGroup, lblNewLabel, comboBoxPlaySound);
 		
 		LanguageEntry tradingHourStart = (LanguageEntry)syntaxMap.get("TradingHourStart");
 		JLabel label = new JLabel(tradingHourStart.getLabel());
-		label.setBounds(44, 84, 289, 16);
-		getContentPane().add(label);
+		JComboBox comboBoxTradingHour = new JComboBox(getOptions("TradingHourStart").toArray());
+		
+		addComponent(layout, horizontalParallelGroup, verticalSequentialGroup, label, comboBoxTradingHour);
 		
 		LanguageEntry lotReductionFactor = (LanguageEntry)syntaxMap.get("LotReductionFactor");
 		JLabel label_1 = new JLabel(lotReductionFactor.getLabel());
-		label_1.setBounds(44, 130, 289, 16);
-		getContentPane().add(label_1);
+		textFieldLotReduction = new JTextField();
+		
+		addComponent(layout, horizontalParallelGroup, verticalSequentialGroup, label_1, textFieldLotReduction);
+		
 		
 		LanguageEntry buySellordersincludeTPSL = (LanguageEntry)syntaxMap.get("BuySellordersincludeTPSL");
 		JLabel label_2 = new JLabel(buySellordersincludeTPSL.getLabel());
-		label_2.setBounds(44, 180, 289, 16);
-		getContentPane().add(label_2);
+		JCheckBox chckbxNewCheckBoxBuySell = new JCheckBox();
+		addComponent(layout, horizontalParallelGroup, verticalSequentialGroup, label_2, chckbxNewCheckBoxBuySell);
+		
 		
 		LanguageEntry mm = (LanguageEntry)syntaxMap.get("MM");
 		JLabel label_3 = new JLabel(mm.getLabel());
-		label_3.setBounds(44, 233, 289, 16);
-		getContentPane().add(label_3);
+		JComboBox comboBoxMM = new JComboBox(getOptions("MM").toArray());
 		
+		addComponent(layout, horizontalParallelGroup, verticalSequentialGroup, label_3, comboBoxMM);
+		
+
 		LanguageEntry half = (LanguageEntry)syntaxMap.get("half");
 		JLabel label_4 = new JLabel(half.getLabel());
-		label_4.setBounds(44, 284, 289, 16);
-		getContentPane().add(label_4);
-		
-		JComboBox comboBoxPlaySound = new JComboBox(getOptions("PlaySound").toArray());
-		comboBoxPlaySound.setBounds(345, 42, 80, 22);
-		getContentPane().add(comboBoxPlaySound);
-		
-		JComboBox comboBoxTradingHour = new JComboBox(getOptions("TradingHourStart").toArray());
-		comboBoxTradingHour.setBounds(345, 84, 80, 22);
-		
-		getContentPane().add(comboBoxTradingHour);
-		
-		textFieldLotReduction = new JTextField();
-		textFieldLotReduction.setBounds(345, 119, 203, 22);
-		getContentPane().add(textFieldLotReduction);
-		textFieldLotReduction.setColumns(10);
-		
-		JCheckBox chckbxNewCheckBoxBuySell = new JCheckBox();
-		chckbxNewCheckBoxBuySell.setBounds(341, 174, 113, 25);
-		getContentPane().add(chckbxNewCheckBoxBuySell);
-		
-		JComboBox comboBoxMM = new JComboBox(getOptions("MM").toArray());
-		comboBoxMM.setBounds(345, 233, 80, 22);
-		getContentPane().add(comboBoxMM);
-		
+
 		JComboBox comboBoxHalfOption = new JComboBox(getOptions("half").toArray());
-		comboBoxHalfOption.setBounds(345, 284, 80, 22);
-		getContentPane().add(comboBoxHalfOption);
-		contentPane = new JPanel();
+
+		addComponent(layout, horizontalParallelGroup, verticalSequentialGroup, label_4, comboBoxHalfOption);
+		
+		this.pack();
 	}
+	
+	
+	
 	
 	
 	public List<String> getOptions(String name)
@@ -167,5 +189,24 @@ public class Form1Window extends JFrame {
 		}
 		
 		return options;
+	}
+	
+	
+	private void addComponent(GroupLayout layout, ParallelGroup horizontalParallelGroup, SequentialGroup verticalSequential, Component leftComponent, Component rightComponent)
+	{
+		SequentialGroup componentSequential2 = layout.createSequentialGroup();
+		
+		
+		componentSequential2.addComponent(leftComponent);
+		componentSequential2.addComponent(rightComponent);
+		
+		horizontalParallelGroup.addGroup(componentSequential2);
+		
+		
+		ParallelGroup verticlaParallelGroupFinal2 = layout.createParallelGroup(GroupLayout.Alignment.BASELINE);
+		verticalSequential.addGroup(verticlaParallelGroupFinal2);
+		verticlaParallelGroupFinal2.addComponent(leftComponent);
+		verticlaParallelGroupFinal2.addComponent(rightComponent);
+		
 	}
 }
