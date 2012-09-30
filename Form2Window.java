@@ -110,8 +110,9 @@ public class Form2Window extends JFrame {
 		  //Creating group layout
 		  //GroupLayout layout = new GroupLayout(panel);
 		  //setting the grouplaoyt in content pane
-		  panel.setLayout(new GridLayout(0, 3, 30, 30));
+		  //panel.setLayout(new GridLayout(0, 3, 30, 30));
 		  //contentPane.setPreferredSize(new Dimension(500, 200));
+		  panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 		  
 		  scrollBar = new JScrollPane();
 		  scrollBar.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);

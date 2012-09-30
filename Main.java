@@ -1,4 +1,7 @@
+import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Toolkit;
+import java.awt.Window;
 
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
@@ -51,7 +54,7 @@ public class Main {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+		frame.setLocationRelativeTo(null);
 		JMenuBar menuBar = new JMenuBar();
 		frame.setJMenuBar(menuBar);
 		
@@ -74,6 +77,7 @@ public class Main {
 				Form1Window form1Window = new Form1Window(lanugage);
 				form1Window.setVisible(true);
 				form1Window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				centreWindow(form1Window);
 			}
 		});
 		mnOpen.add(mntmForm);
@@ -91,6 +95,7 @@ public class Main {
 				Form2Window form2Window = new Form2Window(lanugage);
 				form2Window.setVisible(true);
 				form2Window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				centreWindow(form2Window);
 			}
 		});
 		mnOpen.add(mntmForm_1);
@@ -108,6 +113,7 @@ public class Main {
 				Form3Window form3Window = new Form3Window(lanugage);
 				form3Window.setVisible(true);
 				form3Window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				centreWindow(form3Window);
 			}
 		});
 		mnOpen.add(mntmForm_3);
@@ -122,9 +128,13 @@ public class Main {
 		chckbxmntmFrancis = new JCheckBoxMenuItem("Francis");
 		buttonGroup.add(chckbxmntmFrancis);
 		mnLanguage.add(chckbxmntmFrancis);
-		
-		
-		
+	}
+
+	public static void centreWindow(Window frame) {
+	    Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+	    int x = (int) ((dimension.getWidth() - frame.getWidth()) / 2);
+	    int y = (int) ((dimension.getHeight() - frame.getHeight()) / 2);
+	    frame.setLocation(x, y);
 	}
 
 }
