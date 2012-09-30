@@ -15,7 +15,7 @@
                 <option as="showvars"/>
             </spinnerOption >
         </option>
-        <option name="LotReductionFactor" label="Lot Reduction Factor" type="text" defaultOption="Default value from object" tooltip="type a reduction factor">
+        <option name="LotReductionFactor" label="Lot Reduction Factor" type="text" defaultOption="" tooltip="type a reduction factor">
         </option>
         <option name="BuySellordersincludeTPSL" label="BuySell orders include TPSL" type="check" defaultOption="checked" tooltip="check if applies">
         </option>

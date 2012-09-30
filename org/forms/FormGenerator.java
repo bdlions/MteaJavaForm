@@ -17,8 +17,10 @@ public class FormGenerator
 	private String language = "English";
 	private Hashtable syntaxMapForm1;
 	private Hashtable syntaxMapForm2;
+	private Hashtable syntaxMapForm3;
 	private Form1 form1;
 	private Form2 form2;
+	private Form3 form3;
 	
 	public Form1 getForm1() {
 		return form1;
@@ -28,12 +30,19 @@ public class FormGenerator
 		return form2;
 	}
 	
+	public Form3 getForm3() {
+		return form3;
+	}
+	
 	public Hashtable getSyntaxMapForm1() {
 		return syntaxMapForm1;
 	}
 	
 	public Hashtable getSyntaxMapForm2() {
 		return syntaxMapForm2;
+	}
+	public Hashtable getSyntaxMapForm3() {
+		return syntaxMapForm3;
 	}
 	
 	public String getLanguage() {
@@ -93,6 +102,36 @@ public class FormGenerator
 					for(LanguageEntry entry: language.getEntry())
 					{
 						syntaxMapForm2.put(entry.getName(), entry);
+					}
+				}
+			}
+		} 
+		catch (JAXBException exception) 
+		{
+			
+		}
+	}
+	
+	public void generateForm3()
+	{
+		try 
+		{
+			InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("resource/form3.xml");
+			JAXBContext jaxbContext = JAXBContext.newInstance(Form3.class);
+			 
+			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+			form3 = (Form3) jaxbUnmarshaller.unmarshal(inputStream);
+			
+			syntaxMapForm3 = new Hashtable();
+			
+			List<Language> languages =  form3.getLanguages().getLanguage();
+			for ( Language language : languages) 
+			{
+				if(getLanguage().equalsIgnoreCase(language.getName()))
+				{
+					for(LanguageEntry entry: language.getEntry())
+					{
+						syntaxMapForm3.put(entry.getName(), entry);
 					}
 				}
 			}

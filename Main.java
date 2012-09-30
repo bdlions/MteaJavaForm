@@ -95,6 +95,23 @@ public class Main {
 		});
 		mnOpen.add(mntmForm_1);
 		
+		JMenuItem mntmForm_3 = new JMenuItem("Form3");
+		mntmForm_3.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+				String lanugage = "English";
+				if(chckbxmntmFrancis.isSelected())
+				{
+					lanugage = "Francais";
+				}
+				Form3Window form3Window = new Form3Window(lanugage);
+				form3Window.setVisible(true);
+				form3Window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			}
+		});
+		mnOpen.add(mntmForm_3);
+		
 		JMenu mnLanguage = new JMenu("Language");
 		menuBar.add(mnLanguage);
 		

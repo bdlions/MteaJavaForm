@@ -1,0 +1,538 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<myform3 title="Form3">
+	<comparison>
+		<arithmaticoperators>
+			<op name="Plus" symbol="+" i8n-entry="Plus" />
+			<op name="Minus" symbol="-" i8n-entry="Minus" />
+			<op name="Div" symbol="/" i8n-entry="Div" />
+			<op name="Mult" symbol="*" i8n-entry="Mult" />
+		</arithmaticoperators>
+		<operators>
+			<op name="&gt; Higher than" symbol="&gt;" i8n-entry="higherThan" />
+			<op name="&lt; Lower Than" symbol="&lt;" i8n-entry="lowerThan" />
+			<op name="&gt;= Higher or equal" symbol="&gt;=" i8n-entry="higherThanOrEqual" />
+			<op name="&lt;= Lower or equal" symbol="&lt;=" i8n-entry="lowerThanOrEqual" />
+			<op name="= Equal" symbol="=" i8n-entry="equal" />
+			<op name="&lt;&gt; Different than" symbol="&lt;&gt;" i8n-entry="differentThan" />
+		</operators>
+		<attributesleft>
+			<attribute name="Option1" i8n-entry="AccDecOiAC">
+				<parameters>
+					<dropdownOption name="Symbol" i8n-entry="Symbol"
+						default="Current Symbol" tooltip="Symbol name">
+						<option as="Current Symbol" />
+						<option as="A" />
+						<option as="B" />
+					</dropdownOption>
+					<dropdownOption name="SubOption1" i8n-entry="SubOption1"
+						default="Current" tooltip="Chart SubOption1">
+						<option as="Current" />
+						<option as="0" />
+						<option as="1" />
+					</dropdownOption>
+					<spinnerOption name="Max" i8n-entry="Max" default="0"
+						tooltip="Max relative to the current max">
+						<option min="0" />
+						<option max="100" />
+					</spinnerOption>
+				</parameters>
+			</attribute>
+			<attribute name="OPTION2" i8n-entry="OPTION2">
+				<parameters>
+					<dropdownOption name="Symbol" i8n-entry="Symbol"
+						default="Current Symbol" tooltip="Symbol name">
+						<option as="Current Symbol" />
+						<option as="A" />
+						<option as="B" />
+					</dropdownOption>
+				</parameters>
+			</attribute>
+			<attribute name="Average Movement" i8n-entry="AvgMovDIiADX">
+				<parameters>
+					<dropdownOption name="Symbol" i8n-entry="Symbol"
+						default="Current Symbol" tooltip="Symbol name">
+						<option as="Current Symbol" />
+						<option as="A" />
+						<option as="B" />
+					</dropdownOption>
+					<dropdownOption name="SubOption1" i8n-entry="SubOption1"
+						default="Current" tooltip="Chart SubOption1">
+						<option as="Current" />
+						<option as="0" />
+						<option as="1" />
+					</dropdownOption>
+					<spinnerOption name="Period" i8n-entry="Period"
+						default="0" tooltip="Averaging period for calculation">
+						<option min="0" />
+						<option max="500" />
+					</spinnerOption>
+					<dropdownOption name="Applied ZET" i8n-entry="Applied ZET"
+						default="ZET_CLOSE" tooltip="Applied ZET">
+						<option as="ZET_CLOSE" />
+						<option as="ZET_OPEN" />
+						<option as="ZET_HIGH" />
+					</dropdownOption>
+					<dropdownOption name="Mode" i8n-entry="Mode"
+						default="MODE1" tooltip="Indicator line identifier">
+						<option as="MODE1" />
+						<option as="MODE2" />
+					</dropdownOption>
+					<spinnerOption name="Max" i8n-entry="Max" default="0"
+						tooltip="Max relative to the current max (number of periods back)">
+						<option min="0" />
+						<option max="100" />
+					</spinnerOption>
+				</parameters>
+			</attribute>
+			<attribute name="CUSTOM Z" i8n-entry="CUSTOM Z">
+				<parameters>
+					<dropdownOption name="Symbol" i8n-entry="Symbol"
+						default="Current Symbol" tooltip="Symbol name">
+						<option as="Current Symbol" />
+						<option as="A" />
+						<option as="B" />
+					</dropdownOption>
+					<dropdownOption name="SubOption1" i8n-entry="SubOption1"
+						default="Current" tooltip="Chart SubOption1">
+						<option as="Current" />
+						<option as="0" />
+						<option as="1" />
+					</dropdownOption>
+					<spinnerOption name="%aperiod" i8n-entry="%aperiod"
+						default="0" tooltip="Averaging period for calculation">
+						<option min="0" />
+						<option max="500" />
+					</spinnerOption>
+					<spinnerOption name="%bperiod" i8n-entry="%bperiod"
+						default="0" tooltip="">
+						<option min="0" />
+						<option max="500" />
+					</spinnerOption>
+					<spinnerOption name="Slowing" i8n-entry="Slowing"
+						default="0" tooltip="">
+						<option min="0" />
+						<option max="500" />
+					</spinnerOption>
+					<dropdownOption name="method" i8n-entry="method"
+						default="ModeSS" tooltip="">
+						<option as="ModeSS" />
+						<option as="ModeEE" />
+					</dropdownOption>
+					<spinnerOption name="ZET field" i8n-entry="ZET field"
+						default="0" tooltip="Applied ZET">
+						<option min="0" />
+						<option max="500" />
+					</spinnerOption>
+					<dropdownOption name="Mode" i8n-entry="Mode"
+						default="MODE1" tooltip="Indicator line identifier">
+						<option as="MODE1" />
+						<option as="MODE3" />
+					</dropdownOption>
+					<spinnerOption name="Max" i8n-entry="Max2" default="0"
+						tooltip="Max relative to the current max (number of periods back)">
+						<option min="0" />
+						<option max="100" />
+					</spinnerOption>
+				</parameters>
+			</attribute>
+		</attributesleft>
+
+		<attributesright>
+			<attribute name="Option1" i8n-entry="AccDecOiAC">
+				<parameters>
+					<dropdownOption name="Symbol" i8n-entry="Symbol"
+						default="Current Symbol" tooltip="Symbol name">
+						<option as="Current Symbol" />
+						<option as="A" />
+						<option as="B" />
+					</dropdownOption>
+					<dropdownOption name="SubOption1" i8n-entry="SubOption1"
+						default="Current" tooltip="Chart SubOption1">
+						<option as="Current" />
+						<option as="0" />
+						<option as="1" />
+					</dropdownOption>
+					<spinnerOption name="Max" i8n-entry="Max" default="0"
+						tooltip="Max relative to the current max">
+						<option min="0" />
+						<option max="100" />
+					</spinnerOption>
+				</parameters>
+			</attribute>
+			<attribute name="OPTION2" i8n-entry="OPTION2">
+				<parameters>
+					<dropdownOption name="Symbol" i8n-entry="Symbol"
+						default="Current Symbol" tooltip="Symbol name">
+						<option as="Current Symbol" />
+						<option as="A" />
+						<option as="B" />
+					</dropdownOption>
+				</parameters>
+			</attribute>
+			<attribute name="Average Movement" i8n-entry="AvgMovDIiADX">
+				<parameters>
+					<dropdownOption name="Symbol" i8n-entry="Symbol"
+						default="Current Symbol" tooltip="Symbol name">
+						<option as="Current Symbol" />
+						<option as="A" />
+						<option as="B" />
+					</dropdownOption>
+					<dropdownOption name="SubOption1" i8n-entry="SubOption1"
+						default="Current" tooltip="Chart SubOption1">
+						<option as="Current" />
+						<option as="0" />
+						<option as="1" />
+					</dropdownOption>
+					<spinnerOption name="Period" i8n-entry="Period"
+						default="0" tooltip="Averaging period for calculation">
+						<option min="0" />
+						<option max="500" />
+					</spinnerOption>
+					<dropdownOption name="Applied ZET" i8n-entry="Applied ZET"
+						default="ZET_CLOSE" tooltip="Applied ZET">
+						<option as="ZET_CLOSE" />
+						<option as="ZET_OPEN" />
+						<option as="ZET_HIGH" />
+					</dropdownOption>
+					<dropdownOption name="Mode" i8n-entry="Mode"
+						default="MODE1" tooltip="Indicator line identifier">
+						<option as="MODE1" />
+						<option as="MODE2" />
+					</dropdownOption>
+					<spinnerOption name="Max" i8n-entry="Max" default="0"
+						tooltip="Max relative to the current max (number of periods back)">
+						<option min="0" />
+						<option max="100" />
+					</spinnerOption>
+				</parameters>
+			</attribute>
+			<attribute name="CUSTOM Z" i8n-entry="CUSTOM Z">
+				<parameters>
+					<dropdownOption name="Symbol" i8n-entry="Symbol"
+						default="Current Symbol" tooltip="Symbol name">
+						<option as="Current Symbol" />
+						<option as="A" />
+						<option as="B" />
+					</dropdownOption>
+					<dropdownOption name="SubOption1" i8n-entry="SubOption1"
+						default="Current" tooltip="Chart SubOption1">
+						<option as="Current" />
+						<option as="0" />
+						<option as="1" />
+					</dropdownOption>
+					<spinnerOption name="%aperiod" i8n-entry="%aperiod"
+						default="0" tooltip="Averaging period for calculation">
+						<option min="0" />
+						<option max="500" />
+					</spinnerOption>
+					<spinnerOption name="%bperiod" i8n-entry="%bperiod"
+						default="0" tooltip="">
+						<option min="0" />
+						<option max="500" />
+					</spinnerOption>
+					<spinnerOption name="Slowing" i8n-entry="Slowing"
+						default="0" tooltip="">
+						<option min="0" />
+						<option max="500" />
+					</spinnerOption>
+					<dropdownOption name="method" i8n-entry="method"
+						default="ModeSS" tooltip="">
+						<option as="ModeSS" />
+						<option as="ModeEE" />
+					</dropdownOption>
+					<spinnerOption name="ZET field" i8n-entry="ZET field"
+						default="0" tooltip="Applied ZET">
+						<option min="0" />
+						<option max="500" />
+					</spinnerOption>
+					<dropdownOption name="Mode" i8n-entry="Mode"
+						default="MODE1" tooltip="Indicator line identifier">
+						<option as="MODE1" />
+						<option as="MODE3" />
+					</dropdownOption>
+					<spinnerOption name="Max" i8n-entry="Max2" default="0"
+						tooltip="Max relative to the current max (number of periods back)">
+						<option min="0" />
+						<option max="100" />
+					</spinnerOption>
+				</parameters>
+			</attribute>
+		</attributesright>
+	</comparison>
+	<languages>
+		<language name="English">
+			<entry name="title">
+				<label>Form3</label>
+			</entry>
+			<entry name="ok">
+				<label>Ok</label>
+			</entry>
+			<entry name="cancel">
+				<label>Cancel</label>
+			</entry>
+			<entry name="load-error">
+				<label>Failed to load data. Please refresh the page and try again
+				</label>
+			</entry>
+			<entry name="AccDecOiAC" type="option">
+				<label>Option1</label>
+			</entry>
+			<entry name="Symbol">
+				<label>Symbol</label>
+				<tooltip>Symbol name</tooltip>
+			</entry>
+			<entry name="Current Symbol" type="option">
+				<label>Current Symbol</label>
+			</entry>
+			<entry name="SubOption1">
+				<label>SubOption1</label>
+				<tooltip>Chart SubOption1</tooltip>
+			</entry>
+			<entry name="Current" type="option">
+				<label>Current</label>
+			</entry>
+			<entry name="Max">
+				<label>Max</label>
+				<tooltip>Max relative to the current max</tooltip>
+			</entry>
+			<entry name="SubOption1">
+				<label>SubOption1</label>
+				<tooltip>Chart SubOption1</tooltip>
+			</entry>
+			<entry name="OPTION2" type="option">
+				<label>OPTION2</label>
+			</entry>
+			<entry name="AvgMovDIiADX" type="option">
+				<label>Average Movement</label>
+			</entry>
+			<entry name="Period">
+				<label>Period</label>
+				<tooltip>Averaging period for calculation</tooltip>
+			</entry>
+			<entry name="Applied ZET">
+				<label>Applied ZET</label>
+				<tooltip>Applied ZET</tooltip>
+			</entry>
+			<entry name="ZET_CLOSE" type="option">
+				<label>ZET_CLOSE</label>
+			</entry>
+			<entry name="ZET_OPEN" type="option">
+				<label>ZET_OPEN</label>
+			</entry>
+			<entry name="ZET_HIGH" type="option">
+				<label>ZET_HIGH</label>
+			</entry>
+			<entry name="Mode">
+				<label>Mode</label>
+				<tooltip>Indicator line identifier</tooltip>
+			</entry>
+			<entry name="MODE1" type="option">
+				<label>MODE1</label>
+			</entry>
+			<entry name="MODE2" type="option">
+				<label>MODE2</label>
+			</entry>
+			<entry name="Max">
+				<label>Max</label>
+				<tooltip>Max relative to the current max (number of periods back)
+				</tooltip>
+			</entry>
+			<entry name="CUSTOM Z" type="option">
+				<label>CUSTOM Z</label>
+			</entry>
+			<entry name="%aperiod">
+				<label>%aperiod</label>
+				<tooltip>Averaging period for calculation</tooltip>
+			</entry>
+			<entry name="%bperiod">
+				<label>%bperiod</label>
+				<tooltip></tooltip>
+			</entry>
+			<entry name="Slowing">
+				<label>Slowing</label>
+				<tooltip></tooltip>
+			</entry>
+			<entry name="method">
+				<label>method</label>
+				<tooltip></tooltip>
+			</entry>
+			<entry name="ModeSS" type="option">
+				<label>ModeSS</label>
+			</entry>
+			<entry name="ModeEE" type="option">
+				<label>ModeEE</label>
+			</entry>
+			<entry name="ZET field">
+				<label>ZET field</label>
+				<tooltip>Applied ZET</tooltip>
+			</entry>
+			<entry name="ZET field">
+				<label>ZET field</label>
+				<tooltip>Applied ZET</tooltip>
+			</entry>
+			<entry name="MODE3" type="option">
+				<label>MODE3</label>
+			</entry>
+			<entry name="Max2">
+				<label>Max</label>
+				<tooltip>Max relative to the current max (number of periods back)
+				</tooltip>
+			</entry>
+			<entry name="higherThan" type="option">
+				<label>&gt; Higher than</label>
+			</entry>
+			<entry name="lowerThan" type="option">
+				<label>&lt; Lower Than</label>
+			</entry>
+			<entry name="higherThanOrEqual" type="option">
+				<label>&gt;= Higher or equal</label>
+			</entry>
+			<entry name="lowerThanOrEqual" type="option">
+				<label>&lt;= Lower or equal</label>
+			</entry>
+			<entry name="equal" type="option">
+				<label>= Equal</label>
+			</entry>
+			<entry name="differentThan" type="option">
+				<label>&lt;&gt; Different than</label>
+			</entry>
+		</language>
+		<language name="Francais">
+			<entry name="title">
+				<label>Formulaire3</label>
+			</entry>
+			<entry name="ok">
+				<label>Ok</label>
+			</entry>
+			<entry name="cancel">
+				<label>Annuler</label>
+			</entry>
+			<entry name="load-error">
+				<label>Impossible de charger les données. S'il vous plaît rafraîchir
+					la page et réessayez</label>
+			</entry>
+			<entry name="AccDecOiAC" type="option">
+				<label>Option1</label>
+			</entry>
+			<entry name="Symbol">
+				<label>Symbol</label>
+				<tooltip>Symbol name</tooltip>
+			</entry>
+			<entry name="Current Symbol" type="option">
+				<label>Current Symbol</label>
+			</entry>
+			<entry name="SubOption1">
+				<label>SubOption1</label>
+				<tooltip>Chart SubOption1</tooltip>
+			</entry>
+			<entry name="Current" type="option">
+				<label>Current</label>
+			</entry>
+			<entry name="Max">
+				<label>Max</label>
+				<tooltip>Max relative to the current max</tooltip>
+			</entry>
+			<entry name="SubOption1">
+				<label>SubOption1</label>
+				<tooltip>Chart SubOption1</tooltip>
+			</entry>
+			<entry name="OPTION2" type="option">
+				<label>OPTION2</label>
+			</entry>
+			<entry name="AvgMovDIiADX" type="option">
+				<label>Average Movement</label>
+			</entry>
+			<entry name="Period">
+				<label>Period</label>
+				<tooltip>Averaging period for calculation</tooltip>
+			</entry>
+			<entry name="Applied ZET">
+				<label>Applied ZET</label>
+				<tooltip>Applied ZET</tooltip>
+			</entry>
+			<entry name="ZET_CLOSE" type="option">
+				<label>ZET_CLOSE</label>
+			</entry>
+			<entry name="ZET_OPEN" type="option">
+				<label>ZET_OPEN</label>
+			</entry>
+			<entry name="ZET_HIGH" type="option">
+				<label>ZET_HIGH</label>
+			</entry>
+			<entry name="Mode">
+				<label>Mode</label>
+				<tooltip>Indicator line identifier</tooltip>
+			</entry>
+			<entry name="MODE1" type="option">
+				<label>MODE1</label>
+			</entry>
+			<entry name="MODE2" type="option">
+				<label>MODE2</label>
+			</entry>
+			<entry name="Max">
+				<label>Max</label>
+				<tooltip>Max relative to the current max (number of periods back)
+				</tooltip>
+			</entry>
+			<entry name="CUSTOM Z" type="option">
+				<label>CUSTOM Z</label>
+			</entry>
+			<entry name="%aperiod">
+				<label>%aperiod</label>
+				<tooltip>Averaging period for calculation</tooltip>
+			</entry>
+			<entry name="%bperiod">
+				<label>%bperiod</label>
+				<tooltip></tooltip>
+			</entry>
+			<entry name="Slowing">
+				<label>Slowing</label>
+				<tooltip></tooltip>
+			</entry>
+			<entry name="method">
+				<label>method</label>
+				<tooltip></tooltip>
+			</entry>
+			<entry name="ModeSS" type="option">
+				<label>ModeSS</label>
+			</entry>
+			<entry name="ModeEE" type="option">
+				<label>ModeEE</label>
+			</entry>
+			<entry name="ZET field">
+				<label>ZET field</label>
+				<tooltip>Applied ZET</tooltip>
+			</entry>
+			<entry name="ZET field">
+				<label>ZET field</label>
+				<tooltip>Applied ZET</tooltip>
+			</entry>
+			<entry name="MODE3" type="option">
+				<label>MODE3</label>
+			</entry>
+			<entry name="Max2">
+				<label>Max</label>
+				<tooltip>Max relative to the current max (number of periods back)
+				</tooltip>
+			</entry>
+			<entry name="higherThan" type="option">
+				<label>&gt; Higher than</label>
+			</entry>
+			<entry name="lowerThan" type="option">
+				<label>&lt; Lower Than</label>
+			</entry>
+			<entry name="higherThanOrEqual" type="option">
+				<label>&gt;= Higher or equal</label>
+			</entry>
+			<entry name="lowerThanOrEqual" type="option">
+				<label>&lt;= Lower or equal</label>
+			</entry>
+			<entry name="equal" type="option">
+				<label>= Equal</label>
+			</entry>
+			<entry name="differentThan" type="option">
+				<label>&lt;&gt; Different than</label>
+			</entry>
+		</language>
+	</languages>
+</myform3>
