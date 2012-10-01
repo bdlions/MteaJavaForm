@@ -2,6 +2,9 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -35,424 +38,563 @@ import org.forms.form1.spinner.SpinnerOption;
 import org.forms.form1.spinner.SpinnerOptionElement;
 import org.forms.languages.LanguageEntry;
 
-
 public class Form1Window extends JFrame {
 
 	private JTextField textFieldLotReduction;
 	private FormGenerator formGenerator;
 	private JPanel contentPane;
 	private JPanel panel;
-	
+	private int row = 0;
+
+	public int getRow() {
+		return row;
+	}
+
+	public void setRow(int row) {
+		this.row = row;
+	}
+
 	/**
 	 * Launch the application.
 	 */
-	/*public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Form1Window frame = new Form1Window("English");
-					//Form1Window frame = new Form1Window("Francais");
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}*/
-	
+	/*
+	 * public static void main(String[] args) { EventQueue.invokeLater(new
+	 * Runnable() { public void run() { try { Form1Window frame = new
+	 * Form1Window("English"); //Form1Window frame = new
+	 * Form1Window("Francais"); frame.setVisible(true); } catch (Exception e) {
+	 * e.printStackTrace(); } } }); }
+	 */
+
 	/**
 	 * Create the frame.
 	 */
-	public Form1Window(String language)
-	{
+	public Form1Window(String language) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		  setBounds(100, 100, 450, 300);
-		  contentPane = new JPanel();
-		  //contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		  contentPane.setLayout(new BorderLayout(0, 0));
-		  setContentPane(contentPane);
-		  
-		  panel = new JPanel();
-		  //contentPane.add(panel, BorderLayout.CENTER);
-		  
-		  //Creating group layout
-		  GroupLayout layout = new GroupLayout(panel);
-		  //setting the grouplaoyt in content pane
-		  panel.setLayout(layout);
-		  contentPane.setPreferredSize(new Dimension(500, 250));
-		  
-		  JScrollPane scrollBar = new JScrollPane();
-		  scrollBar.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-		  scrollBar.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		  contentPane.add(scrollBar, BorderLayout.CENTER);
-		  scrollBar.setViewportView(panel);
-		  
-		  //setting gaps in container
-		  layout.setAutoCreateGaps(true);
-		  layout.setAutoCreateContainerGaps(true);
-		  
-		  //horizontal and vertical group
-		  ParallelGroup horizontalGroup = layout.createParallelGroup(GroupLayout.Alignment.LEADING);
-		  layout.setHorizontalGroup(horizontalGroup);
-		  
-		  SequentialGroup horizontalSequentialGroup = layout.createSequentialGroup();
-		  horizontalGroup.addGroup(horizontalSequentialGroup);
-		  
-		  ParallelGroup horizontalParallelGroup = layout.createParallelGroup(GroupLayout.Alignment.LEADING);
-		  horizontalSequentialGroup.addGroup(horizontalParallelGroup);
-		  
-		  
-		  ParallelGroup verticalGroup = layout.createParallelGroup(GroupLayout.Alignment.BASELINE);
-		  layout.setVerticalGroup(verticalGroup);
-		  
-		  SequentialGroup verticalSequentialGroup = layout.createSequentialGroup();
-		  verticalGroup.addGroup(verticalSequentialGroup);
-		  
-		  //-----------------Adding group layout-------------------//
-		    
-		  
-		  //setting language in formgenerator
-		  formGenerator = new FormGenerator();
-		  formGenerator.setLanguage(language);
-		  formGenerator.generateForm1();
-		  
-		  Hashtable syntaxMap = formGenerator.getSyntaxMapForm1();
-		  
-		  LanguageEntry titleEntry = (LanguageEntry)syntaxMap.get("title");
-		  String title = titleEntry.getLabel();
-		  setTitle(title);
-		  
-		  JPanel buttonPanel = new JPanel();
-		  
-		  titleEntry = (LanguageEntry)syntaxMap.get("ok");
-		  String okLabel = titleEntry.getLabel();
-		  JButton okButton = new JButton(okLabel);
-		  okButton.addActionListener(new ActionListener() {				
-			  @Override
-			  public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub	
-				  Form1Output from1Output = new Form1Output(formGenerator.getForm1());
-				  from1Output.setVisible(true);
-				  from1Output.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-			  }
-		  });
-		  titleEntry = (LanguageEntry)syntaxMap.get("cancel");
-		  String cancelLabel = titleEntry.getLabel();
-		  JButton cancelButton = new JButton(cancelLabel);
-		  cancelButton.addActionListener(new ActionListener() {				
-			  @Override
-			  public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub		
-				  disposePanel();
-			  }
-		  });
-		  
-		  buttonPanel.add(okButton);
-		  buttonPanel.add(cancelButton);
-		  contentPane.add(buttonPanel, BorderLayout.SOUTH);
-		  
-		  for(Option option : formGenerator.getForm1().getListOptions().getOption())
-		  {
-		   addComponent(layout, horizontalParallelGroup, verticalSequentialGroup, option);
-		  }
-		  
-		  this.pack();
+		setBounds(100, 100, 450, 300);
+		contentPane = new JPanel();
+		contentPane.setLayout(new BorderLayout(0, 0));
+		setContentPane(contentPane);
+
+		panel = new JPanel(new GridBagLayout());
+
+		// Creating group layout
+		contentPane.setPreferredSize(new Dimension(500, 250));
+
+		JScrollPane scrollBar = new JScrollPane();
+		scrollBar
+				.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scrollBar
+				.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		contentPane.add(scrollBar, BorderLayout.CENTER);
+		scrollBar.setViewportView(panel);
+
+		// setting language in formgenerator
+		formGenerator = new FormGenerator();
+		formGenerator.setLanguage(language);
+		formGenerator.generateForm1();
+
+		Hashtable syntaxMap = formGenerator.getSyntaxMapForm1();
+
+		LanguageEntry titleEntry = (LanguageEntry) syntaxMap.get("title");
+		String title = titleEntry.getLabel();
+		setTitle(title);
+
+		JPanel buttonPanel = new JPanel();
+
+		titleEntry = (LanguageEntry) syntaxMap.get("ok");
+		String okLabel = titleEntry.getLabel();
+		JButton okButton = new JButton(okLabel);
+		
+		okButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				Form1Output from1Output = new Form1Output(formGenerator
+						.getForm1());
+				from1Output.setVisible(true);
+				from1Output.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			}
+		});
+		
+		titleEntry = (LanguageEntry) syntaxMap.get("cancel");
+		String cancelLabel = titleEntry.getLabel();
+		JButton cancelButton = new JButton(cancelLabel);
+		cancelButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				disposePanel();
+			}
+		});
+
+		buttonPanel.add(okButton);
+		buttonPanel.add(cancelButton);
+		contentPane.add(buttonPanel, BorderLayout.SOUTH);
+
+		GridBagConstraints constraints = new GridBagConstraints();
+		for (Option option : formGenerator.getForm1().getListOptions()
+				.getOption()) {
+			addComponent(option, constraints, panel);
+		}
 	}
-	
-	public void disposePanel()
-	{
+
+	public void disposePanel() {
 		this.dispose();
 	}
-	
-	public List<String> getOptions(String name)
-	{
+
+	public List<String> getOptions(String name) {
 		List<String> options = new ArrayList<String>();
-		
+
 		Form1 form1 = formGenerator.getForm1();
-		
-		
-		for(Option option:form1.getListOptions().getOption())
-		{
+
+		for (Option option : form1.getListOptions().getOption()) {
 			options = getOptionsAndSub(option, name);
-			
-			if(options.size() > 0)
-			{
+
+			if (options.size() > 0) {
 				return options;
 			}
 		}
-		
+
 		return options;
 	}
-	
-	public List<String> getOptionsAndSub(Option option, String name)
-	{
+
+	public List<String> getOptionsAndSub(Option option, String name) {
 		Hashtable syntaxMap = formGenerator.getSyntaxMapForm1();
-		LanguageEntry languageEntry = (LanguageEntry)syntaxMap.get(name);
-		
+		LanguageEntry languageEntry = (LanguageEntry) syntaxMap.get(name);
+
 		List<String> options = new ArrayList<String>();
-		if(option.getName().equals(name))
-		{
-			for(DropDownOption dropDownOption: option.getDropdownOption())
-			{
-				for(DropDownOptionElement dropDownOptionElement: dropDownOption.getOption())
-				{
-					if(syntaxMap.containsKey(dropDownOptionElement.getAs()))
-					{
-						languageEntry = (LanguageEntry)syntaxMap.get(dropDownOptionElement.getAs());
+		if (option.getName().equals(name)) {
+			for (DropDownOption dropDownOption : option.getDropdownOption()) {
+				for (DropDownOptionElement dropDownOptionElement : dropDownOption
+						.getOption()) {
+					if (syntaxMap.containsKey(dropDownOptionElement.getAs())) {
+						languageEntry = (LanguageEntry) syntaxMap
+								.get(dropDownOptionElement.getAs());
 						options.add(languageEntry.getLabel());
 					}
-					if(dropDownOptionElement.getAs().equals("showvars"))
-					{
+					if (dropDownOptionElement.getAs().equals("showvars")) {
 						options.add("will add some variables later");
 					}
 				}
 			}
-			for(SpinnerOption spinnerOption: option.getSpinnerOption())
-			{
+			for (SpinnerOption spinnerOption : option.getSpinnerOption()) {
 				int min = 0;
 				int max = 0;
-				for(SpinnerOptionElement spinnerOptionElement:spinnerOption.getOption())
-				{
-					if(spinnerOptionElement.getMin() > 0)
-					{
+				for (SpinnerOptionElement spinnerOptionElement : spinnerOption
+						.getOption()) {
+					if (spinnerOptionElement.getMin() > 0) {
 						min = spinnerOptionElement.getMin();
 					}
-					if(spinnerOptionElement.getMax() > 0)
-					{
+					if (spinnerOptionElement.getMax() > 0) {
 						max = spinnerOptionElement.getMax();
 					}
-					
-					/*if(spinnerOptionElement.getAs() != null && syntaxMap.containsKey(spinnerOptionElement.getAs()))
-					{
-						languageEntry = (LanguageEntry)syntaxMap.get(spinnerOptionElement.getAs());
-						options.add(languageEntry.getLabel());
-					}
-					if(spinnerOptionElement.getAs() != null && spinnerOptionElement.getAs().equals("showvars"))
-					{
-						options.add("will add some variables later");
-					}*/
-					
 				}
-				for(int i = min; i <= max; i++)
-				{
+				for (int i = min; i <= max; i++) {
 					options.add(i + "");
 				}
-				//if(spinnerOptionElement.getAs() != null && spinnerOptionElement.getAs().equals("showvars"))
+				// if(spinnerOptionElement.getAs() != null &&
+				// spinnerOptionElement.getAs().equals("showvars"))
 				{
 					options.add("will add some variables later");
 				}
 			}
 			return options;
-		}
-		else if(option.getSuboption().size() > 0)
-		{
-			for(Option subOption: option.getSuboption())
-			{
+		} else if (option.getSuboption().size() > 0) {
+			for (Option subOption : option.getSuboption()) {
 				return getOptionsAndSub(subOption, name);
 			}
 		}
-		
+
 		return options;
 	}
-	
-	private void addComponent(GroupLayout layout, ParallelGroup horizontalParallelGroup, 
-			SequentialGroup verticalSequentialGroup, final Option option)
-	{
-		
+
+	public void addComponent(final Option option,
+			GridBagConstraints constraints, final JPanel panel) {
 		String type = option.getType();
 		String name = option.getName();
 		String labelText = option.getLabel();
 		String tooltip = option.getTooltip();
 		String defaultOption = option.getDefaultOption();
-		
+
 		Hashtable syntaxMap = formGenerator.getSyntaxMapForm1();
-		
-		LanguageEntry languageEntry = (LanguageEntry)syntaxMap.get(name);
+
+		LanguageEntry languageEntry = (LanguageEntry) syntaxMap.get(name);
 		JLabel leftComponent = new JLabel(languageEntry.getLabel());
-		leftComponent.setName(name+"Label");
-		
+		leftComponent.setName(name + "Label");
+
 		Component rightComponent = null;
-		
-		if( type.equalsIgnoreCase("text"))
-		{
+
+		if (type.equalsIgnoreCase("text")) {
 			JTextField textField = new JTextField(defaultOption);
 			textField.setToolTipText(tooltip);
 			textField.setName(name);
 			textField.addKeyListener(new KeyListener() {
-				
+
 				@Override
 				public void keyTyped(KeyEvent e) {
 					// TODO Auto-generated method stub
-					
+
 				}
-				
+
 				@Override
 				public void keyReleased(KeyEvent e) {
 					// TODO Auto-generated method stub
-					option.setDefaultOption(((JTextField)e.getSource()).getText());
+					option.setDefaultOption(((JTextField) e.getSource())
+							.getText());
 				}
-				
+
 				@Override
 				public void keyPressed(KeyEvent e) {
 					// TODO Auto-generated method stub
-					
+
 				}
 			});
 			rightComponent = textField;
-		}
-		else if( type.equalsIgnoreCase("dropdown") || type.equalsIgnoreCase("spinner"))
-		{
+		} else if (type.equalsIgnoreCase("dropdown")
+				|| type.equalsIgnoreCase("spinner")) {
 			JComboBox comboBox = new JComboBox(getOptions(name).toArray());
 			comboBox.setName(name);
 			comboBox.setToolTipText(languageEntry.getTooltip());
 			comboBox.setSelectedItem(defaultOption);
-			
-			comboBox.addActionListener(new ActionListener() 
-			{
-				
+
+			comboBox.addActionListener(new ActionListener() {
+
 				@Override
-				public void actionPerformed(ActionEvent e) 
-				{
+				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
 					Hashtable syntaxMap = formGenerator.getSyntaxMapForm1();
-					
-					JComboBox combo = (JComboBox)e.getSource();
+
+					JComboBox combo = (JComboBox) e.getSource();
 					String comboName = combo.getName();
-					
-					for(Option option : formGenerator.getForm1().getListOptions().getOption())
-					{
-						if(option.getName().equals(comboName))
-						{
+
+					for (Option option : formGenerator.getForm1()
+							.getListOptions().getOption()) {
+						if (option.getName().equals(comboName)) {
 							option.setDefaultOption(option.getType());
 							Option newSubOption = null;
 							JComboBox subOptionCombo = null;
 							JLabel subOptionLable = null;
-							for(Option subOption: option.getSuboption())
-							{
-								
-								LanguageEntry languageEntry = (LanguageEntry)syntaxMap.get(subOption.getName());
-								if(languageEntry.getLabel().equals(combo.getSelectedItem().toString()))
-								{
+							for (Option subOption : option.getSuboption()) {
+
+								LanguageEntry languageEntry = (LanguageEntry) syntaxMap
+										.get(subOption.getName());
+								if (languageEntry.getLabel().equals(
+										combo.getSelectedItem().toString())) {
 									newSubOption = subOption;
 									combo.setName(option.getName());
 									option.setDefaultOption(subOption.getName());
 								}
-								for (Component component:panel.getComponents())
-								{
-									if(subOption.getName().equals(component.getName()))
-									{
+								for (Component component : panel
+										.getComponents()) {
+									if (subOption.getName().equals(
+											component.getName())) {
 										subOptionCombo = (JComboBox) component;
 									}
-									
-									if((subOption.getName()+"Label").equals(component.getName()))
-									{
+
+									if ((subOption.getName() + "Label")
+											.equals(component.getName())) {
 										subOptionLable = (JLabel) component;
 									}
 								}
 							}
-							
-							
-							if(newSubOption != null)
-							{
+
+							if (newSubOption != null) {
 								subOptionCombo.removeAllItems();
-								
-								for(DropDownOption dropDownOption: newSubOption.getDropdownOption())
-								{
-									for(DropDownOptionElement dropDownOptionElement:dropDownOption.getOption())
-									{
-										String comboElementName = dropDownOptionElement.getAs();
-										if(comboElementName != "")
-										{
-											LanguageEntry languageEntryCombo = (LanguageEntry)syntaxMap.get(dropDownOptionElement.getAs());
-											if(languageEntryCombo.getLabel() != null || languageEntryCombo.getLabel()!="")
-											{
-												comboElementName = languageEntryCombo.getLabel();
+
+								for (DropDownOption dropDownOption : newSubOption
+										.getDropdownOption()) {
+									for (DropDownOptionElement dropDownOptionElement : dropDownOption
+											.getOption()) {
+										String comboElementName = dropDownOptionElement
+												.getAs();
+										if (comboElementName != "") {
+											LanguageEntry languageEntryCombo = (LanguageEntry) syntaxMap
+													.get(dropDownOptionElement
+															.getAs());
+											if (languageEntryCombo.getLabel() != null
+													|| languageEntryCombo
+															.getLabel() != "") {
+												comboElementName = languageEntryCombo
+														.getLabel();
 											}
 										}
-										subOptionCombo.addItem(comboElementName);										
+										subOptionCombo
+												.addItem(comboElementName);
 									}
 								}
-								if(subOptionLable != null)
-								{
-									subOptionLable.setName(newSubOption.getName()+"Label");
-									subOptionLable.setText(combo.getSelectedItem().toString());
-									subOptionLable.revalidate();									
+								if (subOptionLable != null) {
+									subOptionLable.setName(newSubOption
+											.getName() + "Label");
+									subOptionLable.setText(combo
+											.getSelectedItem().toString());
+									subOptionLable.revalidate();
 								}
-								
-								String defaultOption = newSubOption.getDefaultOption();
-								if(defaultOption != "")
-								{
-									LanguageEntry defaultOptionEntry = (LanguageEntry)syntaxMap.get(newSubOption.getDefaultOption());
-									defaultOption = defaultOptionEntry.getLabel();
+
+								String defaultOption = newSubOption
+										.getDefaultOption();
+								if (defaultOption != "") {
+									LanguageEntry defaultOptionEntry = (LanguageEntry) syntaxMap
+											.get(newSubOption
+													.getDefaultOption());
+									defaultOption = defaultOptionEntry
+											.getLabel();
 								}
-								
-								
+
 								subOptionCombo.setName(newSubOption.getName());
-								subOptionCombo.setToolTipText(newSubOption.getTooltip());
+								subOptionCombo.setToolTipText(newSubOption
+										.getTooltip());
 								subOptionCombo.setSelectedItem(defaultOption);
-								
+
 								subOptionCombo.revalidate();
 							}
 						}
-						
+
 					}
 				}
 			});
 			rightComponent = comboBox;
-		}
-		else if( type.equalsIgnoreCase("check"))
-		{
+		} else if (type.equalsIgnoreCase("check")) {
 			JCheckBox checkBox = new JCheckBox();
 			checkBox.setToolTipText(tooltip);
-			
-			if(defaultOption.equals("checked"))
-			{
+
+			if (defaultOption.equals("checked")) {
 				checkBox.setSelected(true);
 			}
 			checkBox.addChangeListener(new ChangeListener() {
-				
+
 				@Override
 				public void stateChanged(ChangeEvent e) {
 					// TODO Auto-generated method stub
-					if(((JCheckBox)e.getSource()).isSelected())
-					{
+					if (((JCheckBox) e.getSource()).isSelected()) {
 						option.setDefaultOption("checked");
-					}
-					else
-					{
+					} else {
 						option.setDefaultOption("unchecked");
 					}
 				}
 			});
-			
+
 			rightComponent = checkBox;
 		}
-		
-		
-		if(leftComponent != null && rightComponent != null)
-		{
-		
-			SequentialGroup componentSequential2 = layout.createSequentialGroup();
-			
+
+		if (leftComponent != null && rightComponent != null) {
+
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.gridx = 0;
+			constraints.gridy = getRow();
+			panel.add(leftComponent, constraints);
+
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.gridx = 1;
+			constraints.gridy = getRow();
+			panel.add(rightComponent, constraints);
+
+			setRow(getRow() + 1);
+
+		}
+
+		if (option.getSuboption().size() > 0) {
+			for (Option subOption : option.getSuboption()) {
+				if (subOption.getName().equals(defaultOption)) {
+					addComponent(subOption, constraints, panel);
+				}
+			}
+		}
+	}
+
+	private void addComponent(GroupLayout layout,
+			ParallelGroup horizontalParallelGroup,
+			SequentialGroup verticalSequentialGroup, final Option option) {
+
+		String type = option.getType();
+		String name = option.getName();
+		String labelText = option.getLabel();
+		String tooltip = option.getTooltip();
+		String defaultOption = option.getDefaultOption();
+
+		Hashtable syntaxMap = formGenerator.getSyntaxMapForm1();
+
+		LanguageEntry languageEntry = (LanguageEntry) syntaxMap.get(name);
+		JLabel leftComponent = new JLabel(languageEntry.getLabel());
+		leftComponent.setName(name + "Label");
+
+		Component rightComponent = null;
+
+		if (type.equalsIgnoreCase("text")) {
+			JTextField textField = new JTextField(defaultOption);
+			textField.setToolTipText(tooltip);
+			textField.setName(name);
+			textField.addKeyListener(new KeyListener() {
+
+				@Override
+				public void keyTyped(KeyEvent e) {
+					// TODO Auto-generated method stub
+
+				}
+
+				@Override
+				public void keyReleased(KeyEvent e) {
+					// TODO Auto-generated method stub
+					option.setDefaultOption(((JTextField) e.getSource())
+							.getText());
+				}
+
+				@Override
+				public void keyPressed(KeyEvent e) {
+					// TODO Auto-generated method stub
+
+				}
+			});
+			rightComponent = textField;
+		} else if (type.equalsIgnoreCase("dropdown")
+				|| type.equalsIgnoreCase("spinner")) {
+			JComboBox comboBox = new JComboBox(getOptions(name).toArray());
+			comboBox.setName(name);
+			comboBox.setToolTipText(languageEntry.getTooltip());
+			comboBox.setSelectedItem(defaultOption);
+
+			comboBox.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					Hashtable syntaxMap = formGenerator.getSyntaxMapForm1();
+
+					JComboBox combo = (JComboBox) e.getSource();
+					String comboName = combo.getName();
+
+					for (Option option : formGenerator.getForm1()
+							.getListOptions().getOption()) {
+						if (option.getName().equals(comboName)) {
+							option.setDefaultOption(option.getType());
+							Option newSubOption = null;
+							JComboBox subOptionCombo = null;
+							JLabel subOptionLable = null;
+							for (Option subOption : option.getSuboption()) {
+
+								LanguageEntry languageEntry = (LanguageEntry) syntaxMap
+										.get(subOption.getName());
+								if (languageEntry.getLabel().equals(
+										combo.getSelectedItem().toString())) {
+									newSubOption = subOption;
+									combo.setName(option.getName());
+									option.setDefaultOption(subOption.getName());
+								}
+								for (Component component : panel
+										.getComponents()) {
+									if (subOption.getName().equals(
+											component.getName())) {
+										subOptionCombo = (JComboBox) component;
+									}
+
+									if ((subOption.getName() + "Label")
+											.equals(component.getName())) {
+										subOptionLable = (JLabel) component;
+									}
+								}
+							}
+
+							if (newSubOption != null) {
+								subOptionCombo.removeAllItems();
+
+								for (DropDownOption dropDownOption : newSubOption
+										.getDropdownOption()) {
+									for (DropDownOptionElement dropDownOptionElement : dropDownOption
+											.getOption()) {
+										String comboElementName = dropDownOptionElement
+												.getAs();
+										if (comboElementName != "") {
+											LanguageEntry languageEntryCombo = (LanguageEntry) syntaxMap
+													.get(dropDownOptionElement
+															.getAs());
+											if (languageEntryCombo.getLabel() != null
+													|| languageEntryCombo
+															.getLabel() != "") {
+												comboElementName = languageEntryCombo
+														.getLabel();
+											}
+										}
+										subOptionCombo
+												.addItem(comboElementName);
+									}
+								}
+								if (subOptionLable != null) {
+									subOptionLable.setName(newSubOption
+											.getName() + "Label");
+									subOptionLable.setText(combo
+											.getSelectedItem().toString());
+									subOptionLable.revalidate();
+								}
+
+								String defaultOption = newSubOption
+										.getDefaultOption();
+								if (defaultOption != "") {
+									LanguageEntry defaultOptionEntry = (LanguageEntry) syntaxMap
+											.get(newSubOption
+													.getDefaultOption());
+									defaultOption = defaultOptionEntry
+											.getLabel();
+								}
+
+								subOptionCombo.setName(newSubOption.getName());
+								subOptionCombo.setToolTipText(newSubOption
+										.getTooltip());
+								subOptionCombo.setSelectedItem(defaultOption);
+
+								subOptionCombo.revalidate();
+							}
+						}
+
+					}
+				}
+			});
+			rightComponent = comboBox;
+		} else if (type.equalsIgnoreCase("check")) {
+			JCheckBox checkBox = new JCheckBox();
+			checkBox.setToolTipText(tooltip);
+
+			if (defaultOption.equals("checked")) {
+				checkBox.setSelected(true);
+			}
+			checkBox.addChangeListener(new ChangeListener() {
+
+				@Override
+				public void stateChanged(ChangeEvent e) {
+					// TODO Auto-generated method stub
+					if (((JCheckBox) e.getSource()).isSelected()) {
+						option.setDefaultOption("checked");
+					} else {
+						option.setDefaultOption("unchecked");
+					}
+				}
+			});
+
+			rightComponent = checkBox;
+		}
+
+		if (leftComponent != null && rightComponent != null) {
+
+			SequentialGroup componentSequential2 = layout
+					.createSequentialGroup();
+
 			componentSequential2.addComponent(leftComponent);
-			componentSequential2.addComponent(rightComponent, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE);
-			
+			componentSequential2
+					.addComponent(rightComponent, GroupLayout.PREFERRED_SIZE,
+							200, GroupLayout.PREFERRED_SIZE);
+
 			horizontalParallelGroup.addGroup(componentSequential2);
-			
-			
-			ParallelGroup verticlaParallelGroupFinal2 = layout.createParallelGroup(GroupLayout.Alignment.BASELINE);
+
+			ParallelGroup verticlaParallelGroupFinal2 = layout
+					.createParallelGroup(GroupLayout.Alignment.BASELINE);
 			verticalSequentialGroup.addGroup(verticlaParallelGroupFinal2);
 			verticlaParallelGroupFinal2.addComponent(leftComponent);
 			verticlaParallelGroupFinal2.addComponent(rightComponent);
 		}
-		
-		if(option.getSuboption().size() > 0)
-		{
-			for(Option subOption: option.getSuboption())
-			{
-				if(subOption.getName().equals(defaultOption))
-				{
-					addComponent(layout, horizontalParallelGroup, verticalSequentialGroup, subOption);
+
+		if (option.getSuboption().size() > 0) {
+			for (Option subOption : option.getSuboption()) {
+				if (subOption.getName().equals(defaultOption)) {
+					addComponent(layout, horizontalParallelGroup,
+							verticalSequentialGroup, subOption);
 				}
 			}
 		}
