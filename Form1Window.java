@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -21,6 +23,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JCheckBox;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.forms.Form1;
 import org.forms.FormGenerator;
@@ -127,10 +131,9 @@ public class Form1Window extends JFrame {
 			  @Override
 			  public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub	
-				  for (Component component:panel.getComponents())
-					{
-						JOptionPane.showMessageDialog(null, component.getName());
-					}
+				  Form1Output from1Output = new Form1Output(formGenerator.getForm1());
+				  from1Output.setVisible(true);
+				  from1Output.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			  }
 		  });
 		  titleEntry = (LanguageEntry)syntaxMap.get("cancel");
@@ -253,7 +256,7 @@ public class Form1Window extends JFrame {
 	}
 	
 	private void addComponent(GroupLayout layout, ParallelGroup horizontalParallelGroup, 
-			SequentialGroup verticalSequentialGroup, Option option)
+			SequentialGroup verticalSequentialGroup, final Option option)
 	{
 		
 		String type = option.getType();
@@ -274,7 +277,27 @@ public class Form1Window extends JFrame {
 		{
 			JTextField textField = new JTextField(defaultOption);
 			textField.setToolTipText(tooltip);
-			
+			textField.setName(name);
+			textField.addKeyListener(new KeyListener() {
+				
+				@Override
+				public void keyTyped(KeyEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void keyReleased(KeyEvent e) {
+					// TODO Auto-generated method stub
+					option.setDefaultOption(((JTextField)e.getSource()).getText());
+				}
+				
+				@Override
+				public void keyPressed(KeyEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
 			rightComponent = textField;
 		}
 		else if( type.equalsIgnoreCase("dropdown") || type.equalsIgnoreCase("spinner"))
@@ -300,6 +323,7 @@ public class Form1Window extends JFrame {
 					{
 						if(option.getName().equals(comboName))
 						{
+							option.setDefaultOption(option.getType());
 							Option newSubOption = null;
 							JComboBox subOptionCombo = null;
 							JLabel subOptionLable = null;
@@ -311,7 +335,7 @@ public class Form1Window extends JFrame {
 								{
 									newSubOption = subOption;
 									combo.setName(option.getName());
-									
+									option.setDefaultOption(subOption.getName());
 								}
 								for (Component component:panel.getComponents())
 								{
@@ -385,6 +409,21 @@ public class Form1Window extends JFrame {
 			{
 				checkBox.setSelected(true);
 			}
+			checkBox.addChangeListener(new ChangeListener() {
+				
+				@Override
+				public void stateChanged(ChangeEvent e) {
+					// TODO Auto-generated method stub
+					if(((JCheckBox)e.getSource()).isSelected())
+					{
+						option.setDefaultOption("checked");
+					}
+					else
+					{
+						option.setDefaultOption("unchecked");
+					}
+				}
+			});
 			
 			rightComponent = checkBox;
 		}
