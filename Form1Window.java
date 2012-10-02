@@ -57,13 +57,20 @@ public class Form1Window extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	/*
-	 * public static void main(String[] args) { EventQueue.invokeLater(new
-	 * Runnable() { public void run() { try { Form1Window frame = new
-	 * Form1Window("English"); //Form1Window frame = new
-	 * Form1Window("Francais"); frame.setVisible(true); } catch (Exception e) {
-	 * e.printStackTrace(); } } }); }
-	 */
+	
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Form1Window frame = new Form1Window("English"); 
+					//Form1Window new Form1Window("Francais");
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 
 	/**
 	 * Create the frame.
@@ -256,7 +263,7 @@ public class Form1Window extends JFrame {
 			comboBox.setName(name);
 			comboBox.setToolTipText(languageEntry.getTooltip());
 			comboBox.setSelectedItem(defaultOption);
-
+			
 			comboBox.addActionListener(new ActionListener() {
 
 				@Override
@@ -266,11 +273,12 @@ public class Form1Window extends JFrame {
 
 					JComboBox combo = (JComboBox) e.getSource();
 					String comboName = combo.getName();
-
+					if(combo.getSelectedItem() != null)
+					option.setDefaultOption(combo.getSelectedItem().toString());
 					for (Option option : formGenerator.getForm1()
 							.getListOptions().getOption()) {
 						if (option.getName().equals(comboName)) {
-							option.setDefaultOption(option.getType());
+							option.setDefaultOption(combo.getSelectedItem().toString());
 							Option newSubOption = null;
 							JComboBox subOptionCombo = null;
 							JLabel subOptionLable = null;
@@ -400,203 +408,5 @@ public class Form1Window extends JFrame {
 			}
 		}
 	}
-
-	private void addComponent(GroupLayout layout,
-			ParallelGroup horizontalParallelGroup,
-			SequentialGroup verticalSequentialGroup, final Option option) {
-
-		String type = option.getType();
-		String name = option.getName();
-		String labelText = option.getLabel();
-		String tooltip = option.getTooltip();
-		String defaultOption = option.getDefaultOption();
-
-		Hashtable syntaxMap = formGenerator.getSyntaxMapForm1();
-
-		LanguageEntry languageEntry = (LanguageEntry) syntaxMap.get(name);
-		JLabel leftComponent = new JLabel(languageEntry.getLabel());
-		leftComponent.setName(name + "Label");
-
-		Component rightComponent = null;
-
-		if (type.equalsIgnoreCase("text")) {
-			JTextField textField = new JTextField(defaultOption);
-			textField.setToolTipText(tooltip);
-			textField.setName(name);
-			textField.addKeyListener(new KeyListener() {
-
-				@Override
-				public void keyTyped(KeyEvent e) {
-					// TODO Auto-generated method stub
-
-				}
-
-				@Override
-				public void keyReleased(KeyEvent e) {
-					// TODO Auto-generated method stub
-					option.setDefaultOption(((JTextField) e.getSource())
-							.getText());
-				}
-
-				@Override
-				public void keyPressed(KeyEvent e) {
-					// TODO Auto-generated method stub
-
-				}
-			});
-			rightComponent = textField;
-		} else if (type.equalsIgnoreCase("dropdown")
-				|| type.equalsIgnoreCase("spinner")) {
-			JComboBox comboBox = new JComboBox(getOptions(name).toArray());
-			comboBox.setName(name);
-			comboBox.setToolTipText(languageEntry.getTooltip());
-			comboBox.setSelectedItem(defaultOption);
-
-			comboBox.addActionListener(new ActionListener() {
-
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					// TODO Auto-generated method stub
-					Hashtable syntaxMap = formGenerator.getSyntaxMapForm1();
-
-					JComboBox combo = (JComboBox) e.getSource();
-					String comboName = combo.getName();
-
-					for (Option option : formGenerator.getForm1()
-							.getListOptions().getOption()) {
-						if (option.getName().equals(comboName)) {
-							option.setDefaultOption(option.getType());
-							Option newSubOption = null;
-							JComboBox subOptionCombo = null;
-							JLabel subOptionLable = null;
-							for (Option subOption : option.getSuboption()) {
-
-								LanguageEntry languageEntry = (LanguageEntry) syntaxMap
-										.get(subOption.getName());
-								if (languageEntry.getLabel().equals(
-										combo.getSelectedItem().toString())) {
-									newSubOption = subOption;
-									combo.setName(option.getName());
-									option.setDefaultOption(subOption.getName());
-								}
-								for (Component component : panel
-										.getComponents()) {
-									if (subOption.getName().equals(
-											component.getName())) {
-										subOptionCombo = (JComboBox) component;
-									}
-
-									if ((subOption.getName() + "Label")
-											.equals(component.getName())) {
-										subOptionLable = (JLabel) component;
-									}
-								}
-							}
-
-							if (newSubOption != null) {
-								subOptionCombo.removeAllItems();
-
-								for (DropDownOption dropDownOption : newSubOption
-										.getDropdownOption()) {
-									for (DropDownOptionElement dropDownOptionElement : dropDownOption
-											.getOption()) {
-										String comboElementName = dropDownOptionElement
-												.getAs();
-										if (comboElementName != "") {
-											LanguageEntry languageEntryCombo = (LanguageEntry) syntaxMap
-													.get(dropDownOptionElement
-															.getAs());
-											if (languageEntryCombo.getLabel() != null
-													|| languageEntryCombo
-															.getLabel() != "") {
-												comboElementName = languageEntryCombo
-														.getLabel();
-											}
-										}
-										subOptionCombo
-												.addItem(comboElementName);
-									}
-								}
-								if (subOptionLable != null) {
-									subOptionLable.setName(newSubOption
-											.getName() + "Label");
-									subOptionLable.setText(combo
-											.getSelectedItem().toString());
-									subOptionLable.revalidate();
-								}
-
-								String defaultOption = newSubOption
-										.getDefaultOption();
-								if (defaultOption != "") {
-									LanguageEntry defaultOptionEntry = (LanguageEntry) syntaxMap
-											.get(newSubOption
-													.getDefaultOption());
-									defaultOption = defaultOptionEntry
-											.getLabel();
-								}
-
-								subOptionCombo.setName(newSubOption.getName());
-								subOptionCombo.setToolTipText(newSubOption
-										.getTooltip());
-								subOptionCombo.setSelectedItem(defaultOption);
-
-								subOptionCombo.revalidate();
-							}
-						}
-
-					}
-				}
-			});
-			rightComponent = comboBox;
-		} else if (type.equalsIgnoreCase("check")) {
-			JCheckBox checkBox = new JCheckBox();
-			checkBox.setToolTipText(tooltip);
-
-			if (defaultOption.equals("checked")) {
-				checkBox.setSelected(true);
-			}
-			checkBox.addChangeListener(new ChangeListener() {
-
-				@Override
-				public void stateChanged(ChangeEvent e) {
-					// TODO Auto-generated method stub
-					if (((JCheckBox) e.getSource()).isSelected()) {
-						option.setDefaultOption("checked");
-					} else {
-						option.setDefaultOption("unchecked");
-					}
-				}
-			});
-
-			rightComponent = checkBox;
-		}
-
-		if (leftComponent != null && rightComponent != null) {
-
-			SequentialGroup componentSequential2 = layout
-					.createSequentialGroup();
-
-			componentSequential2.addComponent(leftComponent);
-			componentSequential2
-					.addComponent(rightComponent, GroupLayout.PREFERRED_SIZE,
-							200, GroupLayout.PREFERRED_SIZE);
-
-			horizontalParallelGroup.addGroup(componentSequential2);
-
-			ParallelGroup verticlaParallelGroupFinal2 = layout
-					.createParallelGroup(GroupLayout.Alignment.BASELINE);
-			verticalSequentialGroup.addGroup(verticlaParallelGroupFinal2);
-			verticlaParallelGroupFinal2.addComponent(leftComponent);
-			verticlaParallelGroupFinal2.addComponent(rightComponent);
-		}
-
-		if (option.getSuboption().size() > 0) {
-			for (Option subOption : option.getSuboption()) {
-				if (subOption.getName().equals(defaultOption)) {
-					addComponent(layout, horizontalParallelGroup,
-							verticalSequentialGroup, subOption);
-				}
-			}
-		}
-	}
+	
 }
