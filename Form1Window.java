@@ -62,8 +62,8 @@ public class Form1Window extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Form1Window frame = new Form1Window("English"); 
-					//Form1Window new Form1Window("Francais");
+					//Form1Window frame = new Form1Window("English"); 
+					Form1Window frame = new Form1Window("Francais");
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -116,8 +116,7 @@ public class Form1Window extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				Form1Output from1Output = new Form1Output(formGenerator
-						.getForm1());
+				Form1Output from1Output = new Form1Output(formGenerator);
 				from1Output.setVisible(true);
 				from1Output.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			}

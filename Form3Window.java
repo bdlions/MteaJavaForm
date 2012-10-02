@@ -95,13 +95,43 @@ public class Form3Window extends JFrame {
 		setTitle(title);
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		// setBounds(100, 100, 950, 300);
+		setBounds(100, 100, 950, 300);
 		contentPane = new JPanel();
 		// contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setBorder(new EmptyBorder(10, 5, 0, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
+		JPanel buttonPanel = new JPanel();
 
+		titleEntry = (LanguageEntry) syntaxMap.get("ok");
+		String okLabel = titleEntry.getLabel();
+		JButton okButton = new JButton(okLabel);
+
+		okButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				Form3Output from3Output = new Form3Output(formGenerator.getForm3(), comboBoxOptionLeft, comboBoxOperatorLeft, comboBoxOptionLeftAttributeRight,  comboBoxComparison,comboBoxOptionRightAttributeRight, comboBoxOperatorRight,  comboBoxOptionRight);
+				from3Output.setVisible(true);
+				from3Output.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			}
+		});
+
+		titleEntry = (LanguageEntry) syntaxMap.get("cancel");
+		String cancelLabel = titleEntry.getLabel();
+		JButton cancelButton = new JButton(cancelLabel);
+		cancelButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				((JFrame) ((JButton) e.getSource()).getTopLevelAncestor())
+						.dispose();
+			}
+		});
+
+		buttonPanel.add(okButton);
+		buttonPanel.add(cancelButton);
+		contentPane.add(buttonPanel, BorderLayout.SOUTH);
 		JPanel panel = new JPanel();
 		// contentPane.add(panel, BorderLayout.CENTER);
 
@@ -262,7 +292,7 @@ public class Form3Window extends JFrame {
 								.getSelectedItem().toString());
 					}
 				});
-		this.pack();
+		
 	}
 
 	public List<String> getOperators() {
@@ -374,7 +404,7 @@ public class Form3Window extends JFrame {
 						comboSource.add(dropDownOptionElement.getAs());
 					}
 					addComponent(layout, horizontalParallelGroup,
-							verticalSequentialGroup, dropDownOption.getName(),
+							verticalSequentialGroup, dropDownOption,
 							comboSource);
 
 				}
@@ -401,7 +431,7 @@ public class Form3Window extends JFrame {
 					// comboSource.add(spinnerOptionElement.getAs());
 
 					addComponent(layout, horizontalParallelGroup,
-							verticalSequentialGroup, spinnerOption.getName(),
+							verticalSequentialGroup, spinnerOption,
 							comboSource);
 
 				}
@@ -473,7 +503,7 @@ public class Form3Window extends JFrame {
 					}
 					addComponent(leftLayoutAttributeRight,
 							horizontalParallelGroup, verticalSequentialGroup,
-							dropDownOption.getName(), comboSource);
+							dropDownOption, comboSource);
 
 				}
 
@@ -500,7 +530,7 @@ public class Form3Window extends JFrame {
 
 					addComponent(leftLayoutAttributeRight,
 							horizontalParallelGroup, verticalSequentialGroup,
-							spinnerOption.getName(), comboSource);
+							spinnerOption, comboSource);
 
 				}
 			}
@@ -514,9 +544,20 @@ public class Form3Window extends JFrame {
 
 	private void addComponent(GroupLayout layout,
 			ParallelGroup horizontalParallelGroup,
-			SequentialGroup verticalSequentialGroup, String comboName,
+			SequentialGroup verticalSequentialGroup, final Object object,
 			List<String> comboSource) {
 
+		String comboName = "";
+		
+		if(object instanceof SpinnerOption)
+		{
+			comboName = ((SpinnerOption)object).getName();
+		}
+		else if(object instanceof DropDownOption)
+		{
+			comboName = ((DropDownOption)object).getName();
+		}
+		
 		JLabel leftComponent = new JLabel(comboName);
 		leftComponent.setName(comboName + "Label");
 
@@ -532,6 +573,15 @@ public class Form3Window extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
+					String defaultValue = ((JComboBox)e.getSource()).getSelectedItem().toString();
+					if(object instanceof SpinnerOption)
+					{
+						((SpinnerOption)object).setDefaultValue(defaultValue);
+					}
+					else if(object instanceof DropDownOption)
+					{
+						((DropDownOption)object).setDefaultValue(defaultValue);
+					}
 				}
 			});
 			rightComponent = comboBox;
@@ -617,7 +667,7 @@ public class Form3Window extends JFrame {
 						comboSource.add(dropDownOptionElement.getAs());
 					}
 					addComponent(rightLayout, horizontalParallelGroup,
-							verticalSequentialGroup, dropDownOption.getName(),
+							verticalSequentialGroup, dropDownOption,
 							comboSource);
 
 				}
@@ -644,7 +694,7 @@ public class Form3Window extends JFrame {
 					// comboSource.add(spinnerOptionElement.getAs());
 
 					addComponent(rightLayout, horizontalParallelGroup,
-							verticalSequentialGroup, spinnerOption.getName(),
+							verticalSequentialGroup, spinnerOption,
 							comboSource);
 
 				}
@@ -719,7 +769,7 @@ public class Form3Window extends JFrame {
 					}
 					addComponent(rightLayoutAttributeRight,
 							horizontalParallelGroup, verticalSequentialGroup,
-							dropDownOption.getName(), comboSource);
+							dropDownOption, comboSource);
 
 				}
 
@@ -746,7 +796,7 @@ public class Form3Window extends JFrame {
 
 					addComponent(rightLayoutAttributeRight,
 							horizontalParallelGroup, verticalSequentialGroup,
-							spinnerOption.getName(), comboSource);
+							spinnerOption, comboSource);
 
 				}
 			}

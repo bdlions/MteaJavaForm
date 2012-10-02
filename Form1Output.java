@@ -4,6 +4,8 @@ import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Label;
+import java.util.HashMap;
+import java.util.Hashtable;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -11,11 +13,16 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import org.forms.Form1;
+import org.forms.FormGenerator;
 import org.forms.form1.listoptions.Option;
+import org.forms.languages.LanguageEntry;
 
 public class Form1Output extends JFrame {
 
 	private JPanel contentPane;
+	private Form1 form1;
+	private FormGenerator formGenerator;
+	
 	private int row = 0;
 	
 	public int getRow() {
@@ -24,27 +31,12 @@ public class Form1Output extends JFrame {
 	public void setRow(int row) {
 		this.row = row;
 	}
-	
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Form1Output frame = new Form1Output(new Form1());
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+
 
 	/**
 	 * Create the frame.
 	 */
-	public Form1Output(Form1 form1) {
+	public Form1Output(FormGenerator formGenerator) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -52,6 +44,9 @@ public class Form1Output extends JFrame {
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 
+		this.formGenerator = formGenerator;
+		form1 = formGenerator.getForm1();
+		
 		JPanel panel = new JPanel(new GridBagLayout());
 		
 		
@@ -79,12 +74,24 @@ public class Form1Output extends JFrame {
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridx = 0;
 		constraints.gridy = getRow();
-		panel.add(new Label(option.getLabel()), constraints);
+		Hashtable syntaxMap = formGenerator.getSyntaxMapForm1();
+		
+		LanguageEntry labelEntry = (LanguageEntry) syntaxMap.get(option.getName());
+		panel.add(new Label(labelEntry.getLabel()), constraints);
 		
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridx = 1;
 		constraints.gridy = getRow();
-		panel.add(new Label(option.getDefaultOption()), constraints);
+		
+		if(syntaxMap.containsKey(option.getDefaultOption()))
+		{
+			LanguageEntry valueEntry = (LanguageEntry) syntaxMap.get(option.getDefaultOption());
+			panel.add(new Label(valueEntry.getLabel()), constraints);
+		}
+		else
+		{
+			panel.add(new Label(option.getDefaultOption()), constraints);
+		}
 
 		setRow(getRow() + 1);
 		
