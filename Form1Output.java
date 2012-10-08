@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Hashtable;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
@@ -76,8 +77,7 @@ public class Form1Output extends JFrame {
 		constraints.gridy = getRow();
 		Hashtable syntaxMap = formGenerator.getSyntaxMapForm1();
 		
-		LanguageEntry labelEntry = (LanguageEntry) syntaxMap.get(option.getName());
-		panel.add(new Label(labelEntry.getLabel()), constraints);
+		panel.add(new Label(option.getName()), constraints);
 		
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridx = 1;
@@ -96,7 +96,14 @@ public class Form1Output extends JFrame {
 		setRow(getRow() + 1);
 		
 		for (Option subOption : option.getSuboption()) {
-			if(subOption.getName().equals(option.getDefaultOption()))
+			String subOptionName = subOption.getName();
+			if(syntaxMap.containsKey(subOptionName))
+			{
+				LanguageEntry valueEntry = (LanguageEntry) syntaxMap.get(subOptionName);
+				subOptionName = valueEntry.getLabel();
+			}
+			//JOptionPane.showMessageDialog(null, "option default value"+option.getDefaultOption()+";subOption name:"+subOptionName);
+			if(subOptionName.equals(option.getDefaultOption()))
 			addComponent(subOption, constraints, panel);
 		}
 	}

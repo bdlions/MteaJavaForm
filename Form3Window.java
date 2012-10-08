@@ -2,6 +2,8 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 
@@ -19,12 +21,17 @@ import javax.swing.GroupLayout.ParallelGroup;
 import javax.swing.GroupLayout.SequentialGroup;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -34,13 +41,13 @@ import javax.swing.BoxLayout;
 import org.forms.Form2;
 import org.forms.Form3;
 import org.forms.FormGenerator;
-import org.forms.form1.dropdown.DropDownOptionElement;
-import org.forms.form1.listoptions.Option;
-import org.forms.form1.spinner.SpinnerOptionElement;
 import org.forms.form2.Attribute;
 import org.forms.form2.Operand;
 import org.forms.form2.dropdown.DropDownOption;
+import org.forms.form2.dropdown.DropDownOptionElement;
+import org.forms.form2.parameters.Option;
 import org.forms.form2.spinner.SpinnerOption;
+import org.forms.form2.spinner.SpinnerOptionElement;
 import org.forms.languages.LanguageEntry;
 
 import com.sun.java.swing.plaf.windows.resources.windows;
@@ -80,6 +87,24 @@ public class Form3Window extends JFrame {
 	private JComboBox comboBoxOptionRight;
 	private JComboBox comboBoxOptionRightAttributeRight;
 
+	private Hashtable syntaxMap;
+	private LanguageEntry languageEntry;
+	private Attribute currentSelectedLeftOperatorLeftAttribute;
+	private Attribute currentSelectedLeftOperatoRightAttribute;
+	private Attribute currentSelectedRightOperatorLeftAttribute;
+	private Attribute currentSelectedRightOperatorRightAttribute;
+	private String currentPanel = "";
+	private boolean blockComboChangeEvent = false;
+	
+	private int row = 0;
+
+	public int getRow() {
+		return row;
+	}
+
+	public void setRow(int row) {
+		this.row = row;
+	}
 	/**
 	 * Create the frame.
 	 */
@@ -88,11 +113,16 @@ public class Form3Window extends JFrame {
 		formGenerator.setLanguage(language);
 		formGenerator.generateForm3();
 
-		Hashtable syntaxMap = formGenerator.getSyntaxMapForm3();
+		syntaxMap = formGenerator.getSyntaxMapForm3();
 
-		LanguageEntry titleEntry = (LanguageEntry) syntaxMap.get("title");
-		String title = titleEntry.getLabel();
-		setTitle(title);
+		String title = "title";
+		if(syntaxMap.containsKey(title))
+		{
+			languageEntry = (LanguageEntry) syntaxMap.get(title);
+			title = languageEntry.getLabel();
+		}
+		//setting form title
+		setTitle(title);		
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 950, 300);
@@ -103,22 +133,30 @@ public class Form3Window extends JFrame {
 		setContentPane(contentPane);
 		JPanel buttonPanel = new JPanel();
 
-		titleEntry = (LanguageEntry) syntaxMap.get("ok");
-		String okLabel = titleEntry.getLabel();
+		String okLabel = "ok";
+		if(syntaxMap.containsKey("okLabel"))
+		{
+			LanguageEntry titleEntry = (LanguageEntry) syntaxMap.get("ok");
+			okLabel = titleEntry.getLabel();
+		}
 		JButton okButton = new JButton(okLabel);
-
 		okButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				Form3Output from3Output = new Form3Output(formGenerator.getForm3(), comboBoxOptionLeft, comboBoxOperatorLeft, comboBoxOptionLeftAttributeRight,  comboBoxComparison,comboBoxOptionRightAttributeRight, comboBoxOperatorRight,  comboBoxOptionRight);
+				Form3Output from3Output = new Form3Output(formGenerator.getForm3(), comboBoxOptionLeft, comboBoxOperatorLeft, comboBoxOptionLeftAttributeRight,  comboBoxComparison,comboBoxOptionRightAttributeRight, comboBoxOperatorRight,  comboBoxOptionRight, formGenerator);
 				from3Output.setVisible(true);
 				from3Output.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				Main.centreWindow(from3Output);
 			}
 		});
 
-		titleEntry = (LanguageEntry) syntaxMap.get("cancel");
-		String cancelLabel = titleEntry.getLabel();
+		String cancelLabel = "cancel";
+		if(syntaxMap.containsKey("cancel"))
+		{
+			LanguageEntry titleEntry = (LanguageEntry) syntaxMap.get("cancel");
+			cancelLabel = titleEntry.getLabel();
+		}	
 		JButton cancelButton = new JButton(cancelLabel);
 		cancelButton.addActionListener(new ActionListener() {
 			@Override
@@ -183,7 +221,7 @@ public class Form3Window extends JFrame {
 		panel.add(operatorPanelRight);
 		panel.add(rightPanelAttributeRight);
 
-		comboBoxOptionLeft = new JComboBox(getLeftAttributes().toArray());
+		comboBoxOptionLeft = new JComboBox(getLeftOperatorLeftAttributes().toArray());
 		leftPanel.add(comboBoxOptionLeft, BorderLayout.PAGE_START);
 		leftCardPanel = new JPanel(new CardLayout());
 		leftPanel.add(leftCardPanel, BorderLayout.CENTER);
@@ -200,7 +238,7 @@ public class Form3Window extends JFrame {
 			}
 		});
 
-		comboBoxOptionLeftAttributeRight = new JComboBox(getRightAttributes()
+		comboBoxOptionLeftAttributeRight = new JComboBox(getLeftOperatorRightAttributes()
 				.toArray());
 		leftPanelAttributeRight.add(comboBoxOptionLeftAttributeRight,
 				BorderLayout.PAGE_START);
@@ -256,7 +294,7 @@ public class Form3Window extends JFrame {
 			}
 		});
 
-		comboBoxOptionRight = new JComboBox(getRightAttributes().toArray());
+		comboBoxOptionRight = new JComboBox(getRightOperatorLeftAttributes().toArray());
 		rightPanel.add(comboBoxOptionRight, BorderLayout.PAGE_START);
 		rightCardPanel = new JPanel(new CardLayout());
 		rightPanel.add(rightCardPanel, BorderLayout.CENTER);
@@ -272,7 +310,7 @@ public class Form3Window extends JFrame {
 			}
 		});
 
-		comboBoxOptionRightAttributeRight = new JComboBox(getRightAttributes()
+		comboBoxOptionRightAttributeRight = new JComboBox(getRightOperatorRightAttributes()				
 				.toArray());
 		rightPanelAttributeRight.add(comboBoxOptionRightAttributeRight,
 				BorderLayout.PAGE_START);
@@ -320,12 +358,12 @@ public class Form3Window extends JFrame {
 		return operators;
 	}
 
-	public List<String> getLeftAttributes() {
+	/*public List<String> getLeftOperatorLeftAttributes() {
 		List<String> attributes = new ArrayList<String>();
 
 		Form3 form3 = formGenerator.getForm3();
 
-		for (Attribute attribute : form3.getComparison().getAttributesleft()
+		for (Attribute attribute : form3.getComparison().getLeftOperatorAttributesleft()
 				.getAttribute()) {
 			attributes.add(attribute.getName());
 		}
@@ -333,16 +371,73 @@ public class Form3Window extends JFrame {
 		return attributes;
 	}
 
-	public List<String> getRightAttributes() {
+	public List<String> getLeftOperatorRightAttributes() {
+		List<String> attributes = new ArrayList<String>();
+		Form3 form3 = formGenerator.getForm3();
+		for (Attribute attribute : form3.getComparison().getLeftOperatorAttributesright()
+				.getAttribute()) {
+			attributes.add(attribute.getName());
+		}
+		return attributes;
+	}
+	public List<String> getRightOperatorLeftAttributes() {
+		List<String> attributes = new ArrayList<String>();
+		Form3 form3 = formGenerator.getForm3();
+		for (Attribute attribute : form3.getComparison().getRightOperatorAttributesleft()
+				.getAttribute()) {
+			attributes.add(attribute.getName());
+		}
+		return attributes;
+	}
+
+	public List<String> getRightOperatorRightAttributes() {
+		List<String> attributes = new ArrayList<String>();
+		Form3 form3 = formGenerator.getForm3();
+		for (Attribute attribute : form3.getComparison().getRightOperatorAttributesright()
+				.getAttribute()) {
+			attributes.add(attribute.getName());
+		}
+		return attributes;
+	}*/
+	public List<String> getLeftOperatorLeftAttributes() {
 		List<String> attributes = new ArrayList<String>();
 
 		Form3 form3 = formGenerator.getForm3();
 
-		for (Attribute attribute : form3.getComparison().getAttributesright()
+		for (Attribute attribute : form3.getComparison().getLeftoperatorattributesleft()
 				.getAttribute()) {
 			attributes.add(attribute.getName());
 		}
 
+		return attributes;
+	}
+
+	public List<String> getLeftOperatorRightAttributes() {
+		List<String> attributes = new ArrayList<String>();
+		Form3 form3 = formGenerator.getForm3();
+		for (Attribute attribute : form3.getComparison().getLeftoperatorattributesright()
+				.getAttribute()) {
+			attributes.add(attribute.getName());
+		}
+		return attributes;
+	}
+	public List<String> getRightOperatorLeftAttributes() {
+		List<String> attributes = new ArrayList<String>();
+		Form3 form3 = formGenerator.getForm3();
+		for (Attribute attribute : form3.getComparison().getRightoperatorattributesleft()
+				.getAttribute()) {
+			attributes.add(attribute.getName());
+		}
+		return attributes;
+	}
+
+	public List<String> getRightOperatorRightAttributes() {
+		List<String> attributes = new ArrayList<String>();
+		Form3 form3 = formGenerator.getForm3();
+		for (Attribute attribute : form3.getComparison().getRightoperatorattributesright()
+				.getAttribute()) {
+			attributes.add(attribute.getName());
+		}
 		return attributes;
 	}
 
@@ -352,88 +447,26 @@ public class Form3Window extends JFrame {
 		leftCardPanel.validate();
 		leftCardPanel.repaint();
 
-		JPanel cp = new JPanel();
+		JPanel cp = new JPanel(new GridBagLayout());	
+		cp.setName("LeftOperatorLeftPanel");
+		leftCardPanel.add(cp, cardName + "right");
 
-		GroupLayout layout = new GroupLayout(cp);
-		// setting the grouplaoyt in content pane
-		cp.setLayout(layout);
-		// cp.setPreferredSize(new Dimension(500, 400));
-
-		// setting gaps in container
-		layout.setAutoCreateGaps(true);
-		layout.setAutoCreateContainerGaps(true);
-
-		// horizontal and vertical group
-		ParallelGroup horizontalGroup = layout
-				.createParallelGroup(GroupLayout.Alignment.LEADING);
-		layout.setHorizontalGroup(horizontalGroup);
-
-		SequentialGroup horizontalSequentialGroup = layout
-				.createSequentialGroup();
-		horizontalGroup.addGroup(horizontalSequentialGroup);
-
-		ParallelGroup horizontalParallelGroup = layout
-				.createParallelGroup(GroupLayout.Alignment.LEADING);
-		horizontalSequentialGroup.addGroup(horizontalParallelGroup);
-
-		ParallelGroup verticalGroup = layout
-				.createParallelGroup(GroupLayout.Alignment.BASELINE);
-		layout.setVerticalGroup(verticalGroup);
-
-		SequentialGroup verticalSequentialGroup = layout
-				.createSequentialGroup();
-		verticalGroup.addGroup(verticalSequentialGroup);
-
-		leftCardPanel.add(cp, cardName + "left");
-
-		String selectedOption = cardName;
-
-		for (Attribute attribute : formGenerator.getForm3().getComparison()
-				.getAttributesleft().getAttribute()) {
-			if (selectedOption.equals(attribute.getName())) {
-				leftComponents = attribute.getParameters().getDropdownOption()
-						.size()
-						+ attribute.getParameters().getSpinnerOption().size();
-
-				for (DropDownOption dropDownOption : attribute.getParameters()
-						.getDropdownOption()) {
-					List<String> comboSource = new ArrayList<String>();
-
-					for (DropDownOptionElement dropDownOptionElement : dropDownOption
-							.getOption()) {
-						comboSource.add(dropDownOptionElement.getAs());
-					}
-					addComponent(layout, horizontalParallelGroup,
-							verticalSequentialGroup, dropDownOption,
-							comboSource);
-
-				}
-
-				for (SpinnerOption spinnerOption : attribute.getParameters()
-						.getSpinnerOption()) {
-					List<String> comboSource = new ArrayList<String>();
-
-					int counter = 0;
-					int min = 0;
-					int max = 0;
-					for (SpinnerOptionElement spinnerOptionElement : spinnerOption
-							.getOption()) {
-						if (counter == 0)
-							min = spinnerOptionElement.getMin();
-						else if (counter == 1)
-							max = spinnerOptionElement.getMax();
-
-						counter++;
-					}
-					for (int i = min; i <= max; i++) {
-						comboSource.add(i + "");
-					}
-					// comboSource.add(spinnerOptionElement.getAs());
-
-					addComponent(layout, horizontalParallelGroup,
-							verticalSequentialGroup, spinnerOption,
-							comboSource);
-
+		setRow(0);
+		
+		GridBagConstraints constraints = new GridBagConstraints();
+		for (Attribute attribute : formGenerator.getForm3().getComparison().getLeftoperatorattributesleft().getAttribute()) {
+			String attributeName = attribute.getName();
+			if(syntaxMap.containsKey(attributeName))
+			{
+				languageEntry = (LanguageEntry) syntaxMap.get(attributeName);
+				attributeName = languageEntry.getLabel();
+			}			
+			if(attributeName.equals(cardName))
+			{
+				currentPanel = "LeftOperatorLeftPanel";
+				currentSelectedLeftOperatorLeftAttribute = attribute;
+				for (Option option : attribute.getParameters().getOption()) {
+					addComponent(option, constraints, cp);
 				}
 			}
 		}
@@ -449,89 +482,27 @@ public class Form3Window extends JFrame {
 		leftCardPanelAttributeRight.removeAll();
 		leftCardPanelAttributeRight.validate();
 		leftCardPanelAttributeRight.repaint();
+				
+		JPanel cp = new JPanel(new GridBagLayout());	
+		cp.setName("LeftOperatorRightPanel");
+		leftCardPanelAttributeRight.add(cp, cardName + "right");
 
-		JPanel cp = new JPanel();
-
-		leftLayoutAttributeRight = new GroupLayout(cp);
-		// setting the grouplaoyt in content pane
-		cp.setLayout(leftLayoutAttributeRight);
-		// cp.setPreferredSize(new Dimension(500, 400));
-
-		// setting gaps in container
-		leftLayoutAttributeRight.setAutoCreateGaps(true);
-		leftLayoutAttributeRight.setAutoCreateContainerGaps(true);
-
-		// horizontal and vertical group
-		ParallelGroup horizontalGroup = leftLayoutAttributeRight
-				.createParallelGroup(GroupLayout.Alignment.LEADING);
-		leftLayoutAttributeRight.setHorizontalGroup(horizontalGroup);
-
-		SequentialGroup horizontalSequentialGroup = leftLayoutAttributeRight
-				.createSequentialGroup();
-		horizontalGroup.addGroup(horizontalSequentialGroup);
-
-		ParallelGroup horizontalParallelGroup = leftLayoutAttributeRight
-				.createParallelGroup(GroupLayout.Alignment.LEADING);
-		horizontalSequentialGroup.addGroup(horizontalParallelGroup);
-
-		ParallelGroup verticalGroup = leftLayoutAttributeRight
-				.createParallelGroup(GroupLayout.Alignment.BASELINE);
-		leftLayoutAttributeRight.setVerticalGroup(verticalGroup);
-
-		SequentialGroup verticalSequentialGroup = leftLayoutAttributeRight
-				.createSequentialGroup();
-		verticalGroup.addGroup(verticalSequentialGroup);
-
-		leftCardPanelAttributeRight.add(cp, cardName + "left");
-
-		String selectedOption = cardName;
-
-		for (Attribute attribute : formGenerator.getForm3().getComparison()
-				.getAttributesright().getAttribute()) {
-			if (selectedOption.equals(attribute.getName())) {
-				leftComponents = attribute.getParameters().getDropdownOption()
-						.size()
-						+ attribute.getParameters().getSpinnerOption().size();
-
-				for (DropDownOption dropDownOption : attribute.getParameters()
-						.getDropdownOption()) {
-					List<String> comboSource = new ArrayList<String>();
-
-					for (DropDownOptionElement dropDownOptionElement : dropDownOption
-							.getOption()) {
-						comboSource.add(dropDownOptionElement.getAs());
-					}
-					addComponent(leftLayoutAttributeRight,
-							horizontalParallelGroup, verticalSequentialGroup,
-							dropDownOption, comboSource);
-
-				}
-
-				for (SpinnerOption spinnerOption : attribute.getParameters()
-						.getSpinnerOption()) {
-					List<String> comboSource = new ArrayList<String>();
-
-					int counter = 0;
-					int min = 0;
-					int max = 0;
-					for (SpinnerOptionElement spinnerOptionElement : spinnerOption
-							.getOption()) {
-						if (counter == 0)
-							min = spinnerOptionElement.getMin();
-						else if (counter == 1)
-							max = spinnerOptionElement.getMax();
-
-						counter++;
-					}
-					for (int i = min; i <= max; i++) {
-						comboSource.add(i + "");
-					}
-					// comboSource.add(spinnerOptionElement.getAs());
-
-					addComponent(leftLayoutAttributeRight,
-							horizontalParallelGroup, verticalSequentialGroup,
-							spinnerOption, comboSource);
-
+		setRow(0);
+		
+		GridBagConstraints constraints = new GridBagConstraints();
+		for (Attribute attribute : formGenerator.getForm3().getComparison().getLeftoperatorattributesright().getAttribute()) {
+			String attributeName = attribute.getName();
+			if(syntaxMap.containsKey(attributeName))
+			{
+				languageEntry = (LanguageEntry) syntaxMap.get(attributeName);
+				attributeName = languageEntry.getLabel();
+			}
+			if(attributeName.equals(cardName))
+			{
+				currentPanel = "LeftOperatorRightPanel";
+				currentSelectedLeftOperatoRightAttribute = attribute;
+				for (Option option : attribute.getParameters().getOption()) {
+					addComponent(option, constraints, cp);
 				}
 			}
 		}
@@ -542,161 +513,31 @@ public class Form3Window extends JFrame {
 		scrollBar.repaint();
 	}
 
-	private void addComponent(GroupLayout layout,
-			ParallelGroup horizontalParallelGroup,
-			SequentialGroup verticalSequentialGroup, final Object object,
-			List<String> comboSource) {
-
-		String comboName = "";
-		
-		if(object instanceof SpinnerOption)
-		{
-			comboName = ((SpinnerOption)object).getName();
-		}
-		else if(object instanceof DropDownOption)
-		{
-			comboName = ((DropDownOption)object).getName();
-		}
-		
-		JLabel leftComponent = new JLabel(comboName);
-		leftComponent.setName(comboName + "Label");
-
-		Component rightComponent = null;
-
-		// if( type.equalsIgnoreCase("dropdown") ||
-		// type.equalsIgnoreCase("spinner"))
-		{
-			JComboBox comboBox = new JComboBox(comboSource.toArray());
-			comboBox.setName(comboName);
-
-			comboBox.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					// TODO Auto-generated method stub
-					String defaultValue = ((JComboBox)e.getSource()).getSelectedItem().toString();
-					if(object instanceof SpinnerOption)
-					{
-						((SpinnerOption)object).setDefaultValue(defaultValue);
-					}
-					else if(object instanceof DropDownOption)
-					{
-						((DropDownOption)object).setDefaultValue(defaultValue);
-					}
-				}
-			});
-			rightComponent = comboBox;
-		}
-
-		if (leftComponent != null && rightComponent != null) {
-
-			SequentialGroup componentSequential2 = layout
-					.createSequentialGroup();
-
-			componentSequential2.addComponent(leftComponent);
-			componentSequential2
-					.addComponent(rightComponent, GroupLayout.PREFERRED_SIZE,
-							200, GroupLayout.PREFERRED_SIZE);
-
-			horizontalParallelGroup.addGroup(componentSequential2);
-
-			ParallelGroup verticlaParallelGroupFinal2 = layout
-					.createParallelGroup(GroupLayout.Alignment.BASELINE);
-			verticalSequentialGroup.addGroup(verticlaParallelGroupFinal2);
-			verticlaParallelGroupFinal2.addComponent(leftComponent);
-			verticlaParallelGroupFinal2.addComponent(rightComponent);
-		}
-	}
-
 	private void setRightComponent(String cardName) {
 		rightCardPanel.removeAll();
 		rightCardPanel.validate();
 		rightCardPanel.repaint();
 
-		JPanel cpRight = new JPanel();
-		rightLayout = new GroupLayout(cpRight);
-		// setting the grouplaoyt in content pane
-		cpRight.setLayout(rightLayout);
-		// cpRight.setPreferredSize(new Dimension(500, 400));
-
-		// setting gaps in container
-		rightLayout.setAutoCreateGaps(true);
-		rightLayout.setAutoCreateContainerGaps(true);
-
-		// horizontal and vertical group
-		ParallelGroup horizontalGroup = rightLayout
-				.createParallelGroup(GroupLayout.Alignment.LEADING);
-		rightLayout.setHorizontalGroup(horizontalGroup);
-
-		SequentialGroup horizontalSequentialGroup = rightLayout
-				.createSequentialGroup();
-		horizontalGroup.addGroup(horizontalSequentialGroup);
-
-		ParallelGroup horizontalParallelGroup = rightLayout
-				.createParallelGroup(GroupLayout.Alignment.LEADING);
-		horizontalSequentialGroup.addGroup(horizontalParallelGroup);
-
-		ParallelGroup verticalGroup = rightLayout
-				.createParallelGroup(GroupLayout.Alignment.BASELINE);
-		rightLayout.setVerticalGroup(verticalGroup);
-
-		SequentialGroup verticalSequentialGroup = rightLayout
-				.createSequentialGroup();
-		verticalGroup.addGroup(verticalSequentialGroup);
-
+		JPanel cpRight = new JPanel(new GridBagLayout());	
+		cpRight.setName("RightOperatorLeftPanel");
 		rightCardPanel.add(cpRight, cardName + "right");
 
-		String selectedOption = "";
-
-		if (comboBoxOptionRight.getSelectedItem() != null) {
-			selectedOption = comboBoxOptionRight.getSelectedItem().toString();
-		}
-
-		for (Attribute attribute : formGenerator.getForm3().getComparison()
-				.getAttributesright().getAttribute()) {
-			if (selectedOption.equals(attribute.getName())) {
-				rightComponents = attribute.getParameters().getDropdownOption()
-						.size()
-						+ attribute.getParameters().getSpinnerOption().size();
-
-				for (DropDownOption dropDownOption : attribute.getParameters()
-						.getDropdownOption()) {
-					List<String> comboSource = new ArrayList<String>();
-
-					for (DropDownOptionElement dropDownOptionElement : dropDownOption
-							.getOption()) {
-						comboSource.add(dropDownOptionElement.getAs());
-					}
-					addComponent(rightLayout, horizontalParallelGroup,
-							verticalSequentialGroup, dropDownOption,
-							comboSource);
-
-				}
-
-				for (SpinnerOption spinnerOption : attribute.getParameters()
-						.getSpinnerOption()) {
-					List<String> comboSource = new ArrayList<String>();
-
-					int counter = 0;
-					int min = 0;
-					int max = 0;
-					for (SpinnerOptionElement spinnerOptionElement : spinnerOption
-							.getOption()) {
-						if (counter == 0)
-							min = spinnerOptionElement.getMin();
-						else if (counter == 1)
-							max = spinnerOptionElement.getMax();
-
-						counter++;
-					}
-					for (int i = min; i <= max; i++) {
-						comboSource.add(i + "");
-					}
-					// comboSource.add(spinnerOptionElement.getAs());
-
-					addComponent(rightLayout, horizontalParallelGroup,
-							verticalSequentialGroup, spinnerOption,
-							comboSource);
-
+		setRow(0);
+		
+		GridBagConstraints constraints = new GridBagConstraints();
+		for (Attribute attribute : formGenerator.getForm3().getComparison().getRightoperatorattributesleft().getAttribute()) {
+			String attributeName = attribute.getName();
+			if(syntaxMap.containsKey(attributeName))
+			{
+				languageEntry = (LanguageEntry) syntaxMap.get(attributeName);
+				attributeName = languageEntry.getLabel();
+			}
+			if(attributeName.equals(cardName))
+			{
+				currentPanel = "RightOperatorLeftPanel";
+				currentSelectedRightOperatorLeftAttribute = attribute;
+				for (Option option : attribute.getParameters().getOption()) {
+					addComponent(option, constraints, cpRight);
 				}
 			}
 		}
@@ -707,97 +548,34 @@ public class Form3Window extends JFrame {
 		scrollBar.repaint();
 	}
 
+	/*
+	 * Right panel of right arithmetic operator
+	 * */
 	private void setRightComponentAttributeRight(String cardName) {
 		rightCardPanelAttributeRight.removeAll();
 		rightCardPanelAttributeRight.validate();
 		rightCardPanelAttributeRight.repaint();
 
-		JPanel cpRight = new JPanel();
-		rightLayoutAttributeRight = new GroupLayout(cpRight);
-		// setting the grouplaoyt in content pane
-		cpRight.setLayout(rightLayoutAttributeRight);
-		// cpRight.setPreferredSize(new Dimension(500, 400));
-
-		// setting gaps in container
-		rightLayoutAttributeRight.setAutoCreateGaps(true);
-		rightLayoutAttributeRight.setAutoCreateContainerGaps(true);
-
-		// horizontal and vertical group
-		ParallelGroup horizontalGroup = rightLayoutAttributeRight
-				.createParallelGroup(GroupLayout.Alignment.LEADING);
-		rightLayoutAttributeRight.setHorizontalGroup(horizontalGroup);
-
-		SequentialGroup horizontalSequentialGroup = rightLayoutAttributeRight
-				.createSequentialGroup();
-		horizontalGroup.addGroup(horizontalSequentialGroup);
-
-		ParallelGroup horizontalParallelGroup = rightLayoutAttributeRight
-				.createParallelGroup(GroupLayout.Alignment.LEADING);
-		horizontalSequentialGroup.addGroup(horizontalParallelGroup);
-
-		ParallelGroup verticalGroup = rightLayoutAttributeRight
-				.createParallelGroup(GroupLayout.Alignment.BASELINE);
-		rightLayoutAttributeRight.setVerticalGroup(verticalGroup);
-
-		SequentialGroup verticalSequentialGroup = rightLayoutAttributeRight
-				.createSequentialGroup();
-		verticalGroup.addGroup(verticalSequentialGroup);
-
+		JPanel cpRight = new JPanel(new GridBagLayout());	
+		cpRight.setName("RightOperatorRightPanel");
 		rightCardPanelAttributeRight.add(cpRight, cardName + "right");
 
-		String selectedOption = "";
-
-		if (comboBoxOptionRightAttributeRight.getSelectedItem() != null) {
-			selectedOption = comboBoxOptionRightAttributeRight
-					.getSelectedItem().toString();
-		}
-
-		for (Attribute attribute : formGenerator.getForm3().getComparison()
-				.getAttributesright().getAttribute()) {
-			if (selectedOption.equals(attribute.getName())) {
-				rightComponents = attribute.getParameters().getDropdownOption()
-						.size()
-						+ attribute.getParameters().getSpinnerOption().size();
-
-				for (DropDownOption dropDownOption : attribute.getParameters()
-						.getDropdownOption()) {
-					List<String> comboSource = new ArrayList<String>();
-
-					for (DropDownOptionElement dropDownOptionElement : dropDownOption
-							.getOption()) {
-						comboSource.add(dropDownOptionElement.getAs());
-					}
-					addComponent(rightLayoutAttributeRight,
-							horizontalParallelGroup, verticalSequentialGroup,
-							dropDownOption, comboSource);
-
-				}
-
-				for (SpinnerOption spinnerOption : attribute.getParameters()
-						.getSpinnerOption()) {
-					List<String> comboSource = new ArrayList<String>();
-
-					int counter = 0;
-					int min = 0;
-					int max = 0;
-					for (SpinnerOptionElement spinnerOptionElement : spinnerOption
-							.getOption()) {
-						if (counter == 0)
-							min = spinnerOptionElement.getMin();
-						else if (counter == 1)
-							max = spinnerOptionElement.getMax();
-
-						counter++;
-					}
-					for (int i = min; i <= max; i++) {
-						comboSource.add(i + "");
-					}
-					// comboSource.add(spinnerOptionElement.getAs());
-
-					addComponent(rightLayoutAttributeRight,
-							horizontalParallelGroup, verticalSequentialGroup,
-							spinnerOption, comboSource);
-
+		setRow(0);
+		
+		GridBagConstraints constraints = new GridBagConstraints();
+		for (Attribute attribute : formGenerator.getForm3().getComparison().getRightoperatorattributesright().getAttribute()) {
+			String attributeName = attribute.getName();
+			if(syntaxMap.containsKey(attributeName))
+			{
+				languageEntry = (LanguageEntry) syntaxMap.get(attributeName);
+				attributeName = languageEntry.getLabel();
+			}
+			if(attributeName.equals(cardName))
+			{
+				currentPanel = "RightOperatorRightPanel";
+				currentSelectedRightOperatorRightAttribute = attribute;
+				for (Option option : attribute.getParameters().getOption()) {
+					addComponent(option, constraints, cpRight);
 				}
 			}
 		}
@@ -806,6 +584,387 @@ public class Form3Window extends JFrame {
 		rightCardPanelAttributeRight.repaint();
 		scrollBar.validate();
 		scrollBar.repaint();
+	}
+	
+	public void addComponent(final Option option,
+			GridBagConstraints constraints, final JPanel panel) {
+			//retrieving option properties
+			String type = option.getType();
+			String name = option.getName();
+			String labelText = option.getLabel();
+			String tooltip = option.getTooltip();
+			String defaultOption = option.getDefaultOption();
+
+			String leftComponentText = labelText;
+			String tooltipText = tooltip;
+			if(syntaxMap.containsKey(name))
+			{
+				languageEntry = (LanguageEntry) syntaxMap.get(name);		
+				leftComponentText = languageEntry.getLabel();
+				tooltipText = languageEntry.getTooltip();
+			}
+			String defaultOptionText = defaultOption;		
+			if(syntaxMap.containsKey(defaultOptionText))
+			{
+				languageEntry = (LanguageEntry) syntaxMap.get(defaultOptionText);
+				defaultOptionText = languageEntry.getLabel();
+			}
+			
+			JLabel leftComponent = new JLabel(leftComponentText);
+			leftComponent.setName(name + "Label");
+
+			Component rightComponent = null;
+
+			if (type.equalsIgnoreCase("text")) 
+			{
+				JTextField textField = new JTextField(defaultOption);
+				textField.setToolTipText(tooltipText);
+				textField.setName(name);
+				textField.addKeyListener(new KeyListener() {
+					@Override
+					public void keyTyped(KeyEvent e) {
+						// TODO Auto-generated method stub
+					}
+					@Override
+					public void keyReleased(KeyEvent e) {
+						// TODO Auto-generated method stub
+						option.setDefaultOption(((JTextField) e.getSource())
+								.getText());
+					}
+					@Override
+					public void keyPressed(KeyEvent e) {
+						// TODO Auto-generated method stub
+					}
+				});
+				rightComponent = textField;
+			} 
+			else if (type.equalsIgnoreCase("dropdown")
+					|| type.equalsIgnoreCase("spinner")) {
+				
+				
+				JComboBox comboBox = new JComboBox(getOptions(name).toArray());
+				comboBox.setName(name);
+				comboBox.setToolTipText(tooltipText);
+				comboBox.setSelectedItem(defaultOptionText);
+				option.setDefaultOption(defaultOptionText);
+				comboBox.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						// TODO Auto-generated method stub					
+						if(!blockComboChangeEvent)
+						{
+							JComboBox combo = (JComboBox) e.getSource();
+							//JOptionPane.showMessageDialog(null, "addComponent->before option name:"+option.getName()+";option default value:"+option.getDefaultOption());
+							if(combo.getSelectedItem() != null){
+								//option.setDefaultOption(combo.getSelectedItem().toString());
+							}
+							//JOptionPane.showMessageDialog(null, "addComponent->after option name:"+option.getName()+";option default value:"+option.getDefaultOption());
+							String panelName = combo.getParent().getName();
+							Attribute selectedComboAttribute = null;
+							
+							if(panelName.equals("LeftOperatorLeftPanel"))
+							{
+								selectedComboAttribute = currentSelectedLeftOperatorLeftAttribute;
+							}
+							else if(panelName.equals("LeftOperatorRightPanel"))
+							{
+								selectedComboAttribute = currentSelectedLeftOperatoRightAttribute;
+							}
+							else if(panelName.equals("RightOperatorLeftPanel"))
+							{
+								selectedComboAttribute = currentSelectedRightOperatorLeftAttribute;
+							}
+							else if(panelName.equals("RightOperatorRightPanel"))
+							{
+								selectedComboAttribute = currentSelectedRightOperatorRightAttribute;
+							}							
+							for (Option option : selectedComboAttribute.getParameters().getOption()) {
+								
+								comboChangeSubOptionUpdate(option, combo, panel);
+							}
+						}					
+					}
+				});
+				rightComponent = comboBox;
+			} else if (type.equalsIgnoreCase("check")) {
+				JCheckBox checkBox = new JCheckBox();
+				checkBox.setToolTipText(tooltipText);
+				checkBox.setName(name);
+				if (defaultOption.equals("checked")) {
+					checkBox.setSelected(true);
+				}
+				checkBox.addChangeListener(new ChangeListener() {
+
+					@Override
+					public void stateChanged(ChangeEvent e) {
+						// TODO Auto-generated method stub
+						if (((JCheckBox) e.getSource()).isSelected()) {
+							option.setDefaultOption("checked");
+						} else {
+							option.setDefaultOption("unchecked");
+						}
+					}
+				});
+
+				rightComponent = checkBox;
+			}
+
+			if (leftComponent != null && rightComponent != null) {
+
+				constraints.fill = GridBagConstraints.HORIZONTAL;
+				constraints.gridx = 0;
+				constraints.gridy = getRow();
+				panel.add(leftComponent, constraints);
+
+				constraints.fill = GridBagConstraints.HORIZONTAL;
+				constraints.gridx = 1;
+				constraints.gridy = getRow();
+				panel.add(rightComponent, constraints);
+
+				setRow(getRow() + 1);
+
+			}
+			// if an option has sub option then we are adding sub option to the panel
+			if (option.getSuboption().size() > 0) {
+				for (Option subOption : option.getSuboption()) {
+					if (subOption.getName().equals(defaultOption)) {
+						addComponent(subOption, constraints, panel);
+					}
+				}
+			}
+		}
+	
+	
+	
+	public void comboChangeSubOptionUpdate(Option option, JComboBox combo, JPanel panel)
+	{
+		String comboName = combo.getName();
+		if (option.getName().equals(comboName)) {	
+			if(combo.getSelectedItem() != null){
+				//JOptionPane.showMessageDialog(null, "comboChangeSubOptionUpdate->1.option name:"+option.getName()+";comboselectedtext:"+combo.getSelectedItem().toString());
+				option.setDefaultOption(combo.getSelectedItem().toString());
+				//initializing new suboption
+				Option newSubOption = null;
+				JComboBox subOptionCombo = null;
+				JLabel subOptionLable = null;
+				String selectedComboItemText = combo.getSelectedItem().toString();
+				String subOptionNameText = "";
+				//finding specific suboption of this option based on suboption name and option selected item
+				for (Option subOption : option.getSuboption()) {
+					subOptionNameText = subOption.getName();
+					if(syntaxMap.containsKey(subOptionNameText))
+					{
+						languageEntry = (LanguageEntry) syntaxMap.get(subOption.getName());
+						subOptionNameText = languageEntry.getLabel();
+					}					
+					if (subOptionNameText.equals(selectedComboItemText)) 
+					{
+						//we have got the new suboption
+						newSubOption = subOption;
+						//combo.setName(option.getName());
+						//option.setDefaultOption(subOption.getName());
+					}
+					for (Component component : panel.getComponents()) {
+						if (subOption.getName().equals(component.getName())) {
+							//we have detect previous suboption combo
+							subOptionCombo = (JComboBox) component;
+							removeComponentSubOption(subOption, panel);
+						}
+						if ((subOption.getName() + "Label").equals(component.getName())) {
+							//we have detected previous suboption label
+							subOptionLable = (JLabel) component;
+						}
+					}
+				}
+
+				if (newSubOption != null) 
+				{
+					//JOptionPane.showMessageDialog(null, "comboChangeSubOptionUpdate->2.new sub option name:"+newSubOption.getName()+";new suboption default value:"+newSubOption.getDefaultOption()+"previous subOptionCombo name:"+subOptionCombo.getName());
+					if(subOptionCombo != null)
+					{
+						blockComboChangeEvent = true;
+						//removing all elements from previous suboption combo
+						subOptionCombo.removeAllItems();
+						//subOptionCombo = new JComboBox();
+						for (DropDownOption dropDownOption : newSubOption.getDropdownOption()) 
+						{
+							for (DropDownOptionElement dropDownOptionElement : dropDownOption.getOption()) 
+							{
+								String comboElementNameText = dropDownOptionElement.getAs();
+								if(syntaxMap.containsKey(comboElementNameText))
+								{
+									languageEntry = (LanguageEntry) syntaxMap.get(comboElementNameText);
+									comboElementNameText = languageEntry.getLabel();
+								}
+								//adding new combo element
+								subOptionCombo.addItem(comboElementNameText);
+							}
+						}
+						blockComboChangeEvent = false;
+						//JOptionPane.showMessageDialog(null, "comboChangeSubOptionUpdate->3.previous combo is reloaded.");
+						
+						//updating suboption combo name
+						subOptionCombo.setName(newSubOption.getName());		
+						//updating suboption combo default option
+						String defaultOptionText = newSubOption.getDefaultOption();
+						if(syntaxMap.containsKey(defaultOptionText))
+						{
+							languageEntry = (LanguageEntry) syntaxMap.get(defaultOptionText);
+							defaultOptionText = languageEntry.getLabel();
+						}
+						//JOptionPane.showMessageDialog(null, "comboChangeSubOptionUpdate->4.new sub option name:"+newSubOption.getName()+";new suboption default value:"+newSubOption.getDefaultOption());
+						
+						subOptionCombo.setSelectedItem(defaultOptionText);
+						
+						//updating suboption combo tooltip text
+						String tooltipText = newSubOption.getTooltip();
+						if(syntaxMap.containsKey(tooltipText))
+						{
+							languageEntry = (LanguageEntry) syntaxMap.get(tooltipText);
+							tooltipText = languageEntry.getLabel();
+						}
+						subOptionCombo.setToolTipText(tooltipText);
+						
+						subOptionCombo.revalidate();
+					}
+					
+					if (subOptionLable != null) {
+						subOptionLable.setName(newSubOption.getName() + "Label");
+						String newLabelText = newSubOption.getLabel();
+						if(syntaxMap.containsKey(newLabelText))
+						{
+							languageEntry = (LanguageEntry) syntaxMap.get(newLabelText);		
+							newLabelText = languageEntry.getLabel();
+						}
+						subOptionLable.setText(newLabelText);
+						subOptionLable.revalidate();
+					}
+					
+					if(subOptionCombo == null && subOptionLable == null)
+					{
+						GridBagConstraints constraints = new GridBagConstraints();						
+						addComponent(newSubOption, constraints, panel);						
+					}
+										
+				}				
+			}			
+			
+		}
+		else if (option.getSuboption().size() > 0) {
+			for (Option subOption : option.getSuboption()) {
+				comboChangeSubOptionUpdate(subOption, combo, panel);
+			}
+		}
+	}
+	
+	public List<String> getOptions(String name) {
+		List<String> options = new ArrayList<String>();
+		Attribute currentAttribute = null;
+		//JOptionPane.showMessageDialog(null, "name in getOptions:"+name);
+		if(currentPanel == "LeftOperatorLeftPanel")
+		{
+			currentAttribute = currentSelectedLeftOperatorLeftAttribute;
+		}
+		else if(currentPanel == "LeftOperatorRightPanel")
+		{
+			currentAttribute = currentSelectedLeftOperatoRightAttribute;
+		}
+		else if(currentPanel == "RightOperatorLeftPanel")
+		{
+			currentAttribute = currentSelectedRightOperatorLeftAttribute;
+		}
+		else if(currentPanel == "RightOperatorRightPanel")
+		{
+			currentAttribute = currentSelectedRightOperatorRightAttribute;
+		}
+		
+		if(currentAttribute != null)
+		{
+			for (Option option : currentAttribute.getParameters().getOption()) {
+				options = getOptionsAndSub(option, name);
+
+				if (options.size() > 0) {
+					return options;
+				}
+			}
+		}		
+
+		return options;
+	}
+	
+	public List<String> getOptionsAndSub(Option option, String name) {
+		List<String> options = new ArrayList<String>();
+		if (option.getName().equals(name)) {
+			for (DropDownOption dropDownOption : option.getDropdownOption()) {
+				for (DropDownOptionElement dropDownOptionElement : dropDownOption.getOption()) {
+					if (dropDownOptionElement.getAs().equals("showvars")) {
+						options.add("will add some variables later");
+					}
+					else
+					{
+						String dropDownElementText = dropDownOptionElement.getAs();					
+						if (syntaxMap.containsKey(dropDownElementText)) {
+							languageEntry = (LanguageEntry) syntaxMap.get(dropDownElementText);
+							dropDownElementText = languageEntry.getLabel();						
+						}
+						options.add(dropDownElementText);
+					}
+				}
+			}
+			for (SpinnerOption spinnerOption : option.getSpinnerOption()) {
+				int min = 0;
+				int max = 0;
+				for (SpinnerOptionElement spinnerOptionElement : spinnerOption
+						.getOption()) {
+					if (spinnerOptionElement.getMin() > 0) {
+						min = spinnerOptionElement.getMin();
+					}
+					if (spinnerOptionElement.getMax() > 0) {
+						max = spinnerOptionElement.getMax();
+					}
+				}
+				for (int i = min; i <= max; i++) {
+					options.add(i + "");
+				}
+				// if(spinnerOptionElement.getAs() != null &&
+				// spinnerOptionElement.getAs().equals("showvars"))
+				{
+					options.add("will add some variables later");
+				}
+			}
+			return options;
+		} else if (option.getSuboption().size() > 0) {
+			for (Option subOption : option.getSuboption()) {
+				return getOptionsAndSub(subOption, name);
+			}
+		}
+
+		return options;
+	}
+	
+	public void removeComponentSubOption(Option option, JPanel panel)
+	{
+		JComboBox subOptionCombo = null;
+		JLabel subOptionLable = null;
+		for (Option subOption : option.getSuboption()) {
+			for (Component component : panel.getComponents()) {
+				if (subOption.getName().equals(component.getName())) {
+					subOptionCombo = (JComboBox) component;
+					removeComponentSubOption(subOption, panel);
+				}
+				if ((subOption.getName() + "Label").equals(component.getName())) {
+					subOptionLable = (JLabel) component;
+				}
+			}
+		}
+		if(subOptionCombo != null && subOptionLable != null)
+		{
+			panel.remove(subOptionCombo);
+			panel.remove(subOptionLable);
+			panel.revalidate();
+			panel.repaint();
+		}
+		
 	}
 
 }

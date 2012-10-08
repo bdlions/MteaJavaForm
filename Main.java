@@ -24,6 +24,10 @@ public class Main {
 	private JCheckBoxMenuItem chckbxmntmEnglish;
 	private JCheckBoxMenuItem chckbxmntmFrancis;
 	
+	private Form1Window form1Window = null;
+	private Form2Window form2Window = null;
+	private Form3Window form3Window = null;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -69,15 +73,28 @@ public class Main {
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
-				String lanugage = "English";
+				String language = "English";
 				if(chckbxmntmFrancis.isSelected())
 				{
-					lanugage = "Francais";
+					language = "Francais";
 				}
-				Form1Window form1Window = new Form1Window(lanugage);
-				form1Window.setVisible(true);
-				form1Window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-				centreWindow(form1Window);
+				if(form1Window == null)
+				{
+					form1Window = new Form1Window(language);
+					form1Window.setVisible(true);
+					form1Window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+					centreWindow(form1Window);
+				}
+				else
+				{
+					form1Window.setVisible(true);
+					//form1Window.getFormGenerator().setLanguage(language);
+					//form1Window.getFormGenerator().updateSyntaxMapForm1();
+					//form1Window.showForm1();
+					//form1Window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+					//centreWindow(form1Window);
+				}
+				
 			}
 		});
 		mnOpen.add(mntmForm);
@@ -92,10 +109,18 @@ public class Main {
 				{
 					lanugage = "Francais";
 				}
-				Form2Window form2Window = new Form2Window(lanugage);
-				form2Window.setVisible(true);
-				form2Window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-				centreWindow(form2Window);
+				if(form2Window == null)
+				{
+					form2Window = new Form2Window(lanugage);
+					form2Window.setVisible(true);
+					form2Window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+					centreWindow(form2Window);
+				}
+				else
+				{
+					form2Window.setVisible(true);
+				}
+				
 			}
 		});
 		mnOpen.add(mntmForm_1);
@@ -110,10 +135,18 @@ public class Main {
 				{
 					lanugage = "Francais";
 				}
-				Form3Window form3Window = new Form3Window(lanugage);
-				form3Window.setVisible(true);
-				form3Window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-				centreWindow(form3Window);
+				if(form3Window == null)
+				{
+					form3Window = new Form3Window(lanugage);
+					form3Window.setVisible(true);
+					form3Window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+					centreWindow(form3Window);
+				}
+				else
+				{
+					form3Window.setVisible(true);
+				}
+				
 			}
 		});
 		mnOpen.add(mntmForm_3);

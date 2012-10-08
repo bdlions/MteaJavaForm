@@ -24,14 +24,14 @@
                 <option as="half"/>
                 <option as="full"/>
             </dropdownOption>
-            <suboption name="half" label="Select half option type" type="dropdown" defaultOption="one">
+            <suboption name="half" label="half" type="dropdown" defaultOption="one" tooltip="">
                 <dropdownOption>
                     <option as=""/>
                     <option as="one"/>
                     <option as="two"/>
-                </dropdownOption >    
+                </dropdownOption >                
             </suboption>
-            <suboption name="full" label="Select full option type" type="dropdown" defaultOption="ten">
+            <suboption name="full" label="full" type="dropdown" defaultOption="ten" tooltip="">
                 <dropdownOption>
                     <option as=""/>
                     <option as="ten"/>
@@ -95,6 +95,18 @@
 			</entry>
 			<entry name="two" type="option">
 				<label >two</label>
+			</entry>
+			<entry name="naz" type="option">
+				<label >naz</label>
+			</entry>
+			<entry name="alam" type="option">
+				<label >alam</label>
+			</entry>
+			<entry name="nazmul" type="option">
+				<label >nazmul</label>
+			</entry>
+			<entry name="alamgir" type="option">
+				<label >alamgir</label>
 			</entry>
 			<entry name="ten" type="option">
 				<label >ten</label>

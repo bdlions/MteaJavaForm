@@ -4,38 +4,55 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.forms.form2.*;
 
-@XmlType(propOrder = {"arithmaticoperators", "operators", "attributesleft", "attributesright" }, namespace = "comparison")
+@XmlType(propOrder = {"arithmaticoperators", "operators", "leftoperatorattributesleft", "leftoperatorattributesright", "rightoperatorattributesleft", "rightoperatorattributesright"}, namespace = "comparison")
 public class Comparison 
 {
 	private Operators arithmaticoperators;
 	private Operators operators;
-	private Attributes attributesleft;
-	private Attributes attributesright;
+	private Attributes leftoperatorattributesleft;
+	private Attributes leftoperatorattributesright;
+	private Attributes rightoperatorattributesleft;
+	private Attributes rightoperatorattributesright;
 	
-	public Attributes getAttributesleft() {
-		return attributesleft;
-	}
-	public Attributes getAttributesright() {
-		return attributesright;
+	public Operators getArithmaticoperators() {
+		return arithmaticoperators;
 	}
 	public Operators getOperators() {
 		return operators;
 	}
-	
-	public void setAttributesleft(Attributes attributesleft) {
-		this.attributesleft = attributesleft;
+	public Attributes getLeftoperatorattributesleft() {
+		return leftoperatorattributesleft;
 	}
-	public void setAttributesright(Attributes attributesright) {
-		this.attributesright = attributesright;
+	public Attributes getLeftoperatorattributesright() {
+		return leftoperatorattributesright;
+	}
+	public Attributes getRightoperatorattributesleft() {
+		return rightoperatorattributesleft;
+	}
+	public Attributes getRightoperatorattributesright() {
+		return rightoperatorattributesright;
+	}
+	public void setArithmaticoperators(Operators arithmaticoperators) {
+		this.arithmaticoperators = arithmaticoperators;
 	}
 	public void setOperators(Operators operators) {
 		this.operators = operators;
 	}
+	public void setLeftoperatorattributesleft(
+			Attributes leftoperatorattributesleft) {
+		this.leftoperatorattributesleft = leftoperatorattributesleft;
+	}
+	public void setLeftoperatorattributesright(
+			Attributes leftoperatorattributesright) {
+		this.leftoperatorattributesright = leftoperatorattributesright;
+	}
+	public void setRightoperatorattributesleft(
+			Attributes rightoperatorattributesleft) {
+		this.rightoperatorattributesleft = rightoperatorattributesleft;
+	}
+	public void setRightoperatorattributesright(
+			Attributes rightoperatorattributesright) {
+		this.rightoperatorattributesright = rightoperatorattributesright;
+	}
 	
-	public void setArithmaticoperators(Operators arithmaticoperators) {
-		this.arithmaticoperators = arithmaticoperators;
-	}
-	public Operators getArithmaticoperators() {
-		return arithmaticoperators;
-	}
 }

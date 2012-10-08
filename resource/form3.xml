@@ -15,254 +15,571 @@
 			<op name="= Equal" symbol="=" i8n-entry="equal" />
 			<op name="&lt;&gt; Different than" symbol="&lt;&gt;" i8n-entry="differentThan" />
 		</operators>
-		<attributesleft>
+		<leftoperatorattributesleft>
 			<attribute name="Option1" i8n-entry="AccDecOiAC">
 				<parameters>
-					<dropdownOption name="Symbol" i8n-entry="Symbol"
-						default="Current Symbol" tooltip="Symbol name">
-						<option as="Current Symbol" />
-						<option as="A" />
-						<option as="B" />
-					</dropdownOption>
-					<dropdownOption name="SubOption1" i8n-entry="SubOption1"
-						default="Current" tooltip="Chart SubOption1">
-						<option as="Current" />
-						<option as="0" />
-						<option as="1" />
-					</dropdownOption>
-					<spinnerOption name="Max" i8n-entry="Max" default="0"
-						tooltip="Max relative to the current max">
-						<option min="0" />
-						<option max="100" />
-					</spinnerOption>
+					<option name="Symbol" label="Symbol" type="dropdown" defaultOption="Current Symbol" tooltip="Symbol name" i8n-entry="Symbol">
+			            <dropdownOption>
+							<option as="Current Symbol" />
+							<option as="A" />
+							<option as="B" />
+						</dropdownOption>
+			        </option>
+					<option name="SubOption1" label="SubOption1" type="dropdown" defaultOption="Current" tooltip="Chart SubOption1" i8n-entry="SubOption1">
+			            <dropdownOption>
+							<option as="Current" />
+							<option as="0" />
+							<option as="1" />
+						</dropdownOption>
+			        </option>	
+					<option name="Max" label="Max" type="spinner" defaultOption="0" tooltip="Max relative to the current max" i8n-entry="SubOption1">
+						<spinnerOption>
+							<option min="0"/>
+							<option max="100"/>
+						</spinnerOption >
+					</option>					
 				</parameters>
 			</attribute>
 			<attribute name="OPTION2" i8n-entry="OPTION2">
 				<parameters>
-					<dropdownOption name="Symbol" i8n-entry="Symbol"
-						default="Current Symbol" tooltip="Symbol name">
-						<option as="Current Symbol" />
-						<option as="A" />
-						<option as="B" />
-					</dropdownOption>
+					<option name="Symbol" label="Symbol" type="dropdown" defaultOption="Current Symbol" tooltip="Symbol name" i8n-entry="Symbol">
+			            <dropdownOption>
+			                <option as="Current Symbol" />
+							<option as="A" />
+							<option as="B" />
+			            </dropdownOption>
+			        </option>
 				</parameters>
 			</attribute>
 			<attribute name="Average Movement" i8n-entry="AvgMovDIiADX">
 				<parameters>
-					<dropdownOption name="Symbol" i8n-entry="Symbol"
-						default="Current Symbol" tooltip="Symbol name">
-						<option as="Current Symbol" />
-						<option as="A" />
-						<option as="B" />
-					</dropdownOption>
-					<dropdownOption name="SubOption1" i8n-entry="SubOption1"
-						default="Current" tooltip="Chart SubOption1">
-						<option as="Current" />
-						<option as="0" />
-						<option as="1" />
-					</dropdownOption>
-					<spinnerOption name="Period" i8n-entry="Period"
-						default="0" tooltip="Averaging period for calculation">
-						<option min="0" />
-						<option max="500" />
-					</spinnerOption>
-					<dropdownOption name="Applied ZET" i8n-entry="Applied ZET"
-						default="ZET_CLOSE" tooltip="Applied ZET">
-						<option as="ZET_CLOSE" />
-						<option as="ZET_OPEN" />
-						<option as="ZET_HIGH" />
-					</dropdownOption>
-					<dropdownOption name="Mode" i8n-entry="Mode"
-						default="MODE1" tooltip="Indicator line identifier">
-						<option as="MODE1" />
-						<option as="MODE2" />
-					</dropdownOption>
-					<spinnerOption name="Max" i8n-entry="Max" default="0"
-						tooltip="Max relative to the current max (number of periods back)">
-						<option min="0" />
-						<option max="100" />
-					</spinnerOption>
+					<option name="Symbol" label="Symbol" type="dropdown" defaultOption="Current Symbol" tooltip="Symbol name" i8n-entry="Symbol">
+			            <dropdownOption>
+			                <option as="Current Symbol" />
+							<option as="A" />
+							<option as="B" />
+			            </dropdownOption>
+			        </option>
+					<option name="SubOption1" label="SubOption1" type="dropdown" defaultOption="Current" tooltip="Chart SubOption1" i8n-entry="SubOption1">
+			            <dropdownOption>
+			                <option as="Current" />
+							<option as="0" />
+							<option as="1" />
+			            </dropdownOption>
+					</option>
+					<option name="Period" label="Period" type="spinner" defaultOption="0" tooltip="Averaging period for calculation" i8n-entry="Period">
+						<spinnerOption>
+							<option min="0"/>
+							<option max="500"/>
+						</spinnerOption >
+					</option>
+					<option name="Applied ZET" label="Applied ZET" type="dropdown" defaultOption="ZET_CLOSE" tooltip="Applied ZET" i8n-entry="Symbol">
+			            <dropdownOption>
+			                <option as="ZET_CLOSE" />
+							<option as="ZET_OPEN" />
+							<option as="ZET_HIGH" />
+			            </dropdownOption>
+			        </option>
+					<option name="Mode" label="Mode" type="dropdown" defaultOption="MODE1" tooltip="Indicator line identifier" i8n-entry="Mode">
+			            <dropdownOption>
+			                <option as="MODE1" />
+							<option as="MODE2" />
+			            </dropdownOption>
+					</option>
+					<option name="Max" label="Max" type="spinner" defaultOption="0" tooltip="Max relative to the current max (number of periods back)" i8n-entry="Max">
+						<spinnerOption>
+							<option min="0"/>
+							<option max="100"/>
+						</spinnerOption >
+					</option>
 				</parameters>
 			</attribute>
 			<attribute name="CUSTOM Z" i8n-entry="CUSTOM Z">
 				<parameters>
-					<dropdownOption name="Symbol" i8n-entry="Symbol"
-						default="Current Symbol" tooltip="Symbol name">
-						<option as="Current Symbol" />
-						<option as="A" />
-						<option as="B" />
-					</dropdownOption>
-					<dropdownOption name="SubOption1" i8n-entry="SubOption1"
-						default="Current" tooltip="Chart SubOption1">
-						<option as="Current" />
-						<option as="0" />
-						<option as="1" />
-					</dropdownOption>
-					<spinnerOption name="%aperiod" i8n-entry="%aperiod"
-						default="0" tooltip="Averaging period for calculation">
-						<option min="0" />
-						<option max="500" />
-					</spinnerOption>
-					<spinnerOption name="%bperiod" i8n-entry="%bperiod"
-						default="0" tooltip="">
-						<option min="0" />
-						<option max="500" />
-					</spinnerOption>
-					<spinnerOption name="Slowing" i8n-entry="Slowing"
-						default="0" tooltip="">
-						<option min="0" />
-						<option max="500" />
-					</spinnerOption>
-					<dropdownOption name="method" i8n-entry="method"
-						default="ModeSS" tooltip="">
-						<option as="ModeSS" />
-						<option as="ModeEE" />
-					</dropdownOption>
-					<spinnerOption name="ZET field" i8n-entry="ZET field"
-						default="0" tooltip="Applied ZET">
-						<option min="0" />
-						<option max="500" />
-					</spinnerOption>
-					<dropdownOption name="Mode" i8n-entry="Mode"
-						default="MODE1" tooltip="Indicator line identifier">
-						<option as="MODE1" />
-						<option as="MODE3" />
-					</dropdownOption>
-					<spinnerOption name="Max" i8n-entry="Max2" default="0"
-						tooltip="Max relative to the current max (number of periods back)">
-						<option min="0" />
-						<option max="100" />
-					</spinnerOption>
+					<option name="Symbol" label="Symbol" type="dropdown" defaultOption="Current Symbol" tooltip="Symbol name" i8n-entry="Symbol">
+			            <dropdownOption>
+			                <option as="Current Symbol" />
+							<option as="A" />
+							<option as="B" />
+			            </dropdownOption>
+			        </option>
+					<option name="SubOption1" label="SubOption1" type="dropdown" defaultOption="Current" tooltip="Chart SubOption1" i8n-entry="SubOption1">
+			            <dropdownOption>
+			                <option as="Current" />
+							<option as="0" />
+							<option as="1" />
+			            </dropdownOption>
+			        </option>
+					<option name="%aperiod" label="%aperiod" type="spinner" defaultOption="0" tooltip="Averaging period for calculation" i8n-entry="%aperiod">
+			            <spinnerOption>
+							<option min="0" />
+							<option max="500" />
+			            </spinnerOption>
+			        </option>
+					<option name="%bperiod" label="%bperiod" type="spinner" defaultOption="0" tooltip="" i8n-entry="%bperiod">
+			            <spinnerOption>
+							<option min="0" />
+							<option max="500" />
+			            </spinnerOption>
+			        </option>
+					<option name="Slowing" label="Slowing" type="spinner" defaultOption="0" tooltip="" i8n-entry="Slowing">
+			            <spinnerOption>
+							<option min="0" />
+							<option max="500" />
+			            </spinnerOption>
+			        </option>
+					<option name="method" label="method" type="dropdown" defaultOption="ModeSS" tooltip="" i8n-entry="method">
+			            <dropdownOption>
+			                <option as="ModeSS" />
+							<option as="ModeEE" />
+			            </dropdownOption>
+			        </option>
+					<option name="ZET field" label="ZET field" type="spinner" defaultOption="0" tooltip="Applied ZET" i8n-entry="ZET field">
+			            <spinnerOption>
+							<option min="0" />
+							<option max="500" />
+			            </spinnerOption>
+			        </option>
+					<option name="Mode" label="Mode" type="dropdown" defaultOption="MODE1" tooltip="Indicator line identifier" i8n-entry="Mode">
+			            <dropdownOption>
+			                <option as="MODE1" />
+							<option as="MODE3" />
+			            </dropdownOption>
+			        </option>
+					<option name="Max" label="Max" type="spinner" defaultOption="0" tooltip="Max relative to the current max (number of periods back)" i8n-entry="Max">
+			            <spinnerOption>
+							<option min="0" />
+							<option max="100" />
+			            </spinnerOption>
+			        </option>
 				</parameters>
 			</attribute>
-		</attributesleft>
-
-		<attributesright>
+		</leftoperatorattributesleft>
+		<leftoperatorattributesright>
 			<attribute name="Option1" i8n-entry="AccDecOiAC">
 				<parameters>
-					<dropdownOption name="Symbol" i8n-entry="Symbol"
-						default="Current Symbol" tooltip="Symbol name">
-						<option as="Current Symbol" />
-						<option as="A" />
-						<option as="B" />
-					</dropdownOption>
-					<dropdownOption name="SubOption1" i8n-entry="SubOption1"
-						default="Current" tooltip="Chart SubOption1">
-						<option as="Current" />
-						<option as="0" />
-						<option as="1" />
-					</dropdownOption>
-					<spinnerOption name="Max" i8n-entry="Max" default="0"
-						tooltip="Max relative to the current max">
-						<option min="0" />
-						<option max="100" />
-					</spinnerOption>
+					<option name="Symbol" label="Symbol" type="dropdown" defaultOption="Current Symbol" tooltip="Symbol name" i8n-entry="Symbol">
+			            <dropdownOption>
+							<option as="Current Symbol" />
+							<option as="A" />
+							<option as="B" />
+						</dropdownOption>
+			        </option>
+					<option name="SubOption1" label="SubOption1" type="dropdown" defaultOption="Current" tooltip="Chart SubOption1" i8n-entry="SubOption1">
+			            <dropdownOption>
+							<option as="Current" />
+							<option as="0" />
+							<option as="1" />
+						</dropdownOption>
+			        </option>	
+					<option name="Max" label="Max" type="spinner" defaultOption="0" tooltip="Max relative to the current max" i8n-entry="SubOption1">
+						<spinnerOption>
+							<option min="0"/>
+							<option max="100"/>
+						</spinnerOption >
+					</option>					
 				</parameters>
 			</attribute>
 			<attribute name="OPTION2" i8n-entry="OPTION2">
 				<parameters>
-					<dropdownOption name="Symbol" i8n-entry="Symbol"
-						default="Current Symbol" tooltip="Symbol name">
-						<option as="Current Symbol" />
-						<option as="A" />
-						<option as="B" />
-					</dropdownOption>
+					<option name="Symbol" label="Symbol" type="dropdown" defaultOption="Current Symbol" tooltip="Symbol name" i8n-entry="Symbol">
+			            <dropdownOption>
+			                <option as="Current Symbol" />
+							<option as="A" />
+							<option as="B" />
+			            </dropdownOption>
+			        </option>
 				</parameters>
 			</attribute>
 			<attribute name="Average Movement" i8n-entry="AvgMovDIiADX">
 				<parameters>
-					<dropdownOption name="Symbol" i8n-entry="Symbol"
-						default="Current Symbol" tooltip="Symbol name">
-						<option as="Current Symbol" />
-						<option as="A" />
-						<option as="B" />
-					</dropdownOption>
-					<dropdownOption name="SubOption1" i8n-entry="SubOption1"
-						default="Current" tooltip="Chart SubOption1">
-						<option as="Current" />
-						<option as="0" />
-						<option as="1" />
-					</dropdownOption>
-					<spinnerOption name="Period" i8n-entry="Period"
-						default="0" tooltip="Averaging period for calculation">
-						<option min="0" />
-						<option max="500" />
-					</spinnerOption>
-					<dropdownOption name="Applied ZET" i8n-entry="Applied ZET"
-						default="ZET_CLOSE" tooltip="Applied ZET">
-						<option as="ZET_CLOSE" />
-						<option as="ZET_OPEN" />
-						<option as="ZET_HIGH" />
-					</dropdownOption>
-					<dropdownOption name="Mode" i8n-entry="Mode"
-						default="MODE1" tooltip="Indicator line identifier">
-						<option as="MODE1" />
-						<option as="MODE2" />
-					</dropdownOption>
-					<spinnerOption name="Max" i8n-entry="Max" default="0"
-						tooltip="Max relative to the current max (number of periods back)">
-						<option min="0" />
-						<option max="100" />
-					</spinnerOption>
+					<option name="Symbol" label="Symbol" type="dropdown" defaultOption="Current Symbol" tooltip="Symbol name" i8n-entry="Symbol">
+			            <dropdownOption>
+			                <option as="Current Symbol" />
+							<option as="A" />
+							<option as="B" />
+			            </dropdownOption>
+			        </option>
+					<option name="SubOption1" label="SubOption1" type="dropdown" defaultOption="Current" tooltip="Chart SubOption1" i8n-entry="SubOption1">
+			            <dropdownOption>
+			                <option as="Current" />
+							<option as="0" />
+							<option as="1" />
+			            </dropdownOption>
+					</option>
+					<option name="Period" label="Period" type="spinner" defaultOption="0" tooltip="Averaging period for calculation" i8n-entry="Period">
+						<spinnerOption>
+							<option min="0"/>
+							<option max="500"/>
+						</spinnerOption >
+					</option>
+					<option name="Applied ZET" label="Applied ZET" type="dropdown" defaultOption="ZET_CLOSE" tooltip="Applied ZET" i8n-entry="Symbol">
+			            <dropdownOption>
+			                <option as="ZET_CLOSE" />
+							<option as="ZET_OPEN" />
+							<option as="ZET_HIGH" />
+			            </dropdownOption>
+			        </option>
+					<option name="Mode" label="Mode" type="dropdown" defaultOption="MODE1" tooltip="Indicator line identifier" i8n-entry="Mode">
+			            <dropdownOption>
+			                <option as="MODE1" />
+							<option as="MODE2" />
+			            </dropdownOption>
+					</option>
+					<option name="Max" label="Max" type="spinner" defaultOption="0" tooltip="Max relative to the current max (number of periods back)" i8n-entry="Max">
+						<spinnerOption>
+							<option min="0"/>
+							<option max="100"/>
+						</spinnerOption >
+					</option>
 				</parameters>
 			</attribute>
 			<attribute name="CUSTOM Z" i8n-entry="CUSTOM Z">
 				<parameters>
-					<dropdownOption name="Symbol" i8n-entry="Symbol"
-						default="Current Symbol" tooltip="Symbol name">
-						<option as="Current Symbol" />
-						<option as="A" />
-						<option as="B" />
-					</dropdownOption>
-					<dropdownOption name="SubOption1" i8n-entry="SubOption1"
-						default="Current" tooltip="Chart SubOption1">
-						<option as="Current" />
-						<option as="0" />
-						<option as="1" />
-					</dropdownOption>
-					<spinnerOption name="%aperiod" i8n-entry="%aperiod"
-						default="0" tooltip="Averaging period for calculation">
-						<option min="0" />
-						<option max="500" />
-					</spinnerOption>
-					<spinnerOption name="%bperiod" i8n-entry="%bperiod"
-						default="0" tooltip="">
-						<option min="0" />
-						<option max="500" />
-					</spinnerOption>
-					<spinnerOption name="Slowing" i8n-entry="Slowing"
-						default="0" tooltip="">
-						<option min="0" />
-						<option max="500" />
-					</spinnerOption>
-					<dropdownOption name="method" i8n-entry="method"
-						default="ModeSS" tooltip="">
-						<option as="ModeSS" />
-						<option as="ModeEE" />
-					</dropdownOption>
-					<spinnerOption name="ZET field" i8n-entry="ZET field"
-						default="0" tooltip="Applied ZET">
-						<option min="0" />
-						<option max="500" />
-					</spinnerOption>
-					<dropdownOption name="Mode" i8n-entry="Mode"
-						default="MODE1" tooltip="Indicator line identifier">
-						<option as="MODE1" />
-						<option as="MODE3" />
-					</dropdownOption>
-					<spinnerOption name="Max" i8n-entry="Max2" default="0"
-						tooltip="Max relative to the current max (number of periods back)">
-						<option min="0" />
-						<option max="100" />
-					</spinnerOption>
+					<option name="Symbol" label="Symbol" type="dropdown" defaultOption="Current Symbol" tooltip="Symbol name" i8n-entry="Symbol">
+			            <dropdownOption>
+			                <option as="Current Symbol" />
+							<option as="A" />
+							<option as="B" />
+			            </dropdownOption>
+			        </option>
+					<option name="SubOption1" label="SubOption1" type="dropdown" defaultOption="Current" tooltip="Chart SubOption1" i8n-entry="SubOption1">
+			            <dropdownOption>
+			                <option as="Current" />
+							<option as="0" />
+							<option as="1" />
+			            </dropdownOption>
+			        </option>
+					<option name="%aperiod" label="%aperiod" type="spinner" defaultOption="0" tooltip="Averaging period for calculation" i8n-entry="%aperiod">
+			            <spinnerOption>
+							<option min="0" />
+							<option max="500" />
+			            </spinnerOption>
+			        </option>
+					<option name="%bperiod" label="%bperiod" type="spinner" defaultOption="0" tooltip="" i8n-entry="%bperiod">
+			            <spinnerOption>
+							<option min="0" />
+							<option max="500" />
+			            </spinnerOption>
+			        </option>
+					<option name="Slowing" label="Slowing" type="spinner" defaultOption="0" tooltip="" i8n-entry="Slowing">
+			            <spinnerOption>
+							<option min="0" />
+							<option max="500" />
+			            </spinnerOption>
+			        </option>
+					<option name="method" label="method" type="dropdown" defaultOption="ModeSS" tooltip="" i8n-entry="method">
+			            <dropdownOption>
+			                <option as="ModeSS" />
+							<option as="ModeEE" />
+			            </dropdownOption>
+			        </option>
+					<option name="ZET field" label="ZET field" type="spinner" defaultOption="0" tooltip="Applied ZET" i8n-entry="ZET field">
+			            <spinnerOption>
+							<option min="0" />
+							<option max="500" />
+			            </spinnerOption>
+			        </option>
+					<option name="Mode" label="Mode" type="dropdown" defaultOption="MODE1" tooltip="Indicator line identifier" i8n-entry="Mode">
+			            <dropdownOption>
+			                <option as="MODE1" />
+							<option as="MODE3" />
+			            </dropdownOption>
+			        </option>
+					<option name="Max" label="Max" type="spinner" defaultOption="0" tooltip="Max relative to the current max (number of periods back)" i8n-entry="Max">
+			            <spinnerOption>
+							<option min="0" />
+							<option max="100" />
+			            </spinnerOption>
+			        </option>
 				</parameters>
 			</attribute>
-		</attributesright>
+		</leftoperatorattributesright>
+		<rightoperatorattributesleft>
+			<attribute name="Option1" i8n-entry="AccDecOiAC">
+				<parameters>
+					<option name="Symbol" label="Symbol" type="dropdown" defaultOption="Current Symbol" tooltip="Symbol name" i8n-entry="Symbol">
+			            <dropdownOption>
+							<option as="Current Symbol" />
+							<option as="A" />
+							<option as="B" />
+						</dropdownOption>
+			        </option>
+					<option name="SubOption1" label="SubOption1" type="dropdown" defaultOption="Current" tooltip="Chart SubOption1" i8n-entry="SubOption1">
+			            <dropdownOption>
+							<option as="Current" />
+							<option as="0" />
+							<option as="1" />
+						</dropdownOption>
+			        </option>	
+					<option name="Max" label="Max" type="spinner" defaultOption="0" tooltip="Max relative to the current max" i8n-entry="SubOption1">
+						<spinnerOption>
+							<option min="0"/>
+							<option max="100"/>
+						</spinnerOption >
+					</option>					
+				</parameters>
+			</attribute>
+			<attribute name="OPTION2" i8n-entry="OPTION2">
+				<parameters>
+					<option name="Symbol" label="Symbol" type="dropdown" defaultOption="Current Symbol" tooltip="Symbol name" i8n-entry="Symbol">
+			            <dropdownOption>
+			                <option as="Current Symbol" />
+							<option as="A" />
+							<option as="B" />
+			            </dropdownOption>
+			        </option>
+				</parameters>
+			</attribute>
+			<attribute name="Average Movement" i8n-entry="AvgMovDIiADX">
+				<parameters>
+					<option name="Symbol" label="Symbol" type="dropdown" defaultOption="Current Symbol" tooltip="Symbol name" i8n-entry="Symbol">
+			            <dropdownOption>
+			                <option as="Current Symbol" />
+							<option as="A" />
+							<option as="B" />
+			            </dropdownOption>
+			        </option>
+					<option name="SubOption1" label="SubOption1" type="dropdown" defaultOption="Current" tooltip="Chart SubOption1" i8n-entry="SubOption1">
+			            <dropdownOption>
+			                <option as="Current" />
+							<option as="0" />
+							<option as="1" />
+			            </dropdownOption>
+					</option>
+					<option name="Period" label="Period" type="spinner" defaultOption="0" tooltip="Averaging period for calculation" i8n-entry="Period">
+						<spinnerOption>
+							<option min="0"/>
+							<option max="500"/>
+						</spinnerOption >
+					</option>
+					<option name="Applied ZET" label="Applied ZET" type="dropdown" defaultOption="ZET_CLOSE" tooltip="Applied ZET" i8n-entry="Symbol">
+			            <dropdownOption>
+			                <option as="ZET_CLOSE" />
+							<option as="ZET_OPEN" />
+							<option as="ZET_HIGH" />
+			            </dropdownOption>
+			        </option>
+					<option name="Mode" label="Mode" type="dropdown" defaultOption="MODE1" tooltip="Indicator line identifier" i8n-entry="Mode">
+			            <dropdownOption>
+			                <option as="MODE1" />
+							<option as="MODE2" />
+			            </dropdownOption>
+					</option>
+					<option name="Max" label="Max" type="spinner" defaultOption="0" tooltip="Max relative to the current max (number of periods back)" i8n-entry="Max">
+						<spinnerOption>
+							<option min="0"/>
+							<option max="100"/>
+						</spinnerOption >
+					</option>
+				</parameters>
+			</attribute>
+			<attribute name="CUSTOM Z" i8n-entry="CUSTOM Z">
+				<parameters>
+					<option name="Symbol" label="Symbol" type="dropdown" defaultOption="Current Symbol" tooltip="Symbol name" i8n-entry="Symbol">
+			            <dropdownOption>
+			                <option as="Current Symbol" />
+							<option as="A" />
+							<option as="B" />
+			            </dropdownOption>
+			        </option>
+					<option name="SubOption1" label="SubOption1" type="dropdown" defaultOption="Current" tooltip="Chart SubOption1" i8n-entry="SubOption1">
+			            <dropdownOption>
+			                <option as="Current" />
+							<option as="0" />
+							<option as="1" />
+			            </dropdownOption>
+			        </option>
+					<option name="%aperiod" label="%aperiod" type="spinner" defaultOption="0" tooltip="Averaging period for calculation" i8n-entry="%aperiod">
+			            <spinnerOption>
+							<option min="0" />
+							<option max="500" />
+			            </spinnerOption>
+			        </option>
+					<option name="%bperiod" label="%bperiod" type="spinner" defaultOption="0" tooltip="" i8n-entry="%bperiod">
+			            <spinnerOption>
+							<option min="0" />
+							<option max="500" />
+			            </spinnerOption>
+			        </option>
+					<option name="Slowing" label="Slowing" type="spinner" defaultOption="0" tooltip="" i8n-entry="Slowing">
+			            <spinnerOption>
+							<option min="0" />
+							<option max="500" />
+			            </spinnerOption>
+			        </option>
+					<option name="method" label="method" type="dropdown" defaultOption="ModeSS" tooltip="" i8n-entry="method">
+			            <dropdownOption>
+			                <option as="ModeSS" />
+							<option as="ModeEE" />
+			            </dropdownOption>
+			        </option>
+					<option name="ZET field" label="ZET field" type="spinner" defaultOption="0" tooltip="Applied ZET" i8n-entry="ZET field">
+			            <spinnerOption>
+							<option min="0" />
+							<option max="500" />
+			            </spinnerOption>
+			        </option>
+					<option name="Mode" label="Mode" type="dropdown" defaultOption="MODE1" tooltip="Indicator line identifier" i8n-entry="Mode">
+			            <dropdownOption>
+			                <option as="MODE1" />
+							<option as="MODE3" />
+			            </dropdownOption>
+			        </option>
+					<option name="Max" label="Max" type="spinner" defaultOption="0" tooltip="Max relative to the current max (number of periods back)" i8n-entry="Max">
+			            <spinnerOption>
+							<option min="0" />
+							<option max="100" />
+			            </spinnerOption>
+			        </option>
+				</parameters>
+			</attribute>
+		</rightoperatorattributesleft>
+		<rightoperatorattributesright>
+			<attribute name="Option1" i8n-entry="AccDecOiAC">
+				<parameters>
+					<option name="Symbol" label="Symbol" type="dropdown" defaultOption="Current Symbol" tooltip="Symbol name" i8n-entry="Symbol">
+			            <dropdownOption>
+							<option as="Current Symbol" />
+							<option as="A" />
+							<option as="B" />
+						</dropdownOption>
+			        </option>
+					<option name="SubOption1" label="SubOption1" type="dropdown" defaultOption="Current" tooltip="Chart SubOption1" i8n-entry="SubOption1">
+			            <dropdownOption>
+							<option as="Current" />
+							<option as="0" />
+							<option as="1" />
+						</dropdownOption>
+			        </option>	
+					<option name="Max" label="Max" type="spinner" defaultOption="0" tooltip="Max relative to the current max" i8n-entry="SubOption1">
+						<spinnerOption>
+							<option min="0"/>
+							<option max="100"/>
+						</spinnerOption >
+					</option>					
+				</parameters>
+			</attribute>
+			<attribute name="OPTION2" i8n-entry="OPTION2">
+				<parameters>
+					<option name="Symbol" label="Symbol" type="dropdown" defaultOption="Current Symbol" tooltip="Symbol name" i8n-entry="Symbol">
+			            <dropdownOption>
+			                <option as="Current Symbol" />
+							<option as="A" />
+							<option as="B" />
+			            </dropdownOption>
+			        </option>
+				</parameters>
+			</attribute>
+			<attribute name="Average Movement" i8n-entry="AvgMovDIiADX">
+				<parameters>
+					<option name="Symbol" label="Symbol" type="dropdown" defaultOption="Current Symbol" tooltip="Symbol name" i8n-entry="Symbol">
+			            <dropdownOption>
+			                <option as="Current Symbol" />
+							<option as="A" />
+							<option as="B" />
+			            </dropdownOption>
+			        </option>
+					<option name="SubOption1" label="SubOption1" type="dropdown" defaultOption="Current" tooltip="Chart SubOption1" i8n-entry="SubOption1">
+			            <dropdownOption>
+			                <option as="Current" />
+							<option as="0" />
+							<option as="1" />
+			            </dropdownOption>
+					</option>
+					<option name="Period" label="Period" type="spinner" defaultOption="0" tooltip="Averaging period for calculation" i8n-entry="Period">
+						<spinnerOption>
+							<option min="0"/>
+							<option max="500"/>
+						</spinnerOption >
+					</option>
+					<option name="Applied ZET" label="Applied ZET" type="dropdown" defaultOption="ZET_CLOSE" tooltip="Applied ZET" i8n-entry="Symbol">
+			            <dropdownOption>
+			                <option as="ZET_CLOSE" />
+							<option as="ZET_OPEN" />
+							<option as="ZET_HIGH" />
+			            </dropdownOption>
+			        </option>
+					<option name="Mode" label="Mode" type="dropdown" defaultOption="MODE1" tooltip="Indicator line identifier" i8n-entry="Mode">
+			            <dropdownOption>
+			                <option as="MODE1" />
+							<option as="MODE2" />
+			            </dropdownOption>
+					</option>
+					<option name="Max" label="Max" type="spinner" defaultOption="0" tooltip="Max relative to the current max (number of periods back)" i8n-entry="Max">
+						<spinnerOption>
+							<option min="0"/>
+							<option max="100"/>
+						</spinnerOption >
+					</option>
+				</parameters>
+			</attribute>
+			<attribute name="CUSTOM Z" i8n-entry="CUSTOM Z">
+				<parameters>
+					<option name="Symbol" label="Symbol" type="dropdown" defaultOption="Current Symbol" tooltip="Symbol name" i8n-entry="Symbol">
+			            <dropdownOption>
+			                <option as="Current Symbol" />
+							<option as="A" />
+							<option as="B" />
+			            </dropdownOption>
+			        </option>
+					<option name="SubOption1" label="SubOption1" type="dropdown" defaultOption="Current" tooltip="Chart SubOption1" i8n-entry="SubOption1">
+			            <dropdownOption>
+			                <option as="Current" />
+							<option as="0" />
+							<option as="1" />
+			            </dropdownOption>
+			        </option>
+					<option name="%aperiod" label="%aperiod" type="spinner" defaultOption="0" tooltip="Averaging period for calculation" i8n-entry="%aperiod">
+			            <spinnerOption>
+							<option min="0" />
+							<option max="500" />
+			            </spinnerOption>
+			        </option>
+					<option name="%bperiod" label="%bperiod" type="spinner" defaultOption="0" tooltip="" i8n-entry="%bperiod">
+			            <spinnerOption>
+							<option min="0" />
+							<option max="500" />
+			            </spinnerOption>
+			        </option>
+					<option name="Slowing" label="Slowing" type="spinner" defaultOption="0" tooltip="" i8n-entry="Slowing">
+			            <spinnerOption>
+							<option min="0" />
+							<option max="500" />
+			            </spinnerOption>
+			        </option>
+					<option name="method" label="method" type="dropdown" defaultOption="ModeSS" tooltip="" i8n-entry="method">
+			            <dropdownOption>
+			                <option as="ModeSS" />
+							<option as="ModeEE" />
+			            </dropdownOption>
+			        </option>
+					<option name="ZET field" label="ZET field" type="spinner" defaultOption="0" tooltip="Applied ZET" i8n-entry="ZET field">
+			            <spinnerOption>
+							<option min="0" />
+							<option max="500" />
+			            </spinnerOption>
+			        </option>
+					<option name="Mode" label="Mode" type="dropdown" defaultOption="MODE1" tooltip="Indicator line identifier" i8n-entry="Mode">
+			            <dropdownOption>
+			                <option as="MODE1" />
+							<option as="MODE3" />
+			            </dropdownOption>
+			        </option>
+					<option name="Max" label="Max" type="spinner" defaultOption="0" tooltip="Max relative to the current max (number of periods back)" i8n-entry="Max">
+			            <spinnerOption>
+							<option min="0" />
+							<option max="100" />
+			            </spinnerOption>
+			        </option>
+				</parameters>
+			</attribute>
+		</rightoperatorattributesright>
 	</comparison>
 	<languages>
 		<language name="English">
 			<entry name="title">
-				<label>Form3</label>
+				<label>Form4</label>
 			</entry>
 			<entry name="ok">
 				<label>Ok</label>
@@ -399,7 +716,7 @@
 		</language>
 		<language name="Francais">
 			<entry name="title">
-				<label>Formulaire3</label>
+				<label>Formulaire4</label>
 			</entry>
 			<entry name="ok">
 				<label>Ok</label>

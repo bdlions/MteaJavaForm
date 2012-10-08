@@ -82,6 +82,23 @@ public class FormGenerator
 		}
 	}
 	
+	public void updateSyntaxMapForm1()
+	{
+		syntaxMapForm1 = new Hashtable();
+		
+		List<Language> languages =  form1.getLanguages().getLanguage();
+		for ( Language language : languages) 
+		{
+			if(getLanguage().equalsIgnoreCase(language.getName()))
+			{
+				for(LanguageEntry entry: language.getEntry())
+				{
+					syntaxMapForm1.put(entry.getName(), entry);
+				}
+			}
+		}
+	}
+	
 	public void generateForm2()
 	{
 		try 
