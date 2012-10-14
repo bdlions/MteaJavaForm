@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
+import javax.swing.AbstractButton;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.ParallelGroup;
 import javax.swing.GroupLayout.SequentialGroup;
@@ -192,8 +193,7 @@ public class Form1Window extends JFrame {
 
 		//adding each component to the panel
 		GridBagConstraints constraints = new GridBagConstraints();
-		for (Option option : formGenerator.getForm1().getListOptions()
-				.getOption()) {
+		for (Option option : formGenerator.getForm1().getListOptions().getOption()) {
 			addComponent(option, constraints, panel);
 		}
 		
@@ -281,7 +281,7 @@ public class Form1Window extends JFrame {
 	 * This method adds an option to the panel
 	 * */
 	public void addComponent(final Option option,
-		GridBagConstraints constraints, final JPanel panel) {
+		final GridBagConstraints constraints, final JPanel panel) {
 		
 		//retrieving option properties
 		String type = option.getType();
@@ -341,7 +341,7 @@ public class Form1Window extends JFrame {
 			comboBox.setName(name);
 			comboBox.setToolTipText(tooltipText);
 			comboBox.setSelectedItem(defaultOptionText);
-			option.setDefaultOption(defaultOptionText);
+			//option.setDefaultOption(defaultOptionText);
 			comboBox.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -371,19 +371,26 @@ public class Form1Window extends JFrame {
 			if (defaultOption.equals("checked")) {
 				checkBox.setSelected(true);
 			}
-			checkBox.addChangeListener(new ChangeListener() {
-
+			
+			checkBox.addActionListener(new ActionListener() {
 				@Override
-				public void stateChanged(ChangeEvent e) {
+				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
-					if (((JCheckBox) e.getSource()).isSelected()) {
-						option.setDefaultOption("checked");
-					} else {
-						option.setDefaultOption("unchecked");
-					}
+					AbstractButton abstractButton = (AbstractButton) e .getSource();
+				        boolean selected = abstractButton.getModel().isSelected();
+				        if (((JCheckBox) e.getSource()).isSelected()) {
+							option.setDefaultOption("checked");
+							panel.removeAll();
+						} else {
+							option.setDefaultOption("unchecked");
+							panel.removeAll();
+						}
+						revalidate();
+						for (Option option : formGenerator.getForm1().getListOptions().getOption()) {
+							addComponent(option, constraints, panel);
+						}
 				}
 			});
-
 			rightComponent = checkBox;
 		}
 

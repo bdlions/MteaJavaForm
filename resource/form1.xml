@@ -18,6 +18,26 @@
         <option name="LotReductionFactor" label="Lot Reduction Factor" type="text" defaultOption="" tooltip="type a reduction factor">
         </option>
         <option name="BuySellordersincludeTPSL" label="BuySell orders include TPSL" type="check" defaultOption="checked" tooltip="check if applies">
+        	<listSubOptions name="checked">
+				<suboption name="PlaySub" label="Play Sound" type="dropdown"
+					defaultOption="ON" tooltip="select between ON and OFF">
+					<dropdownOption>
+						<option as="ON" />
+						<option as="OFF" />
+						<option as="showvars" />
+					</dropdownOption>
+				</suboption>
+			</listSubOptions>
+			<listSubOptions name="unchecked">
+				<suboption name="PlayT" label="Play T" type="dropdown"
+					defaultOption="ON" tooltip="select between ON and OFF">
+					<dropdownOption>
+						<option as="ON" />
+						<option as="OFF" />
+						<option as="showvars" />
+					</dropdownOption>
+				</suboption>
+			</listSubOptions>
         </option>
         <option name="MM" label="M Management" type="dropdown" defaultOption="half" tooltip="select between half and full">
             <dropdownOption>
