@@ -742,6 +742,18 @@ public class Form3Window extends JFrame {
 				constraints.fill = GridBagConstraints.HORIZONTAL;
 				constraints.gridx = 0;
 				constraints.gridy = getRow();
+				panel.add(new JLabel("	"), constraints);
+
+				constraints.fill = GridBagConstraints.HORIZONTAL;
+				constraints.gridx = 1;
+				constraints.gridy = getRow();
+				panel.add(new JLabel("	"), constraints);
+
+				setRow(getRow() + 1);
+				
+				constraints.fill = GridBagConstraints.HORIZONTAL;
+				constraints.gridx = 0;
+				constraints.gridy = getRow();
 				panel.add(leftComponent, constraints);
 
 				constraints.fill = GridBagConstraints.HORIZONTAL;

@@ -11,6 +11,7 @@ import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -321,6 +322,7 @@ public class Form2Window extends JFrame {
 		leftCardPanel.validate();
 		leftCardPanel.repaint();
 
+		
 		JPanel cp = new JPanel(new GridBagLayout());
 		cp.setName("LeftPanel");
 		leftCardPanel.add(cp, cardName + "left");
@@ -329,6 +331,8 @@ public class Form2Window extends JFrame {
 		setRow(0);
 		
 		GridBagConstraints constraints = new GridBagConstraints();
+		
+	
 		for (Attribute attribute : formGenerator.getForm2().getComparison().getAttributesleft().getAttribute()) {
 			String attributeName = attribute.getName();
 			if(syntaxMap.containsKey(attributeName))
@@ -507,6 +511,18 @@ public class Form2Window extends JFrame {
 				constraints.fill = GridBagConstraints.HORIZONTAL;
 				constraints.gridx = 0;
 				constraints.gridy = getRow();
+				panel.add(new JLabel("	"), constraints);
+
+				constraints.fill = GridBagConstraints.HORIZONTAL;
+				constraints.gridx = 1;
+				constraints.gridy = getRow();
+				panel.add(new JLabel("	"), constraints);
+
+				setRow(getRow() + 1);
+				
+				constraints.fill = GridBagConstraints.HORIZONTAL;
+				constraints.gridx = 0;
+				constraints.gridy = getRow();
 				panel.add(leftComponent, constraints);
 
 				constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -515,6 +531,7 @@ public class Form2Window extends JFrame {
 				panel.add(rightComponent, constraints);
 
 				setRow(getRow() + 1);
+				
 
 			}
 			// if an option has sub option then we are adding sub option to the panel
