@@ -10,7 +10,7 @@ import org.forms.form1.dropdown.DropDownOption;
 import org.forms.form1.spinner.SpinnerOption;
 
 
-@XmlType(propOrder = { "dropdownOption", "spinnerOption", "suboption"}, namespace = "option")
+@XmlType(propOrder = { "dropdownOption", "spinnerOption","listSubOptions"}, namespace = "option")
 public class Option 
 {
 	private String name;
@@ -21,7 +21,7 @@ public class Option
 	
 	private ArrayList<DropDownOption> dropdownOption = new ArrayList<DropDownOption>();
 	private ArrayList<SpinnerOption> spinnerOption = new ArrayList<SpinnerOption>();
-	private ArrayList<Option> suboption = new ArrayList<Option>();
+	private ArrayList<ListSubOptions> listSubOptions = new ArrayList<ListSubOptions>();
 	
 	
 	
@@ -78,10 +78,10 @@ public class Option
 		return spinnerOption;
 	}
 	
-	public ArrayList<Option> getSuboption() {
-		return suboption;
+	public ArrayList<ListSubOptions> getListSubOptions() {
+		return listSubOptions;
 	}
-	public void setSuboption(ArrayList<Option> suboption) {
-		this.suboption = suboption;
+	public void setListSubOptions(ArrayList<ListSubOptions> listSubOptions) {
+		this.listSubOptions = listSubOptions;
 	}
 }

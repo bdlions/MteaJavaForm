@@ -24,20 +24,40 @@
                 <option as="half"/>
                 <option as="full"/>
             </dropdownOption>
-            <suboption name="half" label="half" type="dropdown" defaultOption="one" tooltip="">
-                <dropdownOption>
-                    <option as=""/>
-                    <option as="one"/>
-                    <option as="two"/>
-                </dropdownOption >                
-            </suboption>
-            <suboption name="full" label="full" type="dropdown" defaultOption="ten" tooltip="">
-                <dropdownOption>
-                    <option as=""/>
-                    <option as="ten"/>
-                    <option as="eleven"/>
-                </dropdownOption>    
-            </suboption>
+			<listSubOptions name="half">
+				<suboption name="PlaySub" label="Play Sound" type="dropdown"
+					defaultOption="ON" tooltip="select between ON and OFF">
+					<dropdownOption>
+						<option as="ON" />
+						<option as="OFF" />
+						<option as="showvars" />
+					</dropdownOption>
+				</suboption>
+				<suboption name="PlayT" label="Play T" type="dropdown"
+					defaultOption="ON" tooltip="select between ON and OFF">
+					<dropdownOption>
+						<option as="ON" />
+						<option as="OFF" />
+						<option as="showvars" />
+					</dropdownOption>
+				</suboption>
+			</listSubOptions>
+			<listSubOptions name="full">
+				<suboption name="full2" label="select full 2 option type">
+					<dropdownOption>
+						<option as="" />
+						<option as="ten" />
+						<option as="eleven" />
+					</dropdownOption>
+				</suboption>
+				<suboption name="TradingSub" label="Trading Hour Start"
+					type="spinner" defaultOption="1" tooltip="select a number between 1 and 99">
+					<spinnerOption>
+						<option min="1" />
+						<option max="199" />
+					</spinnerOption>
+				</suboption>
+			</listSubOptions>
         </option>
     </listOptions>
 	<languages>

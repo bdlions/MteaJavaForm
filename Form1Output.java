@@ -15,6 +15,7 @@ import javax.swing.border.EmptyBorder;
 
 import org.forms.Form1;
 import org.forms.FormGenerator;
+import org.forms.form1.listoptions.ListSubOptions;
 import org.forms.form1.listoptions.Option;
 import org.forms.languages.LanguageEntry;
 
@@ -95,17 +96,23 @@ public class Form1Output extends JFrame {
 
 		setRow(getRow() + 1);
 		
-		for (Option subOption : option.getSuboption()) {
-			String subOptionName = subOption.getName();
-			if(syntaxMap.containsKey(subOptionName))
+		/*for (ListSubOptions listSubOption : option.getListSubOptions()) {
+			String subOptionName = listSubOption.getName();
+			if(option.getDefaultOption().equals(subOptionName))
 			{
-				LanguageEntry valueEntry = (LanguageEntry) syntaxMap.get(subOptionName);
-				subOptionName = valueEntry.getLabel();
+				for(Option subOption:listSubOption.getOption())
+				{
+					if(syntaxMap.containsKey(subOptionName))
+					{
+						LanguageEntry valueEntry = (LanguageEntry) syntaxMap.get(subOptionName);
+						subOptionName = valueEntry.getLabel();
+					}
+					//JOptionPane.showMessageDialog(null, "option default value"+option.getDefaultOption()+";subOption name:"+subOptionName);
+					if(subOptionName.equals(option.getDefaultOption()))
+					addComponent(subOption, constraints, panel);
+				}
 			}
-			//JOptionPane.showMessageDialog(null, "option default value"+option.getDefaultOption()+";subOption name:"+subOptionName);
-			if(subOptionName.equals(option.getDefaultOption()))
-			addComponent(subOption, constraints, panel);
-		}
+		}*/
 	}
 
 }

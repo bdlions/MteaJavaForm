@@ -36,6 +36,7 @@ import org.forms.Form1;
 import org.forms.FormGenerator;
 import org.forms.form1.dropdown.DropDownOption;
 import org.forms.form1.dropdown.DropDownOptionElement;
+import org.forms.form1.listoptions.ListSubOptions;
 import org.forms.form1.listoptions.Option;
 import org.forms.form1.spinner.SpinnerOption;
 import org.forms.form1.spinner.SpinnerOptionElement;
@@ -209,6 +210,7 @@ public class Form1Window extends JFrame {
 		Form1 form1 = formGenerator.getForm1();
 
 		for (Option option : form1.getListOptions().getOption()) {
+			
 			options = getOptionsAndSub(option, name);
 
 			if (options.size() > 0) {
@@ -260,10 +262,16 @@ public class Form1Window extends JFrame {
 				}
 			}
 			return options;
-		} else if (option.getSuboption().size() > 0) {
-			for (Option subOption : option.getSuboption()) {
-				return getOptionsAndSub(subOption, name);
+		} else if (option.getListSubOptions().size() > 0) {
+			for (ListSubOptions listSuboption : option.getListSubOptions()) {
+				for (Option subOption : listSuboption.getSubOption()) {
+					if(subOption.getName().equals(name))
+					{
+						return getOptionsAndSub(subOption, name);
+					}
+				}
 			}
+			
 		}
 
 		return options;
@@ -407,10 +415,12 @@ public class Form1Window extends JFrame {
 
 		}
 		// if an option has sub option then we are adding sub option to the panel
-		if (option.getSuboption().size() > 0) {
-			for (Option subOption : option.getSuboption()) {
-				if (subOption.getName().equals(defaultOption)) {
-					addComponent(subOption, constraints, panel);
+		if (option.getListSubOptions().size() > 0) {
+			for (ListSubOptions listSuboption : option.getListSubOptions()) {
+				if (listSuboption.getName().equals(defaultOption)) {
+					for (Option subOption : listSuboption.getSubOption()) {
+						addComponent(subOption, constraints, panel);
+					}
 				}
 			}
 		}
@@ -434,29 +444,31 @@ public class Form1Window extends JFrame {
 				String selectedComboItemText = combo.getSelectedItem().toString();
 				String subOptionNameText = "";
 				//finding specific suboption of this option based on suboption name and option selected item
-				for (Option subOption : option.getSuboption()) {
-					subOptionNameText = subOption.getName();
-					if(syntaxMap.containsKey(subOptionNameText))
-					{
-						languageEntry = (LanguageEntry) syntaxMap.get(subOption.getName());
-						subOptionNameText = languageEntry.getLabel();
-					}					
-					if (subOptionNameText.equals(selectedComboItemText)) 
-					{
-						//we have got the new suboption
-						newSubOption = subOption;
-						//combo.setName(option.getName());
-						//option.setDefaultOption(subOption.getName());
-					}
-					for (Component component : panel.getComponents()) {
-						if (subOption.getName().equals(component.getName())) {
-							//we have detect previous suboption combo
-							subOptionCombo = (JComboBox) component;
-							removeComponentSubOption(subOption, panel);
+				for (ListSubOptions listSuboption : option.getListSubOptions()) {
+					for (Option subOption : listSuboption.getSubOption()) {
+						subOptionNameText = subOption.getName();
+						if(syntaxMap.containsKey(subOptionNameText))
+						{
+							languageEntry = (LanguageEntry) syntaxMap.get(subOption.getName());
+							subOptionNameText = languageEntry.getLabel();
+						}					
+						if (subOptionNameText.equals(selectedComboItemText)) 
+						{
+							//we have got the new suboption
+							newSubOption = subOption;
+							//combo.setName(option.getName());
+							//option.setDefaultOption(subOption.getName());
 						}
-						if ((subOption.getName() + "Label").equals(component.getName())) {
-							//we have detected previous suboption label
-							subOptionLable = (JLabel) component;
+						for (Component component : panel.getComponents()) {
+							if (subOption.getName().equals(component.getName())) {
+								//we have detect previous suboption combo
+								subOptionCombo = (JComboBox) component;
+								removeComponentSubOption(subOption, panel);
+							}
+							if ((subOption.getName() + "Label").equals(component.getName())) {
+								//we have detected previous suboption label
+								subOptionLable = (JLabel) component;
+							}
 						}
 					}
 				}
@@ -534,9 +546,11 @@ public class Form1Window extends JFrame {
 			}			
 			
 		}
-		else if (option.getSuboption().size() > 0) {
-			for (Option subOption : option.getSuboption()) {
-				comboChangeSubOptionUpdate(subOption, combo, panel);
+		else if (option.getListSubOptions().size() > 0) {
+			for (ListSubOptions listSuboption : option.getListSubOptions()) {
+				for (Option subOption : listSuboption.getSubOption()) {
+					comboChangeSubOptionUpdate(subOption, combo, panel);
+				}
 			}
 		}
 	}
@@ -545,14 +559,16 @@ public class Form1Window extends JFrame {
 	{
 		JComboBox subOptionCombo = null;
 		JLabel subOptionLable = null;
-		for (Option subOption : option.getSuboption()) {
-			for (Component component : panel.getComponents()) {
-				if (subOption.getName().equals(component.getName())) {
-					subOptionCombo = (JComboBox) component;
-					removeComponentSubOption(subOption, panel);
-				}
-				if ((subOption.getName() + "Label").equals(component.getName())) {
-					subOptionLable = (JLabel) component;
+		for (ListSubOptions listSuboption : option.getListSubOptions()) {
+			for (Option subOption : listSuboption.getSubOption()) {
+				for (Component component : panel.getComponents()) {
+					if (subOption.getName().equals(component.getName())) {
+						subOptionCombo = (JComboBox) component;
+						removeComponentSubOption(subOption, panel);
+					}
+					if ((subOption.getName() + "Label").equals(component.getName())) {
+						subOptionLable = (JLabel) component;
+					}
 				}
 			}
 		}
