@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 
 import javax.swing.GroupLayout;
@@ -28,6 +29,8 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
@@ -126,6 +129,31 @@ public class Form3Window extends JFrame {
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 950, 300);
+		
+		addComponentListener(new ComponentAdapter(){
+		    @Override
+		    public void componentResized(ComponentEvent e) {
+		    	int width = getSize().width;
+		    	int height = getSize().height;
+		    	
+		    	Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+		    	int screenWidth = dimension.width;
+		    	int screenHeight = dimension.height;
+		    	
+		    	int currentHeight = height > screenHeight ? screenHeight:height;
+		    	int currentWidth = width > screenWidth ? screenWidth:width;
+		    	
+		        setSize(new Dimension(currentWidth, currentHeight));
+		        
+		        int x = (int) ((dimension.getWidth() - getWidth()) / 2);
+			    int y = (int) ((dimension.getHeight() - getHeight()) / 2);
+			    setLocation(x, y);
+		        
+		        super.componentResized(e);
+		    }
+
+		});
+
 		contentPane = new JPanel();
 		// contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setBorder(new EmptyBorder(10, 5, 0, 5));
@@ -732,6 +760,18 @@ public class Form3Window extends JFrame {
 					}
 				}
 			}
+			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+			Rectangle rect = new Rectangle(screenSize.width / 2 - screenSize.width
+		            / 4, screenSize.height / 2 - screenSize.height / 4,
+		            screenSize.width / 2, screenSize.height / 2);
+		     //System.out.println("rect: " + rect);
+		      //JFrame frame = new JFrame("Test");
+		      //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		      //setPreferredSize(new Dimension(screenSize.width, screenSize.height));
+		      
+		      pack();
+		    
 		}
 	
 	

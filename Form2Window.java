@@ -28,6 +28,8 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
@@ -131,6 +133,29 @@ public class Form2Window extends JFrame {
 		contentPane.setBorder(new EmptyBorder(10, 5, 0, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
+		addComponentListener(new ComponentAdapter(){
+		    @Override
+		    public void componentResized(ComponentEvent e) {
+		    	int width = getSize().width;
+		    	int height = getSize().height;
+		    	
+		    	Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+		    	int screenWidth = dimension.width;
+		    	int screenHeight = dimension.height;
+		    	
+		    	int currentHeight = height > screenHeight ? screenHeight:height;
+		    	int currentWidth = width > screenWidth ? screenWidth:width;
+		    	
+		        setSize(new Dimension(currentWidth, currentHeight));
+		        
+		        int x = (int) ((dimension.getWidth() - getWidth()) / 2);
+			    int y = (int) ((dimension.getHeight() - getHeight()) / 2);
+			    setLocation(x, y);
+		        
+		        super.componentResized(e);
+		    }
+
+		});
 		JPanel buttonPanel = new JPanel();
 
 		String okLabel = "ok";
@@ -500,6 +525,7 @@ public class Form2Window extends JFrame {
 					}
 				}
 			}
+			pack();
 		}
 	
 	

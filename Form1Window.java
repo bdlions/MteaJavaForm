@@ -5,8 +5,11 @@ import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Label;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
@@ -97,6 +100,30 @@ public class Form1Window extends JFrame {
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
+		
+		addComponentListener(new ComponentAdapter(){
+		    @Override
+		    public void componentResized(ComponentEvent e) {
+		    	int width = getSize().width;
+		    	int height = getSize().height;
+		    	
+		    	Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+		    	int screenWidth = dimension.width;
+		    	int screenHeight = dimension.height;
+		    	
+		    	int currentHeight = height > screenHeight ? screenHeight:height;
+		    	int currentWidth = width > screenWidth ? screenWidth:width;
+		    	
+		        setSize(new Dimension(currentWidth, currentHeight));
+		        
+		        int x = (int) ((dimension.getWidth() - getWidth()) / 2);
+			    int y = (int) ((dimension.getHeight() - getHeight()) / 2);
+			    setLocation(x, y);
+		        
+		        super.componentResized(e);
+		    }
+
+		});
 		contentPane = new JPanel();
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
@@ -168,6 +195,8 @@ public class Form1Window extends JFrame {
 				.getOption()) {
 			addComponent(option, constraints, panel);
 		}
+		
+		
 	}
 
 	public void disposePanel() {
@@ -373,6 +402,7 @@ public class Form1Window extends JFrame {
 				}
 			}
 		}
+		pack();
 	}
 	
 	/*
