@@ -96,6 +96,16 @@ public class Form1Output extends JFrame {
 
 		setRow(getRow() + 1);
 		
+		if (option.getListSubOptions().size() > 0) {
+			for (ListSubOptions listSuboption : option.getListSubOptions()) {
+				if (listSuboption.getName().equals(option.getDefaultOption())) {
+					for (Option subOption : listSuboption.getSubOption()) {
+						addComponent(subOption, constraints, panel);
+					}
+				}
+			}
+		}
+		
 		/*for (ListSubOptions listSubOption : option.getListSubOptions()) {
 			String subOptionName = listSubOption.getName();
 			if(option.getDefaultOption().equals(subOptionName))

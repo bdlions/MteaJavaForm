@@ -82,17 +82,15 @@ public class Main {
 				{
 					form1Window = new Form1Window(language);
 					form1Window.setVisible(true);
-					form1Window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+					form1Window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 					centreWindow(form1Window);
 				}
 				else
 				{
 					form1Window.setVisible(true);
-					//form1Window.getFormGenerator().setLanguage(language);
-					//form1Window.getFormGenerator().updateSyntaxMapForm1();
-					//form1Window.showForm1();
-					//form1Window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-					//centreWindow(form1Window);
+					form1Window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+					form1Window.showForm1(language);
+					
 				}
 				
 			}
@@ -104,21 +102,23 @@ public class Main {
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
-				String lanugage = "English";
+				String language = "English";
 				if(chckbxmntmFrancis.isSelected())
 				{
-					lanugage = "Francais";
+					language = "Francais";
 				}
 				if(form2Window == null)
 				{
-					form2Window = new Form2Window(lanugage);
+					form2Window = new Form2Window(language);
 					form2Window.setVisible(true);
-					form2Window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+					form2Window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 					centreWindow(form2Window);
 				}
 				else
 				{
 					form2Window.setVisible(true);
+					form2Window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+					form2Window.showForm2(language);
 				}
 				
 			}
@@ -130,21 +130,23 @@ public class Main {
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
-				String lanugage = "English";
+				String language = "English";
 				if(chckbxmntmFrancis.isSelected())
 				{
-					lanugage = "Francais";
+					language = "Francais";
 				}
 				if(form3Window == null)
 				{
-					form3Window = new Form3Window(lanugage);
+					form3Window = new Form3Window(language);
 					form3Window.setVisible(true);
-					form3Window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+					form3Window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 					centreWindow(form3Window);
 				}
 				else
 				{
 					form3Window.setVisible(true);
+					form3Window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+					form3Window.showForm3(language);
 				}
 				
 			}

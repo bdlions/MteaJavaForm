@@ -45,16 +45,14 @@
                 <option as="full"/>
             </dropdownOption>
 			<listSubOptions name="half">
-				<suboption name="PlaySub" label="Play Sound" type="dropdown"
-					defaultOption="ON" tooltip="select between ON and OFF">
+				<suboption name="PlaySub" label="Play Sound" type="dropdown" defaultOption="ON" tooltip="select between ON and OFF">
 					<dropdownOption>
 						<option as="ON" />
 						<option as="OFF" />
 						<option as="showvars" />
 					</dropdownOption>
 				</suboption>
-				<suboption name="PlayT" label="Play T" type="dropdown"
-					defaultOption="ON" tooltip="select between ON and OFF">
+				<suboption name="PlayT" label="Play T" type="dropdown" defaultOption="ON" tooltip="select between ON and OFF">
 					<dropdownOption>
 						<option as="ON" />
 						<option as="OFF" />
@@ -63,15 +61,14 @@
 				</suboption>
 			</listSubOptions>
 			<listSubOptions name="full">
-				<suboption name="full2" label="select full 2 option type">
+				<suboption name="full2" label="select full 2" type="dropdown" defaultOption="ten" tooltip="select between ten and eleven">
 					<dropdownOption>
 						<option as="" />
 						<option as="ten" />
 						<option as="eleven" />
 					</dropdownOption>
 				</suboption>
-				<suboption name="TradingSub" label="Trading Hour Start"
-					type="spinner" defaultOption="1" tooltip="select a number between 1 and 99">
+				<suboption name="TradingSub" label="Trading Hour Start" type="spinner" defaultOption="1" tooltip="select a number between 1 and 99">
 					<spinnerOption>
 						<option min="1" />
 						<option max="199" />
@@ -123,11 +120,11 @@
 				<tooltip>Select between half and full</tooltip>
 			</entry>
 			<entry name="half">
-				<label>Select half option type</label>
+				<label>Select half</label>
 				<tooltip>half</tooltip>
 			</entry>
 			<entry name="full" type="option">
-				<label >Select full option type</label>
+				<label>Select full</label>
 				<tooltip >full</tooltip>
 			</entry>
 			<entry name="one" type="option">

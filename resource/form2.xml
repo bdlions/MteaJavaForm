@@ -12,6 +12,28 @@
 		<attributesleft>
 			<attribute name="Option1" i8n-entry="AccDecOiAC">
 				<parameters>
+					<option name="BuySellordersincludeTPSL" label="BuySell orders include TPSL" type="check" defaultOption="checked" tooltip="check if applies">
+						<listSubOptions name="checked">
+							<suboption name="PlaySub" label="Play Sound" type="dropdown"
+								defaultOption="ON" tooltip="select between ON and OFF">
+								<dropdownOption>
+									<option as="ON" />
+									<option as="OFF" />
+									<option as="showvars" />
+								</dropdownOption>
+							</suboption>
+						</listSubOptions>
+						<listSubOptions name="unchecked">
+							<suboption name="PlayT" label="Play T" type="dropdown"
+								defaultOption="ON" tooltip="select between ON and OFF">
+								<dropdownOption>
+									<option as="ON" />
+									<option as="OFF" />
+									<option as="showvars" />
+								</dropdownOption>
+							</suboption>
+						</listSubOptions>
+					</option>
 					<option name="Symbol" label="Symbol" type="dropdown" defaultOption="Current Symbol" tooltip="Symbol name" i8n-entry="Symbol">
 			            <dropdownOption>
 							<option as="Current Symbol" />
@@ -36,6 +58,43 @@
 			</attribute>
 			<attribute name="OPTION2" i8n-entry="OPTION2">
 				<parameters>
+					<option name="MM" label="M Management" type="dropdown" defaultOption="half" tooltip="select between half and full">
+						<dropdownOption>
+							<option as="half"/>
+							<option as="full"/>
+						</dropdownOption>
+						<listSubOptions name="half">
+							<suboption name="PlaySub" label="Play Sound" type="dropdown" defaultOption="ON" tooltip="select between ON and OFF">
+								<dropdownOption>
+									<option as="ON" />
+									<option as="OFF" />
+									<option as="showvars" />
+								</dropdownOption>
+							</suboption>
+							<suboption name="PlayT" label="Play T" type="dropdown" defaultOption="ON" tooltip="select between ON and OFF">
+								<dropdownOption>
+									<option as="ON" />
+									<option as="OFF" />
+									<option as="showvars" />
+								</dropdownOption>
+							</suboption>
+						</listSubOptions>
+						<listSubOptions name="full">
+							<suboption name="full2" label="select full 2" type="dropdown" defaultOption="ten" tooltip="select between ten and eleven">
+								<dropdownOption>
+									<option as="" />
+									<option as="ten" />
+									<option as="eleven" />
+								</dropdownOption>
+							</suboption>
+							<suboption name="TradingSub" label="Trading Hour Start" type="spinner" defaultOption="1" tooltip="select a number between 1 and 99">
+								<spinnerOption>
+									<option min="1" />
+									<option max="199" />
+								</spinnerOption>
+							</suboption>
+						</listSubOptions>
+					</option>
 					<option name="Symbol" label="Symbol" type="dropdown" defaultOption="Current Symbol" tooltip="Symbol name" i8n-entry="Symbol">
 			            <dropdownOption>
 			                <option as="Current Symbol" />
@@ -153,6 +212,28 @@
 		<attributesright>
 			<attribute name="Option1" i8n-entry="AccDecOiAC">
 				<parameters>
+					<option name="BuySellordersincludeTPSL" label="BuySell orders include TPSL" type="check" defaultOption="checked" tooltip="check if applies">
+						<listSubOptions name="checked">
+							<suboption name="PlaySub" label="Play Sound" type="dropdown"
+								defaultOption="ON" tooltip="select between ON and OFF">
+								<dropdownOption>
+									<option as="ON" />
+									<option as="OFF" />
+									<option as="showvars" />
+								</dropdownOption>
+							</suboption>
+						</listSubOptions>
+						<listSubOptions name="unchecked">
+							<suboption name="PlayT" label="Play T" type="dropdown"
+								defaultOption="ON" tooltip="select between ON and OFF">
+								<dropdownOption>
+									<option as="ON" />
+									<option as="OFF" />
+									<option as="showvars" />
+								</dropdownOption>
+							</suboption>
+						</listSubOptions>
+					</option>
 					<option name="Symbol" label="Symbol" type="dropdown" defaultOption="Current Symbol" tooltip="Symbol name" i8n-entry="Symbol">
 			            <dropdownOption>
 							<option as="Current Symbol" />
@@ -177,6 +258,43 @@
 			</attribute>
 			<attribute name="OPTION2" i8n-entry="OPTION2">
 				<parameters>
+					<option name="MM" label="M Management" type="dropdown" defaultOption="half" tooltip="select between half and full">
+						<dropdownOption>
+							<option as="half"/>
+							<option as="full"/>
+						</dropdownOption>
+						<listSubOptions name="half">
+							<suboption name="PlaySub" label="Play Sound" type="dropdown" defaultOption="ON" tooltip="select between ON and OFF">
+								<dropdownOption>
+									<option as="ON" />
+									<option as="OFF" />
+									<option as="showvars" />
+								</dropdownOption>
+							</suboption>
+							<suboption name="PlayT" label="Play T" type="dropdown" defaultOption="ON" tooltip="select between ON and OFF">
+								<dropdownOption>
+									<option as="ON" />
+									<option as="OFF" />
+									<option as="showvars" />
+								</dropdownOption>
+							</suboption>
+						</listSubOptions>
+						<listSubOptions name="full">
+							<suboption name="full2" label="select full 2" type="dropdown" defaultOption="ten" tooltip="select between ten and eleven">
+								<dropdownOption>
+									<option as="" />
+									<option as="ten" />
+									<option as="eleven" />
+								</dropdownOption>
+							</suboption>
+							<suboption name="TradingSub" label="Trading Hour Start" type="spinner" defaultOption="1" tooltip="select a number between 1 and 99">
+								<spinnerOption>
+									<option min="1" />
+									<option max="199" />
+								</spinnerOption>
+							</suboption>
+						</listSubOptions>
+					</option>
 					<option name="Symbol" label="Symbol" type="dropdown" defaultOption="Current Symbol" tooltip="Symbol name" i8n-entry="Symbol">
 			            <dropdownOption>
 			                <option as="Current Symbol" />

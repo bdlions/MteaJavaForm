@@ -19,6 +19,7 @@ import org.forms.Form2;
 import org.forms.FormGenerator;
 import org.forms.form2.Attribute;
 import org.forms.form2.dropdown.DropDownOption;
+import org.forms.form2.parameters.ListSubOptions;
 import org.forms.form2.parameters.Option;
 import org.forms.form2.spinner.SpinnerOption;
 import org.forms.languages.LanguageEntry;
@@ -192,9 +193,14 @@ public class Form2Output extends JFrame {
 
 		setRow(getRow() + 1);
 		
-		for (Option subOption : option.getSuboption()) {
-			if(subOption.getName().equals(option.getDefaultOption()))
-			addComponent(subOption, constraints, panel);
+		if (option.getListSubOptions().size() > 0) {
+			for (ListSubOptions listSuboption : option.getListSubOptions()) {
+				if (listSuboption.getName().equals(option.getDefaultOption())) {
+					for (Option subOption : listSuboption.getSubOption()) {
+						addComponent(subOption, constraints, panel);
+					}
+				}
+			}
 		}
 	}
 	

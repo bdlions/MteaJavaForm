@@ -52,6 +52,7 @@ public class Form1Window extends JFrame {
 	private int row = 0;
 	private boolean blockComboChangeEvent = false;
 	private Hashtable syntaxMap;
+	private Hashtable syntaxMapLabelToName;
 	private LanguageEntry languageEntry;
 	public int getRow() {
 		return row;
@@ -90,18 +91,23 @@ public class Form1Window extends JFrame {
 	public Form1Window(String language) 
 	{
 		formGenerator = new FormGenerator();
-		formGenerator.setLanguage(language);
+		//formGenerator.setLanguage(language);
 		formGenerator.generateForm1();
 		
-		showForm1();
+		showForm1(language);
 	}
 	
-	public void showForm1()
+	public void showForm1(String language)
 	{
+		
+		formGenerator.setLanguage(language);
+		formGenerator.updateLanguageMapForm1();
+		
 		syntaxMap = formGenerator.getSyntaxMapForm1();
+		syntaxMapLabelToName = formGenerator.getSyntaxMapLabelToNameForm1();
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		//setBounds(100, 100, 450, 300);
 		
 		addComponentListener(new ComponentAdapter(){
 		    @Override
@@ -127,12 +133,13 @@ public class Form1Window extends JFrame {
 
 		});
 		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(10, 5, 0, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 
 		panel = new JPanel(new GridBagLayout());
 
-		contentPane.setPreferredSize(new Dimension(500, 250));
+		//contentPane.setPreferredSize(new Dimension(500, 250));
 
 		JScrollPane scrollBar = new JScrollPane();
 		scrollBar
@@ -298,7 +305,7 @@ public class Form1Window extends JFrame {
 			leftComponentText = languageEntry.getLabel();
 			tooltipText = languageEntry.getTooltip();
 		}
-		String defaultOptionText = defaultOption;	
+		String defaultOptionText = defaultOption;
 		if(syntaxMap.containsKey(defaultOptionText))
 		{
 			languageEntry = (LanguageEntry) syntaxMap.get(defaultOptionText);
@@ -346,7 +353,23 @@ public class Form1Window extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub					
-					if(!blockComboChangeEvent)
+					JComboBox combo = (JComboBox) e.getSource();
+					if(combo.getSelectedItem() != null){
+						String selectedItemName = combo.getSelectedItem().toString();
+						if(syntaxMapLabelToName.containsKey(selectedItemName))
+						{
+							selectedItemName = (String) syntaxMapLabelToName.get(selectedItemName);									
+						}
+						
+						option.setDefaultOption(selectedItemName);
+						panel.removeAll();
+				        panel.validate();
+				        panel.repaint();
+						for (Option option : formGenerator.getForm1().getListOptions().getOption()) {
+							addComponent(option, constraints, panel);
+						}
+					}
+					/*if(!blockComboChangeEvent)
 					{
 						JComboBox combo = (JComboBox) e.getSource();
 						//JOptionPane.showMessageDialog(null, "addComponent->before option name:"+option.getName()+";option default value:"+option.getDefaultOption());
@@ -360,7 +383,7 @@ public class Form1Window extends JFrame {
 							
 							comboChangeSubOptionUpdate(option, combo, panel);
 						}
-					}					
+					}*/					
 				}
 			});
 			rightComponent = comboBox;
@@ -385,7 +408,11 @@ public class Form1Window extends JFrame {
 							option.setDefaultOption("unchecked");
 							panel.removeAll();
 						}
-						revalidate();
+						
+				        panel.removeAll();
+				        panel.validate();
+				        panel.repaint();
+				        
 						for (Option option : formGenerator.getForm1().getListOptions().getOption()) {
 							addComponent(option, constraints, panel);
 						}
@@ -438,6 +465,26 @@ public class Form1Window extends JFrame {
 	 * This method updates sub option of an option if item is changed of selected option
 	 * */
 	public void comboChangeSubOptionUpdate(Option option, JComboBox combo, JPanel panel)
+	{
+		String comboName = combo.getName();
+		if (option.getName().equals(comboName)) {	
+			if(combo.getSelectedItem() != null){
+				//JOptionPane.showMessageDialog(null, "comboChangeSubOptionUpdate->1.option name:"+option.getName()+";comboselectedtext:"+combo.getSelectedItem().toString());
+				option.setDefaultOption(combo.getSelectedItem().toString());
+								
+			}			
+			
+		}
+		else if (option.getListSubOptions().size() > 0) {
+			for (ListSubOptions listSuboption : option.getListSubOptions()) {
+				for (Option subOption : listSuboption.getSubOption()) {
+					comboChangeSubOptionUpdate(subOption, combo, panel);
+				}
+			}
+		}
+	}
+	
+	/*public void comboChangeSubOptionUpdate(Option option, JComboBox combo, JPanel panel)
 	{
 		String comboName = combo.getName();
 		if (option.getName().equals(comboName)) {	
@@ -560,7 +607,7 @@ public class Form1Window extends JFrame {
 				}
 			}
 		}
-	}
+	}*/
 	
 	public void removeComponentSubOption(Option option, JPanel panel)
 	{
