@@ -1,13 +1,9 @@
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Rectangle;
 import java.awt.Toolkit;
-
 import javax.swing.AbstractButton;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -15,34 +11,23 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.GroupLayout.ParallelGroup;
-import javax.swing.GroupLayout.SequentialGroup;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
 import java.awt.CardLayout;
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
-
 import javax.swing.BoxLayout;
-
-import org.forms.Form2;
 import org.forms.Form3;
 import org.forms.FormGenerator;
 import org.forms.form2.Attribute;
@@ -54,8 +39,6 @@ import org.forms.form2.parameters.Option;
 import org.forms.form2.spinner.SpinnerOption;
 import org.forms.form2.spinner.SpinnerOptionElement;
 import org.forms.languages.LanguageEntry;
-
-import com.sun.java.swing.plaf.windows.resources.windows;
 
 public class Form3Window extends JFrame {
 
@@ -101,17 +84,27 @@ public class Form3Window extends JFrame {
 	private Attribute currentSelectedRightOperatorRightAttribute;
 	private String currentPanel = "";
 	private boolean blockComboChangeEvent = false;
-	
+
 	private int row = 0;
-	
+
 	private String leftOperatorLeftPanelSelectedItem = "";
-	private String leftOperatorRightPanelSelecteditem = "";
+	private String leftOperatorRightPanelSelectedItem = "";
 	private String leftOperatorSelectedItem = "";
 	private String rightOperatorLeftPanelSelectedItem = "";
 	private String rightOperatorRightPanelSelectedItem = "";
 	private String rightOperatorSelectedItem = "";
 	private String comparisonSelectedItem = "";
 
+	private String tempLeftOperatorLeftPanelSelectedItem = "";
+	private String tempLeftOperatorRightPanelSelectedItem = "";
+	private String tempLeftOperatorSelectedItem = "";
+	private String tempRightOperatorLeftPanelSelectedItem = "";
+	private String tempRightOperatorRightPanelSelectedItem = "";
+	private String tempRightOperatorSelectedItem = "";
+	private String tempComparisonSelectedItem = "";
+	public FormGenerator tempFormGenerator;
+	
+	private String[] variables;
 	public int getRow() {
 		return row;
 	}
@@ -119,78 +112,98 @@ public class Form3Window extends JFrame {
 	public void setRow(int row) {
 		this.row = row;
 	}
-	/**
-	 * Create the frame.
+
+	/*
+	 * Creating the frame.
 	 */
-	public Form3Window(String language) 
-	{
+	public Form3Window(String language, String[] variables) {
+		this.variables = variables;
+		// initializing form3
 		formGenerator = new FormGenerator();
 		formGenerator.generateForm3();
-		
-		leftOperatorLeftPanelSelectedItem = (String) getLeftOperatorLeftAttributes().toArray()[0];
-		leftOperatorRightPanelSelecteditem = (String) getLeftOperatorRightAttributes().toArray()[0];
+		//initializing left operator panels, comparison panel and right operator panels initial selected item
+		leftOperatorLeftPanelSelectedItem = (String) getLeftOperatorLeftAttributes()
+				.toArray()[0];
+		leftOperatorRightPanelSelectedItem = (String) getLeftOperatorRightAttributes()
+				.toArray()[0];
 		leftOperatorSelectedItem = (String) getArithmaticOperators().toArray()[0];
-		rightOperatorLeftPanelSelectedItem = (String) getRightOperatorLeftAttributes().toArray()[0];
-		rightOperatorRightPanelSelectedItem = (String) getRightOperatorRightAttributes().toArray()[0];
+		rightOperatorLeftPanelSelectedItem = (String) getRightOperatorLeftAttributes()
+				.toArray()[0];
+		rightOperatorRightPanelSelectedItem = (String) getRightOperatorRightAttributes()
+				.toArray()[0];
 		rightOperatorSelectedItem = (String) getArithmaticOperators().toArray()[0];
 		comparisonSelectedItem = (String) getOperators().toArray()[0];
-		
+
 		showForm3(language);
 	}
-	
-	public void showForm3(String language)
-	{	
+
+	/*
+	 * Rendering form3
+	 */
+	public void showForm3(String language) {
+		//cloning initial object content to a temporary object
+		tempFormGenerator = (FormGenerator) formGenerator.clone();
+		tempLeftOperatorLeftPanelSelectedItem = leftOperatorLeftPanelSelectedItem;
+		tempLeftOperatorRightPanelSelectedItem = leftOperatorRightPanelSelectedItem;
+		tempLeftOperatorSelectedItem = leftOperatorSelectedItem;
+		tempRightOperatorLeftPanelSelectedItem = rightOperatorLeftPanelSelectedItem;
+		tempRightOperatorRightPanelSelectedItem = rightOperatorRightPanelSelectedItem;
+		tempRightOperatorSelectedItem = rightOperatorSelectedItem;
+		tempComparisonSelectedItem = comparisonSelectedItem;
+		
+		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);		
+		// setting language to render form3
 		formGenerator.setLanguage(language);
 		formGenerator.updateLanguageMapForm3();
+		// retrieving language info which is stored in a hash table
 		syntaxMap = formGenerator.getSyntaxMapForm3();
 		syntaxMapLabelToName = formGenerator.getSyntaxMapLabelToNameForm3();
-		
-		String title = "title";
-		if(syntaxMap.containsKey(title))
-		{
+
+		String title = formGenerator.getForm3().getTitle();
+		if (syntaxMap.containsKey(title)) {
 			languageEntry = (LanguageEntry) syntaxMap.get(title);
 			title = languageEntry.getLabel();
 		}
-		//setting form title
-		setTitle(title);		
+		// setting form title
+		setTitle(title);
 
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 950, 300);
+		addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent evt) {
+            	//rolling back to the initial opening state of this form
+            	formGenerator = (FormGenerator) tempFormGenerator.clone();            	
+            }
+        });
 		
-		addComponentListener(new ComponentAdapter(){
-		    @Override
-		    public void componentResized(ComponentEvent e) {
-		    	int width = getSize().width;
-		    	int height = getSize().height;
-		    	
-		    	Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-		    	int screenWidth = dimension.width;
-		    	int screenHeight = dimension.height;
-		    	
-		    	int currentHeight = height > screenHeight ? screenHeight:height;
-		    	int currentWidth = width > screenWidth ? screenWidth:width;
-		    	
-		        setSize(new Dimension(currentWidth, currentHeight));
-		        
-		        int x = (int) ((dimension.getWidth() - getWidth()) / 2);
-			    int y = (int) ((dimension.getHeight() - getHeight()) / 2);
-			    setLocation(x, y);
-		        
-		        super.componentResized(e);
-		    }
+		addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentResized(ComponentEvent e) {
+				int width = getSize().width;
+				int height = getSize().height;
+
+				Dimension dimension = Toolkit.getDefaultToolkit()
+						.getScreenSize();
+				int screenWidth = dimension.width;
+				int screenHeight = dimension.height;
+
+				int currentHeight = height > screenHeight ? screenHeight
+						: height;
+				int currentWidth = width > screenWidth ? screenWidth : width;
+
+				setSize(new Dimension(currentWidth, currentHeight));
+				super.componentResized(e);
+			}
 
 		});
 
+		// panel to render form3
 		contentPane = new JPanel();
-		// contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setBorder(new EmptyBorder(10, 5, 0, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		JPanel buttonPanel = new JPanel();
-
+		// ok and cancel buttons panel
 		String okLabel = "ok";
-		if(syntaxMap.containsKey("okLabel"))
-		{
+		if (syntaxMap.containsKey("okLabel")) {
 			LanguageEntry titleEntry = (LanguageEntry) syntaxMap.get("ok");
 			okLabel = titleEntry.getLabel();
 		}
@@ -198,27 +211,47 @@ public class Form3Window extends JFrame {
 		okButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				Form3Output from3Output = new Form3Output(formGenerator.getForm3(), comboBoxOptionLeft, comboBoxOperatorLeft, comboBoxOptionLeftAttributeRight,  comboBoxComparison,comboBoxOptionRightAttributeRight, comboBoxOperatorRight,  comboBoxOptionRight, formGenerator);
+				//hiding current form and rendering output
+				setVisible(false);				
+				// rendering output of form3
+				Form3Output from3Output = new Form3Output(formGenerator
+						.getForm3(), comboBoxOptionLeft, comboBoxOperatorLeft,
+						comboBoxOptionLeftAttributeRight, comboBoxComparison,
+						comboBoxOptionRightAttributeRight,
+						comboBoxOperatorRight, comboBoxOptionRight,
+						formGenerator);
 				from3Output.setVisible(true);
-				from3Output.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				from3Output.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 				Main.centreWindow(from3Output);
 			}
 		});
 
 		String cancelLabel = "cancel";
-		if(syntaxMap.containsKey("cancel"))
-		{
+		if (syntaxMap.containsKey("cancel")) {
 			LanguageEntry titleEntry = (LanguageEntry) syntaxMap.get("cancel");
 			cancelLabel = titleEntry.getLabel();
-		}	
+		}
 		JButton cancelButton = new JButton(cancelLabel);
 		cancelButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				((JFrame) ((JButton) e.getSource()).getTopLevelAncestor())
-						.dispose();
+				// initializing form2
+				formGenerator = new FormGenerator();
+				formGenerator.generateForm3();
+
+				leftOperatorLeftPanelSelectedItem = (String) getLeftOperatorLeftAttributes()
+						.toArray()[0];
+				leftOperatorRightPanelSelectedItem = (String) getLeftOperatorRightAttributes()
+						.toArray()[0];
+				leftOperatorSelectedItem = (String) getArithmaticOperators().toArray()[0];
+				rightOperatorLeftPanelSelectedItem = (String) getRightOperatorLeftAttributes()
+						.toArray()[0];
+				rightOperatorRightPanelSelectedItem = (String) getRightOperatorRightAttributes()
+						.toArray()[0];
+				rightOperatorSelectedItem = (String) getArithmaticOperators().toArray()[0];
+				comparisonSelectedItem = (String) getOperators().toArray()[0];
+				// hiding this window
+				buttonCancelPressed();
 			}
 		});
 
@@ -226,15 +259,9 @@ public class Form3Window extends JFrame {
 		buttonPanel.add(cancelButton);
 		contentPane.add(buttonPanel, BorderLayout.SOUTH);
 		JPanel panel = new JPanel();
-		// contentPane.add(panel, BorderLayout.CENTER);
-
-		// Creating group layout
-		// GroupLayout layout = new GroupLayout(panel);
-		// setting the grouplaoyt in content pane
-		//panel.setLayout(new GridLayout(0, 7, 30, 30));
+		
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-		// contentPane.setPreferredSize(new Dimension(500, 200));
-
+		// adding vertical and horizontal scroll bars
 		scrollBar = new JScrollPane();
 		scrollBar
 				.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -243,30 +270,35 @@ public class Form3Window extends JFrame {
 		contentPane.add(scrollBar, BorderLayout.CENTER);
 		scrollBar.setViewportView(panel);
 
-		// set left container into left side
+		//left arithmetic operator left panel
 		leftPanel = new JPanel();
 		leftPanel.setLayout(new BorderLayout());
 
+		//left arithmetic operator panel
+		operatorPanelLeft = new JPanel();
+		operatorPanelLeft.setLayout(new BorderLayout());
+		
+		//left arithmetic operator right panel
 		leftPanelAttributeRight = new JPanel();
 		leftPanelAttributeRight.setLayout(new BorderLayout());
 
-		operatorPanelLeft = new JPanel();
-		operatorPanelLeft.setLayout(new BorderLayout());
-
-		// set left container into center side
+		// comparison panel
 		comparisonPanel = new JPanel();
 		comparisonPanel.setLayout(new BorderLayout());
-
-		operatorPanelRight = new JPanel();
-		operatorPanelRight.setLayout(new BorderLayout());
-
-		// set left container into right side
+		
+		//right arithmetic operator left panel		
 		rightPanel = new JPanel();
 		rightPanel.setLayout(new BorderLayout());
-
+		
+		//right arithmetic operator panel
+		operatorPanelRight = new JPanel();
+		operatorPanelRight.setLayout(new BorderLayout());
+		
+		//right arithmetic operator right panel
 		rightPanelAttributeRight = new JPanel();
 		rightPanelAttributeRight.setLayout(new BorderLayout());
 
+		
 		// adding 7 panel in the container
 		panel.add(leftPanel);
 		panel.add(operatorPanelLeft);
@@ -276,44 +308,47 @@ public class Form3Window extends JFrame {
 		panel.add(operatorPanelRight);
 		panel.add(rightPanelAttributeRight);
 
-		comboBoxOptionLeft = new JComboBox(getLeftOperatorLeftAttributes().toArray());
+		//left arithmetic operator left panel selected item combo box
+		comboBoxOptionLeft = new JComboBox(getLeftOperatorLeftAttributes()
+				.toArray());
 		leftPanel.add(comboBoxOptionLeft, BorderLayout.PAGE_START);
 		leftCardPanel = new JPanel(new CardLayout());
 		leftPanel.add(leftCardPanel, BorderLayout.CENTER);
-		//setLeftComponent(comboBoxOptionLeft.getSelectedItem().toString());
-		comboBoxOptionLeft.addActionListener(new ActionListener() 
-		{
+		comboBoxOptionLeft.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				leftOperatorLeftPanelSelectedItem = comboBoxOptionLeft.getSelectedItem().toString();
+				leftOperatorLeftPanelSelectedItem = comboBoxOptionLeft
+						.getSelectedItem().toString();
 				setLeftComponent(comboBoxOptionLeft.getSelectedItem()
 						.toString());
 			}
 		});
 		comboBoxOptionLeft.setSelectedItem(leftOperatorLeftPanelSelectedItem);
 
-		comboBoxOptionLeftAttributeRight = new JComboBox(getLeftOperatorRightAttributes().toArray());
+		//left arithmetic operator right panel selected item combo box		
+		comboBoxOptionLeftAttributeRight = new JComboBox(
+				getLeftOperatorRightAttributes().toArray());
 		leftPanelAttributeRight.add(comboBoxOptionLeftAttributeRight,
 				BorderLayout.PAGE_START);
 		leftCardPanelAttributeRight = new JPanel(new CardLayout());
 		leftPanelAttributeRight.add(leftCardPanelAttributeRight,
 				BorderLayout.CENTER);
-		//setLeftComponentAttributeRight(comboBoxOptionLeftAttributeRight.getSelectedItem().toString());
 		comboBoxOptionLeftAttributeRight
-				.addActionListener(new ActionListener() 
-				{
+				.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						// TODO Auto-generated method stub
-						leftOperatorRightPanelSelecteditem = comboBoxOptionLeftAttributeRight
+						leftOperatorRightPanelSelectedItem = comboBoxOptionLeftAttributeRight
 								.getSelectedItem().toString();
 						setLeftComponentAttributeRight(comboBoxOptionLeftAttributeRight
 								.getSelectedItem().toString());
 					}
 				});
-		comboBoxOptionLeftAttributeRight.setSelectedItem(leftOperatorRightPanelSelecteditem);
+		comboBoxOptionLeftAttributeRight
+				.setSelectedItem(leftOperatorRightPanelSelectedItem);
 
+		//left arithmetic operator panel selected item combo box		
 		comboBoxOperatorLeft = new JComboBox(getArithmaticOperators().toArray());
 		operatorPanelLeft.add(comboBoxOperatorLeft, BorderLayout.PAGE_START);
 		comboBoxOperatorLeft.addActionListener(new ActionListener() {
@@ -321,22 +356,26 @@ public class Form3Window extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				leftOperatorSelectedItem = comboBoxOperatorLeft.getSelectedItem().toString();
+				leftOperatorSelectedItem = comboBoxOperatorLeft
+						.getSelectedItem().toString();
 			}
 		});
 		comboBoxOperatorLeft.setSelectedItem(leftOperatorSelectedItem);
 
+		//comparison panel selected item combo box		
 		comboBoxComparison = new JComboBox(getOperators().toArray());
 		comparisonPanel.add(comboBoxComparison, BorderLayout.PAGE_START);
 		comboBoxComparison.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				comparisonSelectedItem = comboBoxComparison.getSelectedItem().toString();
+				comparisonSelectedItem = comboBoxComparison.getSelectedItem()
+						.toString();
 			}
 		});
 		comboBoxComparison.setSelectedItem(comparisonSelectedItem);
 
+		//right arithmetic operator panel selected item combo box		
 		comboBoxOperatorRight = new JComboBox(getArithmaticOperators()
 				.toArray());
 		operatorPanelRight.add(comboBoxOperatorRight, BorderLayout.PAGE_START);
@@ -344,38 +383,38 @@ public class Form3Window extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				rightOperatorSelectedItem = comboBoxOperatorRight.getSelectedItem().toString();
+				rightOperatorSelectedItem = comboBoxOperatorRight
+						.getSelectedItem().toString();
 			}
 		});
 		comboBoxOperatorRight.setSelectedItem(rightOperatorSelectedItem);
 
-		comboBoxOptionRight = new JComboBox(getRightOperatorLeftAttributes().toArray());
+		//right arithmetic operator left panel selected item combo box	
+		comboBoxOptionRight = new JComboBox(getRightOperatorLeftAttributes()
+				.toArray());
 		rightPanel.add(comboBoxOptionRight, BorderLayout.PAGE_START);
 		rightCardPanel = new JPanel(new CardLayout());
 		rightPanel.add(rightCardPanel, BorderLayout.CENTER);
-
-		//setRightComponent(comboBoxOptionRight.getSelectedItem().toString());
 		comboBoxOptionRight.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				rightOperatorLeftPanelSelectedItem = comboBoxOptionRight.getSelectedItem().toString();
+				rightOperatorLeftPanelSelectedItem = comboBoxOptionRight
+						.getSelectedItem().toString();
 				setRightComponent(comboBoxOptionRight.getSelectedItem()
 						.toString());
 			}
 		});
 		comboBoxOptionRight.setSelectedItem(rightOperatorLeftPanelSelectedItem);
 
-		comboBoxOptionRightAttributeRight = new JComboBox(getRightOperatorRightAttributes()				
-				.toArray());
+		//right arithmetic operator right panel selected item combo box	
+		comboBoxOptionRightAttributeRight = new JComboBox(
+				getRightOperatorRightAttributes().toArray());
 		rightPanelAttributeRight.add(comboBoxOptionRightAttributeRight,
 				BorderLayout.PAGE_START);
 		rightCardPanelAttributeRight = new JPanel(new CardLayout());
 		rightPanelAttributeRight.add(rightCardPanelAttributeRight,
 				BorderLayout.CENTER);
-
-		//setRightComponentAttributeRight(comboBoxOptionRightAttributeRight.getSelectedItem().toString());
 		comboBoxOptionRightAttributeRight
 				.addActionListener(new ActionListener() {
 					@Override
@@ -387,140 +426,127 @@ public class Form3Window extends JFrame {
 								.getSelectedItem().toString());
 					}
 				});
-		comboBoxOptionRightAttributeRight.setSelectedItem(rightOperatorRightPanelSelectedItem);
-		
+		comboBoxOptionRightAttributeRight
+				.setSelectedItem(rightOperatorRightPanelSelectedItem);
+		this.pack();
 	}
 
+	public void buttonCancelPressed() {
+		//rolling back to the initial opening state of this form
+		formGenerator = (FormGenerator) tempFormGenerator.clone();		
+		leftOperatorLeftPanelSelectedItem = tempLeftOperatorLeftPanelSelectedItem;
+		leftOperatorRightPanelSelectedItem = tempLeftOperatorRightPanelSelectedItem;
+		leftOperatorSelectedItem = tempLeftOperatorSelectedItem;
+		rightOperatorLeftPanelSelectedItem = tempRightOperatorLeftPanelSelectedItem;
+		rightOperatorRightPanelSelectedItem = tempRightOperatorRightPanelSelectedItem;
+		rightOperatorSelectedItem = tempRightOperatorSelectedItem;
+		comparisonSelectedItem = tempComparisonSelectedItem;
+		
+		// hiding this window
+		this.setVisible(false);
+	}
+	
+	/*
+	 * This method returns comparison panel operators
+	 * */
 	public List<String> getOperators() {
 		List<String> operators = new ArrayList<String>();
-
 		Form3 form3 = formGenerator.getForm3();
-
 		for (Operand oprand : form3.getComparison().getOperators().getOp()) {
 			operators.add(oprand.getName());
 		}
-
 		return operators;
 	}
 
+	/*
+	 * This method returns arithmetic panel operators
+	 * */
 	public List<String> getArithmaticOperators() {
 		List<String> operators = new ArrayList<String>();
-
 		Form3 form3 = formGenerator.getForm3();
-
 		for (Operand oprand : form3.getComparison().getArithmaticoperators()
 				.getOp()) {
 			operators.add(oprand.getName());
 		}
-
 		return operators;
 	}
 
-	/*public List<String> getLeftOperatorLeftAttributes() {
-		List<String> attributes = new ArrayList<String>();
-
-		Form3 form3 = formGenerator.getForm3();
-
-		for (Attribute attribute : form3.getComparison().getLeftOperatorAttributesleft()
-				.getAttribute()) {
-			attributes.add(attribute.getName());
-		}
-
-		return attributes;
-	}
-
-	public List<String> getLeftOperatorRightAttributes() {
-		List<String> attributes = new ArrayList<String>();
-		Form3 form3 = formGenerator.getForm3();
-		for (Attribute attribute : form3.getComparison().getLeftOperatorAttributesright()
-				.getAttribute()) {
-			attributes.add(attribute.getName());
-		}
-		return attributes;
-	}
-	public List<String> getRightOperatorLeftAttributes() {
-		List<String> attributes = new ArrayList<String>();
-		Form3 form3 = formGenerator.getForm3();
-		for (Attribute attribute : form3.getComparison().getRightOperatorAttributesleft()
-				.getAttribute()) {
-			attributes.add(attribute.getName());
-		}
-		return attributes;
-	}
-
-	public List<String> getRightOperatorRightAttributes() {
-		List<String> attributes = new ArrayList<String>();
-		Form3 form3 = formGenerator.getForm3();
-		for (Attribute attribute : form3.getComparison().getRightOperatorAttributesright()
-				.getAttribute()) {
-			attributes.add(attribute.getName());
-		}
-		return attributes;
-	}*/
+	/*
+	 * This method returns left arithmetic operator left panel item list
+	 * */
 	public List<String> getLeftOperatorLeftAttributes() {
 		List<String> attributes = new ArrayList<String>();
-
 		Form3 form3 = formGenerator.getForm3();
-
-		for (Attribute attribute : form3.getComparison().getLeftoperatorattributesleft()
-				.getAttribute()) {
+		for (Attribute attribute : form3.getComparison()
+				.getLeftoperatorattributesleft().getAttribute()) {
 			attributes.add(attribute.getName());
 		}
-
 		return attributes;
 	}
 
+	/*
+	 * This method returns left arithmetic operator right panel item list
+	 * */
 	public List<String> getLeftOperatorRightAttributes() {
 		List<String> attributes = new ArrayList<String>();
 		Form3 form3 = formGenerator.getForm3();
-		for (Attribute attribute : form3.getComparison().getLeftoperatorattributesright()
-				.getAttribute()) {
+		for (Attribute attribute : form3.getComparison()
+				.getLeftoperatorattributesright().getAttribute()) {
 			attributes.add(attribute.getName());
 		}
 		return attributes;
 	}
+
+	/*
+	 * This method returns right arithmetic operator left panel item list
+	 * */
 	public List<String> getRightOperatorLeftAttributes() {
 		List<String> attributes = new ArrayList<String>();
 		Form3 form3 = formGenerator.getForm3();
-		for (Attribute attribute : form3.getComparison().getRightoperatorattributesleft()
-				.getAttribute()) {
+		for (Attribute attribute : form3.getComparison()
+				.getRightoperatorattributesleft().getAttribute()) {
 			attributes.add(attribute.getName());
 		}
 		return attributes;
 	}
 
+	/*
+	 * This method returns right arithmetic operator right panel item list
+	 * */
 	public List<String> getRightOperatorRightAttributes() {
 		List<String> attributes = new ArrayList<String>();
 		Form3 form3 = formGenerator.getForm3();
-		for (Attribute attribute : form3.getComparison().getRightoperatorattributesright()
-				.getAttribute()) {
+		for (Attribute attribute : form3.getComparison()
+				.getRightoperatorattributesright().getAttribute()) {
 			attributes.add(attribute.getName());
 		}
 		return attributes;
 	}
 
+	/*
+	 * This method renders left arithmetic operator left panel
+	 * */
 	private void setLeftComponent(String cardName) {
 
 		leftCardPanel.removeAll();
 		leftCardPanel.validate();
 		leftCardPanel.repaint();
 
-		JPanel cp = new JPanel(new GridBagLayout());	
+		JPanel cp = new JPanel(new GridBagLayout());
 		cp.setName("LeftOperatorLeftPanel");
 		leftCardPanel.add(cp, cardName + "right");
 
 		setRow(0);
-		
+
 		GridBagConstraints constraints = new GridBagConstraints();
-		for (Attribute attribute : formGenerator.getForm3().getComparison().getLeftoperatorattributesleft().getAttribute()) {
+		for (Attribute attribute : formGenerator.getForm3().getComparison()
+				.getLeftoperatorattributesleft().getAttribute()) {
 			String attributeName = attribute.getName();
-			if(syntaxMap.containsKey(attributeName))
-			{
+			if (syntaxMap.containsKey(attributeName)) {
 				languageEntry = (LanguageEntry) syntaxMap.get(attributeName);
 				attributeName = languageEntry.getLabel();
-			}			
-			if(attributeName.equals(cardName))
-			{
+			}
+			if (attributeName.equals(cardName)) {
 				currentPanel = "LeftOperatorLeftPanel";
 				currentSelectedLeftOperatorLeftAttribute = attribute;
 				for (Option option : attribute.getParameters().getOption()) {
@@ -535,28 +561,30 @@ public class Form3Window extends JFrame {
 		scrollBar.repaint();
 	}
 
+	/*
+	 * This method renders left arithmetic operator right panel
+	 * */
 	private void setLeftComponentAttributeRight(String cardName) {
 
 		leftCardPanelAttributeRight.removeAll();
 		leftCardPanelAttributeRight.validate();
 		leftCardPanelAttributeRight.repaint();
-				
-		JPanel cp = new JPanel(new GridBagLayout());	
+
+		JPanel cp = new JPanel(new GridBagLayout());
 		cp.setName("LeftOperatorRightPanel");
 		leftCardPanelAttributeRight.add(cp, cardName + "right");
 
 		setRow(0);
-		
+
 		GridBagConstraints constraints = new GridBagConstraints();
-		for (Attribute attribute : formGenerator.getForm3().getComparison().getLeftoperatorattributesright().getAttribute()) {
+		for (Attribute attribute : formGenerator.getForm3().getComparison()
+				.getLeftoperatorattributesright().getAttribute()) {
 			String attributeName = attribute.getName();
-			if(syntaxMap.containsKey(attributeName))
-			{
+			if (syntaxMap.containsKey(attributeName)) {
 				languageEntry = (LanguageEntry) syntaxMap.get(attributeName);
 				attributeName = languageEntry.getLabel();
 			}
-			if(attributeName.equals(cardName))
-			{
+			if (attributeName.equals(cardName)) {
 				currentPanel = "LeftOperatorRightPanel";
 				currentSelectedLeftOperatoRightAttribute = attribute;
 				for (Option option : attribute.getParameters().getOption()) {
@@ -571,27 +599,29 @@ public class Form3Window extends JFrame {
 		scrollBar.repaint();
 	}
 
+	/*
+	 * This method renders right arithmetic operator left panel
+	 * */
 	private void setRightComponent(String cardName) {
 		rightCardPanel.removeAll();
 		rightCardPanel.validate();
 		rightCardPanel.repaint();
 
-		JPanel cpRight = new JPanel(new GridBagLayout());	
+		JPanel cpRight = new JPanel(new GridBagLayout());
 		cpRight.setName("RightOperatorLeftPanel");
 		rightCardPanel.add(cpRight, cardName + "right");
 
 		setRow(0);
-		
+
 		GridBagConstraints constraints = new GridBagConstraints();
-		for (Attribute attribute : formGenerator.getForm3().getComparison().getRightoperatorattributesleft().getAttribute()) {
+		for (Attribute attribute : formGenerator.getForm3().getComparison()
+				.getRightoperatorattributesleft().getAttribute()) {
 			String attributeName = attribute.getName();
-			if(syntaxMap.containsKey(attributeName))
-			{
+			if (syntaxMap.containsKey(attributeName)) {
 				languageEntry = (LanguageEntry) syntaxMap.get(attributeName);
 				attributeName = languageEntry.getLabel();
 			}
-			if(attributeName.equals(cardName))
-			{
+			if (attributeName.equals(cardName)) {
 				currentPanel = "RightOperatorLeftPanel";
 				currentSelectedRightOperatorLeftAttribute = attribute;
 				for (Option option : attribute.getParameters().getOption()) {
@@ -607,29 +637,28 @@ public class Form3Window extends JFrame {
 	}
 
 	/*
-	 * Right panel of right arithmetic operator
+	 * This method renders right arithmetic operator right panel
 	 * */
 	private void setRightComponentAttributeRight(String cardName) {
 		rightCardPanelAttributeRight.removeAll();
 		rightCardPanelAttributeRight.validate();
 		rightCardPanelAttributeRight.repaint();
 
-		JPanel cpRight = new JPanel(new GridBagLayout());	
+		JPanel cpRight = new JPanel(new GridBagLayout());
 		cpRight.setName("RightOperatorRightPanel");
 		rightCardPanelAttributeRight.add(cpRight, cardName + "right");
 
 		setRow(0);
-		
+
 		GridBagConstraints constraints = new GridBagConstraints();
-		for (Attribute attribute : formGenerator.getForm3().getComparison().getRightoperatorattributesright().getAttribute()) {
+		for (Attribute attribute : formGenerator.getForm3().getComparison()
+				.getRightoperatorattributesright().getAttribute()) {
 			String attributeName = attribute.getName();
-			if(syntaxMap.containsKey(attributeName))
-			{
+			if (syntaxMap.containsKey(attributeName)) {
 				languageEntry = (LanguageEntry) syntaxMap.get(attributeName);
 				attributeName = languageEntry.getLabel();
 			}
-			if(attributeName.equals(cardName))
-			{
+			if (attributeName.equals(cardName)) {
 				currentPanel = "RightOperatorRightPanel";
 				currentSelectedRightOperatorRightAttribute = attribute;
 				for (Option option : attribute.getParameters().getOption()) {
@@ -643,354 +672,217 @@ public class Form3Window extends JFrame {
 		scrollBar.validate();
 		scrollBar.repaint();
 	}
-	
+
+	/*
+	 * This method adds an option to the panel
+	 */
 	public void addComponent(final Option option,
 			GridBagConstraints constraints, final JPanel panel) {
-			//retrieving option properties
-			String type = option.getType();
-			String name = option.getName();
-			String labelText = option.getLabel();
-			String tooltip = option.getTooltip();
-			String defaultOption = option.getDefaultOption();
+		// retrieving option properties
+		String type = option.getType();
+		String name = option.getName();
+		String labelText = option.getLabel();
+		String tooltip = option.getTooltip();
+		String defaultOption = option.getDefaultOption();
 
-			String leftComponentText = labelText;
-			String tooltipText = tooltip;
-			if(syntaxMap.containsKey(name))
-			{
-				languageEntry = (LanguageEntry) syntaxMap.get(name);		
-				leftComponentText = languageEntry.getLabel();
-				tooltipText = languageEntry.getTooltip();
-			}
-			String defaultOptionText = defaultOption;		
-			if(syntaxMap.containsKey(defaultOptionText))
-			{
-				languageEntry = (LanguageEntry) syntaxMap.get(defaultOptionText);
-				defaultOptionText = languageEntry.getLabel();
-			}
-			
-			JLabel leftComponent = new JLabel(leftComponentText);
-			leftComponent.setName(name + "Label");
+		String leftComponentText = labelText;
+		String tooltipText = tooltip;
+		if (syntaxMap.containsKey(name)) {
+			languageEntry = (LanguageEntry) syntaxMap.get(name);
+			leftComponentText = languageEntry.getLabel();
+			tooltipText = languageEntry.getTooltip();
+		}
+		String defaultOptionText = defaultOption;
+		if (syntaxMap.containsKey(defaultOptionText)) {
+			languageEntry = (LanguageEntry) syntaxMap.get(defaultOptionText);
+			defaultOptionText = languageEntry.getLabel();
+		}
 
-			Component rightComponent = null;
+		JLabel leftComponent = new JLabel(leftComponentText);
+		leftComponent.setName(name + "Label");
 
-			if (type.equalsIgnoreCase("text")) 
-			{
-				JTextField textField = new JTextField(defaultOption);
-				textField.setToolTipText(tooltipText);
-				textField.setName(name);
-				textField.addKeyListener(new KeyListener() {
-					@Override
-					public void keyTyped(KeyEvent e) {
-						// TODO Auto-generated method stub
-					}
-					@Override
-					public void keyReleased(KeyEvent e) {
-						// TODO Auto-generated method stub
-						option.setDefaultOption(((JTextField) e.getSource())
-								.getText());
-					}
-					@Override
-					public void keyPressed(KeyEvent e) {
-						// TODO Auto-generated method stub
-					}
-				});
-				rightComponent = textField;
-			} 
-			else if (type.equalsIgnoreCase("dropdown")
-					|| type.equalsIgnoreCase("spinner")) {
-				
-				
-				JComboBox comboBox = new JComboBox(getOptions(name).toArray());
-				comboBox.setName(name);
-				comboBox.setToolTipText(tooltipText);
-				comboBox.setSelectedItem(defaultOptionText);
-				option.setDefaultOption(defaultOptionText);
-				comboBox.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						// TODO Auto-generated method stub					
-						JComboBox combo = (JComboBox) e.getSource();
-						if(combo.getSelectedItem() != null){
-							String selectedItemName = combo.getSelectedItem().toString();
-							if(syntaxMapLabelToName.containsKey(selectedItemName))
-							{
-								selectedItemName = (String) syntaxMapLabelToName.get(selectedItemName);									
-							}
-							
-							option.setDefaultOption(selectedItemName);
-							panel.removeAll();
-					        panel.validate();
-					        panel.repaint();
-							
-							if(panel.getName().equals("LeftOperatorLeftPanel"))
-							{
-								setLeftComponent(comboBoxOptionLeft.getSelectedItem().toString());
-							}
-							else if(panel.getName().equals("LeftOperatorRightPanel"))
-							{
-								setLeftComponentAttributeRight(comboBoxOptionLeftAttributeRight
-										.getSelectedItem().toString());
-							}
-							else if(panel.getName().equals("RightOperatorLeftPanel"))
-							{
-								setRightComponent(comboBoxOptionRight.getSelectedItem()
-										.toString());
-							}
-							else if(panel.getName().equals("RightOperatorRightPanel"))
-							{
-								setRightComponentAttributeRight(comboBoxOptionRightAttributeRight
-										.getSelectedItem().toString());
-							}
-						}					
-					}
-				});
-				rightComponent = comboBox;
-			} else if (type.equalsIgnoreCase("check")) {
-				JCheckBox checkBox = new JCheckBox();
-				checkBox.setToolTipText(tooltipText);
-				checkBox.setName(name);
-				if (defaultOption.equals("checked")) {
-					checkBox.setSelected(true);
+		Component rightComponent = null;
+		// option's type is text	
+		if (type.equalsIgnoreCase("text")) {
+			JTextField textField = new JTextField(defaultOption);
+			textField.setToolTipText(tooltipText);
+			textField.setName(name);
+			textField.addKeyListener(new KeyListener() {
+				@Override
+				public void keyTyped(KeyEvent e) {
+					// TODO Auto-generated method stub
 				}
-				checkBox.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						// TODO Auto-generated method stub
-						AbstractButton abstractButton = (AbstractButton) e .getSource();
-					        boolean selected = abstractButton.getModel().isSelected();
-					        if (((JCheckBox) e.getSource()).isSelected()) {
-								option.setDefaultOption("checked");
-								panel.removeAll();
-							} else {
-								option.setDefaultOption("unchecked");
-								panel.removeAll();
-							}
-					        panel.removeAll();
-					        panel.validate();
-					        panel.repaint();
-							
-							if(panel.getName().equals("LeftOperatorLeftPanel"))
-							{
-								setLeftComponent(comboBoxOptionLeft.getSelectedItem().toString());
-							}
-							else if(panel.getName().equals("LeftOperatorRightPanel"))
-							{
-								setLeftComponentAttributeRight(comboBoxOptionLeftAttributeRight
-										.getSelectedItem().toString());
-							}
-							else if(panel.getName().equals("RightOperatorLeftPanel"))
-							{
-								setRightComponent(comboBoxOptionRight.getSelectedItem()
-										.toString());
-							}
-							else if(panel.getName().equals("RightOperatorRightPanel"))
-							{
-								setRightComponentAttributeRight(comboBoxOptionRightAttributeRight
-										.getSelectedItem().toString());
-							}
-					}
-				});
 
-				rightComponent = checkBox;
-			}
+				@Override
+				public void keyReleased(KeyEvent e) {
+					// current text is stored in option object
+					option.setDefaultOption(((JTextField) e.getSource())
+							.getText());
+				}
 
-			if (leftComponent != null && rightComponent != null) {
+				@Override
+				public void keyPressed(KeyEvent e) {
+					// TODO Auto-generated method stub
+				}
+			});
+			rightComponent = textField;
+		} 
+		// option's type is dropdown / spinner
+		else if (type.equalsIgnoreCase("dropdown")
+				|| type.equalsIgnoreCase("spinner")) {
 
-				constraints.fill = GridBagConstraints.HORIZONTAL;
-				constraints.gridx = 0;
-				constraints.gridy = getRow();
-				panel.add(new JLabel("	"), constraints);
+			JComboBox comboBox = new JComboBox(getOptions(name).toArray());
+			comboBox.setName(name);
+			comboBox.setToolTipText(tooltipText);
+			comboBox.setSelectedItem(defaultOptionText);
+			option.setDefaultOption(defaultOptionText);
+			comboBox.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// dropdown / spinner selected item is changed
+					JComboBox combo = (JComboBox) e.getSource();
+					if (combo.getSelectedItem() != null) {
+						String selectedItemName = combo.getSelectedItem()
+								.toString();
+						if (syntaxMapLabelToName.containsKey(selectedItemName)) {
+							selectedItemName = (String) syntaxMapLabelToName
+									.get(selectedItemName);
+						}
+						// updating selected item in option object
+						option.setDefaultOption(selectedItemName);
+						// removing all components from this panel
+						panel.removeAll();
+						panel.validate();
+						panel.repaint();
 
-				constraints.fill = GridBagConstraints.HORIZONTAL;
-				constraints.gridx = 1;
-				constraints.gridy = getRow();
-				panel.add(new JLabel("	"), constraints);
-
-				setRow(getRow() + 1);
-				
-				constraints.fill = GridBagConstraints.HORIZONTAL;
-				constraints.gridx = 0;
-				constraints.gridy = getRow();
-				panel.add(leftComponent, constraints);
-
-				constraints.fill = GridBagConstraints.HORIZONTAL;
-				constraints.gridx = 1;
-				constraints.gridy = getRow();
-				panel.add(rightComponent, constraints);
-
-				setRow(getRow() + 1);
-
-			}
-			// if an option has sub option then we are adding sub option to the panel
-			if (option.getListSubOptions().size() > 0) {
-				for (ListSubOptions listSuboption : option.getListSubOptions()) {
-					if (listSuboption.getName().equals(defaultOption)) {
-						for (Option subOption : listSuboption.getSubOption()) {
-							addComponent(subOption, constraints, panel);
+						//updating specific panel
+						if (panel.getName().equals("LeftOperatorLeftPanel")) {
+							setLeftComponent(comboBoxOptionLeft
+									.getSelectedItem().toString());
+						} else if (panel.getName().equals(
+								"LeftOperatorRightPanel")) {
+							setLeftComponentAttributeRight(comboBoxOptionLeftAttributeRight
+									.getSelectedItem().toString());
+						} else if (panel.getName().equals(
+								"RightOperatorLeftPanel")) {
+							setRightComponent(comboBoxOptionRight
+									.getSelectedItem().toString());
+						} else if (panel.getName().equals(
+								"RightOperatorRightPanel")) {
+							setRightComponentAttributeRight(comboBoxOptionRightAttributeRight
+									.getSelectedItem().toString());
 						}
 					}
 				}
+			});
+			rightComponent = comboBox;
+		} 
+		// option's type is checkbox
+		else if (type.equalsIgnoreCase("check")) {
+			JCheckBox checkBox = new JCheckBox();
+			checkBox.setToolTipText(tooltipText);
+			checkBox.setName(name);
+			if (defaultOption.equals("checked")) {
+				checkBox.setSelected(true);
 			}
-			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-
-			Rectangle rect = new Rectangle(screenSize.width / 2 - screenSize.width
-		            / 4, screenSize.height / 2 - screenSize.height / 4,
-		            screenSize.width / 2, screenSize.height / 2);
-		     //System.out.println("rect: " + rect);
-		      //JFrame frame = new JFrame("Test");
-		      //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		      //setPreferredSize(new Dimension(screenSize.width, screenSize.height));
-		      
-		      pack();
-		    
-		}
-	
-	
-	
-	/*public void comboChangeSubOptionUpdate(Option option, JComboBox combo, JPanel panel)
-	{
-		String comboName = combo.getName();
-		if (option.getName().equals(comboName)) {	
-			if(combo.getSelectedItem() != null){
-				//JOptionPane.showMessageDialog(null, "comboChangeSubOptionUpdate->1.option name:"+option.getName()+";comboselectedtext:"+combo.getSelectedItem().toString());
-				option.setDefaultOption(combo.getSelectedItem().toString());
-				//initializing new suboption
-				Option newSubOption = null;
-				JComboBox subOptionCombo = null;
-				JLabel subOptionLable = null;
-				String selectedComboItemText = combo.getSelectedItem().toString();
-				String subOptionNameText = "";
-				//finding specific suboption of this option based on suboption name and option selected item
-				for (Option subOption : option.getSuboption()) {
-					subOptionNameText = subOption.getName();
-					if(syntaxMap.containsKey(subOptionNameText))
-					{
-						languageEntry = (LanguageEntry) syntaxMap.get(subOption.getName());
-						subOptionNameText = languageEntry.getLabel();
-					}					
-					if (subOptionNameText.equals(selectedComboItemText)) 
-					{
-						//we have got the new suboption
-						newSubOption = subOption;
-						//combo.setName(option.getName());
-						//option.setDefaultOption(subOption.getName());
+			checkBox.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					AbstractButton abstractButton = (AbstractButton) e
+							.getSource();
+					//updating option object
+					boolean selected = abstractButton.getModel().isSelected();
+					if (((JCheckBox) e.getSource()).isSelected()) {
+						option.setDefaultOption("checked");
+						panel.removeAll();
+					} else {
+						option.setDefaultOption("unchecked");
+						panel.removeAll();
 					}
-					for (Component component : panel.getComponents()) {
-						if (subOption.getName().equals(component.getName())) {
-							//we have detect previous suboption combo
-							subOptionCombo = (JComboBox) component;
-							removeComponentSubOption(subOption, panel);
-						}
-						if ((subOption.getName() + "Label").equals(component.getName())) {
-							//we have detected previous suboption label
-							subOptionLable = (JLabel) component;
-						}
+					// removing all components from this panel
+					panel.removeAll();
+					panel.validate();
+					panel.repaint();
+					//updating specific panel
+					if (panel.getName().equals("LeftOperatorLeftPanel")) {
+						setLeftComponent(comboBoxOptionLeft.getSelectedItem()
+								.toString());
+					} else if (panel.getName().equals("LeftOperatorRightPanel")) {
+						setLeftComponentAttributeRight(comboBoxOptionLeftAttributeRight
+								.getSelectedItem().toString());
+					} else if (panel.getName().equals("RightOperatorLeftPanel")) {
+						setRightComponent(comboBoxOptionRight.getSelectedItem()
+								.toString());
+					} else if (panel.getName()
+							.equals("RightOperatorRightPanel")) {
+						setRightComponentAttributeRight(comboBoxOptionRightAttributeRight
+								.getSelectedItem().toString());
 					}
 				}
+			});
 
-				if (newSubOption != null) 
-				{
-					//JOptionPane.showMessageDialog(null, "comboChangeSubOptionUpdate->2.new sub option name:"+newSubOption.getName()+";new suboption default value:"+newSubOption.getDefaultOption()+"previous subOptionCombo name:"+subOptionCombo.getName());
-					if(subOptionCombo != null)
-					{
-						blockComboChangeEvent = true;
-						//removing all elements from previous suboption combo
-						subOptionCombo.removeAllItems();
-						//subOptionCombo = new JComboBox();
-						for (DropDownOption dropDownOption : newSubOption.getDropdownOption()) 
-						{
-							for (DropDownOptionElement dropDownOptionElement : dropDownOption.getOption()) 
-							{
-								String comboElementNameText = dropDownOptionElement.getAs();
-								if(syntaxMap.containsKey(comboElementNameText))
-								{
-									languageEntry = (LanguageEntry) syntaxMap.get(comboElementNameText);
-									comboElementNameText = languageEntry.getLabel();
-								}
-								//adding new combo element
-								subOptionCombo.addItem(comboElementNameText);
-							}
-						}
-						blockComboChangeEvent = false;
-						//JOptionPane.showMessageDialog(null, "comboChangeSubOptionUpdate->3.previous combo is reloaded.");
-						
-						//updating suboption combo name
-						subOptionCombo.setName(newSubOption.getName());		
-						//updating suboption combo default option
-						String defaultOptionText = newSubOption.getDefaultOption();
-						if(syntaxMap.containsKey(defaultOptionText))
-						{
-							languageEntry = (LanguageEntry) syntaxMap.get(defaultOptionText);
-							defaultOptionText = languageEntry.getLabel();
-						}
-						//JOptionPane.showMessageDialog(null, "comboChangeSubOptionUpdate->4.new sub option name:"+newSubOption.getName()+";new suboption default value:"+newSubOption.getDefaultOption());
-						
-						subOptionCombo.setSelectedItem(defaultOptionText);
-						
-						//updating suboption combo tooltip text
-						String tooltipText = newSubOption.getTooltip();
-						if(syntaxMap.containsKey(tooltipText))
-						{
-							languageEntry = (LanguageEntry) syntaxMap.get(tooltipText);
-							tooltipText = languageEntry.getLabel();
-						}
-						subOptionCombo.setToolTipText(tooltipText);
-						
-						subOptionCombo.revalidate();
-					}
-					
-					if (subOptionLable != null) {
-						subOptionLable.setName(newSubOption.getName() + "Label");
-						String newLabelText = newSubOption.getLabel();
-						if(syntaxMap.containsKey(newLabelText))
-						{
-							languageEntry = (LanguageEntry) syntaxMap.get(newLabelText);		
-							newLabelText = languageEntry.getLabel();
-						}
-						subOptionLable.setText(newLabelText);
-						subOptionLable.revalidate();
-					}
-					
-					if(subOptionCombo == null && subOptionLable == null)
-					{
-						GridBagConstraints constraints = new GridBagConstraints();						
-						addComponent(newSubOption, constraints, panel);						
-					}
-										
-				}				
-			}			
-			
+			rightComponent = checkBox;
 		}
-		else if (option.getSuboption().size() > 0) {
-			for (Option subOption : option.getSuboption()) {
-				comboChangeSubOptionUpdate(subOption, combo, panel);
+		//adding this option to the panel
+		if (leftComponent != null && rightComponent != null) {
+
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.gridx = 0;
+			constraints.gridy = getRow();
+			panel.add(new JLabel("	"), constraints);
+
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.gridx = 1;
+			constraints.gridy = getRow();
+			panel.add(new JLabel("	"), constraints);
+
+			setRow(getRow() + 1);
+
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.gridx = 0;
+			constraints.gridy = getRow();
+			panel.add(leftComponent, constraints);
+
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.gridx = 1;
+			constraints.gridy = getRow();
+			panel.add(rightComponent, constraints);
+
+			setRow(getRow() + 1);
+
+		}
+		// if an option has sub option then we are adding sub option to the panel
+		if (option.getListSubOptions().size() > 0) {
+			for (ListSubOptions listSuboption : option.getListSubOptions()) {
+				if (listSuboption.getName().equals(defaultOption)) {
+					for (Option subOption : listSuboption.getSubOption()) {
+						addComponent(subOption, constraints, panel);
+					}
+				}
 			}
 		}
-	}*/
-	
+		pack();
+
+	}
+
+	/*
+	 * This method returns options for combo box / spinner
+	 */
 	public List<String> getOptions(String name) {
 		List<String> options = new ArrayList<String>();
 		Attribute currentAttribute = null;
-		//JOptionPane.showMessageDialog(null, "name in getOptions:"+name);
-		if(currentPanel == "LeftOperatorLeftPanel")
-		{
+		if (currentPanel == "LeftOperatorLeftPanel") {
 			currentAttribute = currentSelectedLeftOperatorLeftAttribute;
-		}
-		else if(currentPanel == "LeftOperatorRightPanel")
-		{
+		} else if (currentPanel == "LeftOperatorRightPanel") {
 			currentAttribute = currentSelectedLeftOperatoRightAttribute;
-		}
-		else if(currentPanel == "RightOperatorLeftPanel")
-		{
+		} else if (currentPanel == "RightOperatorLeftPanel") {
 			currentAttribute = currentSelectedRightOperatorLeftAttribute;
-		}
-		else if(currentPanel == "RightOperatorRightPanel")
-		{
+		} else if (currentPanel == "RightOperatorRightPanel") {
 			currentAttribute = currentSelectedRightOperatorRightAttribute;
 		}
-		
-		if(currentAttribute != null)
-		{
+
+		if (currentAttribute != null) {
 			for (Option option : currentAttribute.getParameters().getOption()) {
 				options = getOptionsAndSub(option, name);
 
@@ -998,33 +890,46 @@ public class Form3Window extends JFrame {
 					return options;
 				}
 			}
-		}		
-
+		}
 		return options;
 	}
-	
+
+	/*
+	 * This method checks sub options to get options for combo box / spinner
+	 */
 	public List<String> getOptionsAndSub(Option option, String name) {
 		List<String> options = new ArrayList<String>();
 		if (option.getName().equals(name)) {
 			for (DropDownOption dropDownOption : option.getDropdownOption()) {
-				for (DropDownOptionElement dropDownOptionElement : dropDownOption.getOption()) {
-					if (dropDownOptionElement.getAs().equals("showvars")) {
-						options.add("will add some variables later");
-					}
-					else
+				// this is a drop down option
+				for (DropDownOptionElement dropDownOptionElement : dropDownOption
+						.getOption()) {
+					//adding variable as dropdown element from variable list
+					if (dropDownOptionElement.getAs().equals("showvars")) 
 					{
-						String dropDownElementText = dropDownOptionElement.getAs();					
+						for(int counter = 0 ; counter < variables.length ; counter++)
+						{
+							options.add(variables[counter]);
+						}
+					} 
+					//adding dropdown element defined in xml file					
+					else {
+						String dropDownElementText = dropDownOptionElement
+								.getAs();
 						if (syntaxMap.containsKey(dropDownElementText)) {
-							languageEntry = (LanguageEntry) syntaxMap.get(dropDownElementText);
-							dropDownElementText = languageEntry.getLabel();						
+							languageEntry = (LanguageEntry) syntaxMap
+									.get(dropDownElementText);
+							dropDownElementText = languageEntry.getLabel();
 						}
 						options.add(dropDownElementText);
 					}
 				}
 			}
 			for (SpinnerOption spinnerOption : option.getSpinnerOption()) {
+				// this is a spinner option
 				int min = 0;
 				int max = 0;
+				boolean hasShowVars = false;
 				for (SpinnerOptionElement spinnerOptionElement : spinnerOption
 						.getOption()) {
 					if (spinnerOptionElement.getMin() > 0) {
@@ -1033,55 +938,35 @@ public class Form3Window extends JFrame {
 					if (spinnerOptionElement.getMax() > 0) {
 						max = spinnerOptionElement.getMax();
 					}
+					if(spinnerOptionElement.getAs()!= null && spinnerOptionElement.getAs().equals("showvars"))
+					{
+						hasShowVars = true;
+					}
 				}
 				for (int i = min; i <= max; i++) {
 					options.add(i + "");
 				}
-				// if(spinnerOptionElement.getAs() != null &&
-				// spinnerOptionElement.getAs().equals("showvars"))
+				//adding variable as spinner element from variable list
+				if(hasShowVars)
 				{
-					options.add("will add some variables later");
+					for(int counter = 0 ; counter < variables.length ; counter++)
+					{
+						options.add(variables[counter]);
+					}
 				}
 			}
 			return options;
-		} else if (option.getListSubOptions().size() > 0) {
+		} 
+		// checking sup options
+		else if (option.getListSubOptions().size() > 0) {
 			for (ListSubOptions listSuboption : option.getListSubOptions()) {
 				for (Option subOption : listSuboption.getSubOption()) {
-					if(subOption.getName().equals(name))
-					{
+					if (subOption.getName().equals(name)) {
 						return getOptionsAndSub(subOption, name);
 					}
 				}
 			}
-			
 		}
-
 		return options;
 	}
-	
-	/*public void removeComponentSubOption(Option option, JPanel panel)
-	{
-		JComboBox subOptionCombo = null;
-		JLabel subOptionLable = null;
-		for (Option subOption : option.getSuboption()) {
-			for (Component component : panel.getComponents()) {
-				if (subOption.getName().equals(component.getName())) {
-					subOptionCombo = (JComboBox) component;
-					removeComponentSubOption(subOption, panel);
-				}
-				if ((subOption.getName() + "Label").equals(component.getName())) {
-					subOptionLable = (JLabel) component;
-				}
-			}
-		}
-		if(subOptionCombo != null && subOptionLable != null)
-		{
-			panel.remove(subOptionCombo);
-			panel.remove(subOptionLable);
-			panel.revalidate();
-			panel.repaint();
-		}
-		
-	}*/
-
 }

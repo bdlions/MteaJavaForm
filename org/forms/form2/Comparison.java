@@ -2,12 +2,27 @@ package org.forms.form2;
 
 import javax.xml.bind.annotation.XmlType;
 
+import org.forms.Form2;
+
 @XmlType(propOrder = {"operators", "attributesleft", "attributesright" }, namespace = "comparison")
-public class Comparison 
+public class Comparison implements Cloneable
 {
 	private Operators operators;
-	private Attributes attributesleft;
-	private Attributes attributesright;
+	private Attributes attributesleft = new Attributes();
+	private Attributes attributesright = new Attributes();
+	
+	public Object clone(){
+		try{
+			Comparison cloned = (Comparison)super.clone();
+		    cloned.attributesleft = (Attributes) attributesleft.clone();
+		    cloned.attributesright = (Attributes) attributesright.clone();
+		    return cloned;
+	    }
+	    catch(CloneNotSupportedException e){
+		    System.out.println(e);
+		    return null;
+	    }
+	}
 	
 	public Attributes getAttributesleft() {
 		return attributesleft;

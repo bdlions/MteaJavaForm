@@ -1,6 +1,7 @@
 package org.forms.form1.listoptions;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
@@ -11,7 +12,7 @@ import org.forms.form1.spinner.SpinnerOption;
 
 
 @XmlType(propOrder = { "dropdownOption", "spinnerOption","listSubOptions"}, namespace = "option")
-public class Option 
+public class Option implements Cloneable
 {
 	private String name;
 	private String label;
@@ -23,7 +24,22 @@ public class Option
 	private ArrayList<SpinnerOption> spinnerOption = new ArrayList<SpinnerOption>();
 	private ArrayList<ListSubOptions> listSubOptions = new ArrayList<ListSubOptions>();
 	
-	
+	public Object clone(){
+		try{
+			Option cloned = (Option)super.clone();
+			cloned.name = name;
+			cloned.label = label;
+			cloned.type = type;
+			cloned.defaultOption = defaultOption;
+			cloned.tooltip = tooltip;
+			cloned.listSubOptions = listSubOptionsCloneList(listSubOptions);
+			return cloned;
+	    }
+	    catch(CloneNotSupportedException e){
+		    System.out.println(e);
+		    return null;
+	    }
+	}
 	
 	@XmlAttribute(name="defaultOption")
 	public String getDefaultOption() {
@@ -83,5 +99,12 @@ public class Option
 	}
 	public void setListSubOptions(ArrayList<ListSubOptions> listSubOptions) {
 		this.listSubOptions = listSubOptions;
+	}
+	
+	public static ArrayList<ListSubOptions> listSubOptionsCloneList(ArrayList<ListSubOptions> list) {
+		ArrayList<ListSubOptions> clone = new ArrayList<ListSubOptions>(list.size());
+	    for(ListSubOptions item: list) 
+	    	clone.add((ListSubOptions)item.clone());
+	    return clone;
 	}
 }

@@ -91,6 +91,7 @@
 								<spinnerOption>
 									<option min="1" />
 									<option max="199" />
+									<option as="showvars"/>
 								</spinnerOption>
 							</suboption>
 						</listSubOptions>

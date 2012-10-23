@@ -4,23 +4,18 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Label;
 import java.util.Hashtable;
-
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
-
 import org.forms.Form3;
 import org.forms.FormGenerator;
 import org.forms.form2.Attribute;
-import org.forms.form2.dropdown.DropDownOption;
 import org.forms.form2.parameters.ListSubOptions;
 import org.forms.form2.parameters.Option;
-import org.forms.form2.spinner.SpinnerOption;
 import org.forms.languages.LanguageEntry;
 
 public class Form3Output extends JFrame {
@@ -37,15 +32,15 @@ public class Form3Output extends JFrame {
 	}
 	
 
-	/**
-	 * Create the frame.
+	/*
+	 * Creating the frame.
 	 */
 	public Form3Output(Form3 form3, JComboBox comboBoxOptionLeft, JComboBox comboBoxOperatorLeft,
 			JComboBox comboBoxOptionLeftAttributeRight, 
 			JComboBox  comboBoxComparison,JComboBox comboBoxOptionRightAttributeRight, 
 			JComboBox comboBoxOperatorRight, JComboBox  comboBoxOptionRight , FormGenerator formGenerator ) {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 459, 416);
+		//panel to render form3 output
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -84,7 +79,7 @@ public class Form3Output extends JFrame {
 		
 		
 		contentPane.setPreferredSize(new Dimension(500, 250));
-
+		// adding vertical and horizontal scroll bars
 		JScrollPane scrollBar = new JScrollPane();
 		scrollBar
 				.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -95,8 +90,9 @@ public class Form3Output extends JFrame {
 
 		GridBagConstraints constraints = new GridBagConstraints();
 
-		setRow(0);
+		setRow(0);		
 		String leftOperatorLeftPanelSelectedComboItem = comboBoxOptionLeft.getSelectedItem().toString();
+		// adding each component of left arithmetic operator left panel to the output panel
 		for (Attribute attribute : formGenerator.getForm3().getComparison().getLeftoperatorattributesleft().getAttribute()) {
 			String attributeName = attribute.getName();
 			if(syntaxMap.containsKey(attributeName))
@@ -114,6 +110,7 @@ public class Form3Output extends JFrame {
 		
 		setRow(0);
 		String leftOperatorRightPanelSelectedComboItem = comboBoxOptionLeftAttributeRight.getSelectedItem().toString();
+		// adding each component of left arithmetic operator right panel to the output panel
 		for (Attribute attribute : formGenerator.getForm3().getComparison().getLeftoperatorattributesright().getAttribute()) {
 			String attributeName = attribute.getName();
 			if(syntaxMap.containsKey(attributeName))
@@ -131,6 +128,7 @@ public class Form3Output extends JFrame {
 		
 		setRow(0);
 		String rightOperatorLeftPanelSelectedComboItem = comboBoxOptionRight.getSelectedItem().toString();
+		// adding each component of right arithmetic operator left panel to the output panel
 		for (Attribute attribute : formGenerator.getForm3().getComparison().getRightoperatorattributesleft().getAttribute()) {
 			String attributeName = attribute.getName();
 			if(syntaxMap.containsKey(attributeName))
@@ -148,6 +146,7 @@ public class Form3Output extends JFrame {
 		
 		setRow(0);
 		String rightOperatorRightPanelSelectedComboItem = comboBoxOptionRightAttributeRight.getSelectedItem().toString();
+		// adding each component of rihgt arithmetic operator right panel to the output panel
 		for (Attribute attribute : formGenerator.getForm3().getComparison().getRightoperatorattributesright().getAttribute()) {
 			String attributeName = attribute.getName();
 			if(syntaxMap.containsKey(attributeName))
@@ -163,14 +162,20 @@ public class Form3Output extends JFrame {
 			}
 		}
 		
-		setRow(0);		
+		setRow(0);	
+		// adding comparison selected item to the output panel
 		addOperatorComponent("Comparision is: ", comboBoxComparison.getSelectedItem().toString(), constraints, comparisonPanel);
 		setRow(0);
+		// adding left arithmetic operator selected item to the output panel
 		addOperatorComponent("Left operator is: ", comboBoxOperatorLeft.getSelectedItem().toString(), constraints, leftOperatorPanel);
 		setRow(0);
+		// adding right arithmetic operator selected item to the output panel
 		addOperatorComponent("Right operator is: ", comboBoxOperatorRight.getSelectedItem().toString(), constraints, rightOperatorPanel);
 	}
 	
+	/*
+	 * This method adds operators to the output panel
+	 * */
 	public void addOperatorComponent(String label, String value, GridBagConstraints constraints, JPanel panel)
 	{
 		constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -183,10 +188,12 @@ public class Form3Output extends JFrame {
 		constraints.gridy = getRow();
 		panel.add(new Label(value), constraints);
 
-		setRow(getRow() + 1);
-		
-		
+		setRow(getRow() + 1);		
 	}
+	
+	/*
+	 * This method adds an option to the panel
+	 */
 	public void addComponent(Option option, GridBagConstraints constraints, JPanel panel)
 	{
 		constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -209,7 +216,7 @@ public class Form3Output extends JFrame {
 		}
 
 		setRow(getRow() + 1);
-		
+		//adding sub option of this option in output panel
 		if (option.getListSubOptions().size() > 0) {
 			for (ListSubOptions listSuboption : option.getListSubOptions()) {
 				if (listSuboption.getName().equals(option.getDefaultOption())) {

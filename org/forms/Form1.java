@@ -1,6 +1,7 @@
 package org.forms;
 import java.io.File;
 import java.io.InputStream;
+import java.util.Hashtable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,12 +16,25 @@ import org.forms.languages.Languages;
 
 @XmlType(propOrder = {"listOptions", "languages" }, namespace = "myform1")
 @XmlRootElement(name="myform1")
-public class Form1 
+public class Form1 implements Cloneable
 {
 	private String title;
 	private ListOptions listOptions = new ListOptions();
 	private Languages languages = new Languages();
 
+	public Object clone(){
+		try{
+			Form1 cloned = (Form1)super.clone();
+		    cloned.title = title;
+		    cloned.listOptions = (ListOptions) listOptions.clone();
+		    return cloned;
+	    }
+	    catch(CloneNotSupportedException e){
+		    System.out.println(e);
+		    return null;
+	    }
+	}
+	
 	public String getTitle() {
 		return title;
 	}

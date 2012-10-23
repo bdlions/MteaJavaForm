@@ -4,13 +4,25 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlType(propOrder = {"parameters" }, namespace = "attribute")
-public class Attribute 
+public class Attribute implements Cloneable
 {
 	
 	private String name;
 	private String i8n_entry;
 	
-	private Parameters parameters;
+	private Parameters parameters = new Parameters();
+	
+	public Object clone(){
+		try{
+			Attribute cloned = (Attribute)super.clone();
+		    cloned.parameters = (Parameters)parameters.clone();
+		    return cloned;
+	    }
+	    catch(CloneNotSupportedException e){
+		    System.out.println(e);
+		    return null;
+	    }
+	}
 	
 	@XmlAttribute(namespace="i8n-entry")
 	public String getI8n_entry() {

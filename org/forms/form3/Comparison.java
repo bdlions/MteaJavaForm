@@ -1,18 +1,31 @@
 package org.forms.form3;
 
 import javax.xml.bind.annotation.XmlType;
-
 import org.forms.form2.*;
-
 @XmlType(propOrder = {"arithmaticoperators", "operators", "leftoperatorattributesleft", "leftoperatorattributesright", "rightoperatorattributesleft", "rightoperatorattributesright"}, namespace = "comparison")
-public class Comparison 
+public class Comparison implements Cloneable
 {
 	private Operators arithmaticoperators;
 	private Operators operators;
-	private Attributes leftoperatorattributesleft;
-	private Attributes leftoperatorattributesright;
-	private Attributes rightoperatorattributesleft;
-	private Attributes rightoperatorattributesright;
+	private Attributes leftoperatorattributesleft = new Attributes();
+	private Attributes leftoperatorattributesright = new Attributes();
+	private Attributes rightoperatorattributesleft = new Attributes();
+	private Attributes rightoperatorattributesright = new Attributes();
+	
+	public Object clone(){
+		try{
+			Comparison cloned = (Comparison)super.clone();
+		    cloned.leftoperatorattributesleft = (Attributes) leftoperatorattributesleft.clone();
+		    cloned.leftoperatorattributesright = (Attributes) leftoperatorattributesright.clone();
+		    cloned.rightoperatorattributesleft = (Attributes) rightoperatorattributesleft.clone();
+		    cloned.rightoperatorattributesright = (Attributes) rightoperatorattributesright.clone();
+		    return cloned;
+	    }
+	    catch(CloneNotSupportedException e){
+		    System.out.println(e);
+		    return null;
+	    }
+	}
 	
 	public Operators getArithmaticoperators() {
 		return arithmaticoperators;

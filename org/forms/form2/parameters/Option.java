@@ -6,12 +6,14 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.forms.form2.parameters.ListSubOptions;
+import org.forms.form2.parameters.Option;
 import org.forms.form2.dropdown.DropDownOption;
 import org.forms.form2.spinner.SpinnerOption;
 
 
 @XmlType(propOrder = { "dropdownOption", "spinnerOption", "listSubOptions"}, namespace = "option")
-public class Option 
+public class Option implements Cloneable
 {
 	private String name;
 	private String label;
@@ -23,6 +25,23 @@ public class Option
 	private ArrayList<DropDownOption> dropdownOption = new ArrayList<DropDownOption>();
 	private ArrayList<SpinnerOption> spinnerOption = new ArrayList<SpinnerOption>();
 	private ArrayList<ListSubOptions> listSubOptions = new ArrayList<ListSubOptions>();
+	
+	public Object clone(){
+		try{
+			Option cloned = (Option)super.clone();
+			cloned.name = name;
+			cloned.label = label;
+			cloned.type = type;
+			cloned.defaultOption = defaultOption;
+			cloned.tooltip = tooltip;
+			cloned.listSubOptions = listSubOptionsCloneList(listSubOptions);
+			return cloned;
+	    }
+	    catch(CloneNotSupportedException e){
+		    System.out.println(e);
+		    return null;
+	    }
+	}
 	
 	@XmlAttribute(name="i8n-entry")
 	public String getI8n_entry() {
@@ -90,5 +109,11 @@ public class Option
 	
 	public ArrayList<ListSubOptions> getListSubOptions() {
 		return listSubOptions;
+	}
+	public static ArrayList<ListSubOptions> listSubOptionsCloneList(ArrayList<ListSubOptions> list) {
+		ArrayList<ListSubOptions> clone = new ArrayList<ListSubOptions>(list.size());
+	    for(ListSubOptions item: list) 
+	    	clone.add((ListSubOptions)item.clone());
+	    return clone;
 	}
 }

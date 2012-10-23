@@ -7,12 +7,25 @@ import org.forms.languages.Languages;
 
 @XmlType(propOrder = {"comparison", "languages" }, namespace = "myform3")
 @XmlRootElement(name="myform3")
-public class Form3 
+public class Form3 implements Cloneable
 {
 	private String title;
 	private Comparison comparison = new Comparison();
 	private Languages languages = new Languages();
 
+	public Object clone(){
+		try{
+			Form3 cloned = (Form3)super.clone();
+		    cloned.title = title;
+		    cloned.comparison = (Comparison) comparison.clone();
+		    return cloned;
+	    }
+	    catch(CloneNotSupportedException e){
+		    System.out.println(e);
+		    return null;
+	    }
+	}
+	
 	public String getTitle() {
 		return title;
 	}

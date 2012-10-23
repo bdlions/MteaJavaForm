@@ -2,21 +2,14 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
 import java.awt.Window;
-
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-
-import org.forms.FormGenerator;
-
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.ButtonGroup;
-
-
 public class Main {
 
 	private JFrame frame;
@@ -28,8 +21,8 @@ public class Main {
 	private Form2Window form2Window = null;
 	private Form3Window form3Window = null;
 	
-	/**
-	 * Launch the application.
+	/*
+	 * Launching the application.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -44,15 +37,15 @@ public class Main {
 		});
 	}
 
-	/**
-	 * Create the application.
+	/*
+	 * Creating the application.
 	 */
 	public Main() {
 		initialize();
 	}
 
-	/**
-	 * Initialize the contents of the frame.
+	/*
+	 * Initializing the contents of the frame.
 	 */
 	private void initialize() {
 		frame = new JFrame();
@@ -73,22 +66,26 @@ public class Main {
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
+				//Getting user selected language to render form1
 				String language = "English";
 				if(chckbxmntmFrancis.isSelected())
 				{
 					language = "Francais";
 				}
+				//initializing form1
 				if(form1Window == null)
 				{
-					form1Window = new Form1Window(language);
+					String[] variables = {"var1","var2","var3"};
+					form1Window = new Form1Window(language,variables);
 					form1Window.setVisible(true);
-					form1Window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+					form1Window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 					centreWindow(form1Window);
 				}
+				//reopening form1
 				else
 				{
 					form1Window.setVisible(true);
-					form1Window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+					form1Window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 					form1Window.showForm1(language);
 					
 				}
@@ -102,22 +99,26 @@ public class Main {
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
+				//Getting user selected language to render form2
 				String language = "English";
 				if(chckbxmntmFrancis.isSelected())
 				{
 					language = "Francais";
 				}
+				//initializing form2
 				if(form2Window == null)
 				{
-					form2Window = new Form2Window(language);
+					String[] variables = {"var1","var2","var3"};
+					form2Window = new Form2Window(language, variables);
 					form2Window.setVisible(true);
-					form2Window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+					form2Window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 					centreWindow(form2Window);
 				}
+				//reopening form1
 				else
 				{
 					form2Window.setVisible(true);
-					form2Window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+					form2Window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 					form2Window.showForm2(language);
 				}
 				
@@ -130,22 +131,26 @@ public class Main {
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
+				//Getting user selected language to render form3
 				String language = "English";
 				if(chckbxmntmFrancis.isSelected())
 				{
 					language = "Francais";
 				}
+				//initializing form3
 				if(form3Window == null)
 				{
-					form3Window = new Form3Window(language);
+					String[] variables = {"var1","var2","var3"};
+					form3Window = new Form3Window(language, variables);
 					form3Window.setVisible(true);
-					form3Window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+					form3Window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 					centreWindow(form3Window);
 				}
+				//reopening form1
 				else
 				{
 					form3Window.setVisible(true);
-					form3Window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+					form3Window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 					form3Window.showForm3(language);
 				}
 				
@@ -165,11 +170,13 @@ public class Main {
 		mnLanguage.add(chckbxmntmFrancis);
 	}
 
+	/*
+	 * Rendering the frame at the center of the screen 
+	 */
 	public static void centreWindow(Window frame) {
 	    Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 	    int x = (int) ((dimension.getWidth() - frame.getWidth()) / 2);
 	    int y = (int) ((dimension.getHeight() - frame.getHeight()) / 2);
 	    frame.setLocation(x, y);
 	}
-
 }
