@@ -101,11 +101,11 @@ public class FormGenerator implements Cloneable
 	/*
 	 * This method loads form1 xml file and stores into object
 	 * */
-	public void generateForm1()
+	public void generateForm1(String form1XmlName)
 	{
 		try 
 		{
-			InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("resource/form1.xml");
+			InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("resource/"+form1XmlName);
 			JAXBContext jaxbContext = JAXBContext.newInstance(Form1.class);
 			 
 			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
@@ -135,11 +135,11 @@ public class FormGenerator implements Cloneable
 	/*
 	 * This method loads form2 xml file and stores into object
 	 * */
-	public void generateForm2()
+	public void generateForm2(String form2XmlName)
 	{
 		try 
 		{
-			InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("resource/form2.xml");
+			InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("resource/"+form2XmlName);
 			JAXBContext jaxbContext = JAXBContext.newInstance(Form2.class);
 			 
 			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
@@ -168,11 +168,11 @@ public class FormGenerator implements Cloneable
 	/*
 	 * This method loads form3 xml file and stores into object
 	 * */
-	public void generateForm3()
+	public void generateForm3(String form3XmlName)
 	{
 		try 
 		{
-			InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("resource/form3.xml");
+			InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("resource/"+form3XmlName);
 			JAXBContext jaxbContext = JAXBContext.newInstance(Form3.class);
 			 
 			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();

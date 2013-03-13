@@ -6,10 +6,14 @@ import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.ButtonGroup;
+
+import org.forms.FormGenerator;
 public class Main {
 
 	private JFrame frame;
@@ -21,6 +25,23 @@ public class Main {
 	private Form2Window form2Window = null;
 	private Form3Window form3Window = null;
 	
+	public boolean form1IsFirstTime = true;
+	public boolean form2IsFirstTime = true;
+	public boolean form3IsFirstTime = true;
+	
+	public FormGenerator formGenerator = null;
+	
+	public String form2LeftPanelSelectedItem = "";
+	public String form2ComparisonSelectedItem = "";
+	public String form2RightPanelSelectedItem = "";
+	
+	public String form3LeftOperatorLeftPanelSelectedItem = "";
+	public String form3LeftOperatorRightPanelSelectedItem = "";
+	public String form3LeftOperatorSelectedItem = "";
+	public String form3RightOperatorLeftPanelSelectedItem = "";
+	public String form3RightOperatorRightPanelSelectedItem = "";
+	public String form3RightOperatorSelectedItem = "";
+	public String form3ComparisonSelectedItem = "";
 	/*
 	 * Launching the application.
 	 */
@@ -73,20 +94,27 @@ public class Main {
 					language = "Francais";
 				}
 				//initializing form1
-				if(form1Window == null)
+				if(form1IsFirstTime == true)
 				{
 					String[] variables = {"var1","var2","var3"};
-					form1Window = new Form1Window(language,variables);
+					form1Window = new Form1Window(language,variables,"form1.xml", Main.this);
 					form1Window.setVisible(true);
 					form1Window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 					centreWindow(form1Window);
+					form1IsFirstTime = false;
 				}
 				//reopening form1
 				else
 				{
+					String[] variables = {"var1","var2","var3"};
+					form1Window = new Form1Window(language,variables,"form1.xml", Main.this);
 					form1Window.setVisible(true);
 					form1Window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-					form1Window.showForm1(language);
+					centreWindow(form1Window);
+					
+					/*form1Window.setVisible(true);
+					form1Window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+					form1Window.showForm1(language, Main.this);*/
 					
 				}
 				
@@ -109,17 +137,23 @@ public class Main {
 				if(form2Window == null)
 				{
 					String[] variables = {"var1","var2","var3"};
-					form2Window = new Form2Window(language, variables);
+					form2Window = new Form2Window(language, variables,"form2.xml", Main.this);
 					form2Window.setVisible(true);
 					form2Window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 					centreWindow(form2Window);
+					form2IsFirstTime = false;
 				}
 				//reopening form1
 				else
 				{
+					String[] variables = {"var1","var2","var3"};
+					form2Window = new Form2Window(language, variables,"form2.xml", Main.this);
 					form2Window.setVisible(true);
 					form2Window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-					form2Window.showForm2(language);
+					centreWindow(form2Window);
+					/*form2Window.setVisible(true);
+					form2Window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+					form2Window.showForm2(language);*/
 				}
 				
 			}
@@ -141,17 +175,23 @@ public class Main {
 				if(form3Window == null)
 				{
 					String[] variables = {"var1","var2","var3"};
-					form3Window = new Form3Window(language, variables);
+					form3Window = new Form3Window(language, variables,"form3.xml", Main.this);
 					form3Window.setVisible(true);
 					form3Window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 					centreWindow(form3Window);
+					form3IsFirstTime = false;
 				}
 				//reopening form1
 				else
 				{
+					String[] variables = {"var1","var2","var3"};
+					form3Window = new Form3Window(language, variables,"form3.xml", Main.this);
 					form3Window.setVisible(true);
 					form3Window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-					form3Window.showForm3(language);
+					centreWindow(form3Window);
+					/*form3Window.setVisible(true);
+					form3Window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+					form3Window.showForm3(language);*/
 				}
 				
 			}

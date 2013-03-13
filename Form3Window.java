@@ -42,6 +42,7 @@ import org.forms.languages.LanguageEntry;
 
 public class Form3Window extends JFrame {
 
+	private Main main;
 	private JScrollPane scrollBar;
 
 	private JPanel contentPane;
@@ -116,13 +117,45 @@ public class Form3Window extends JFrame {
 	/*
 	 * Creating the frame.
 	 */
-	public Form3Window(String language, String[] variables) {
+	public Form3Window(String language, String[] variables,String form3XmlName, Main main) {
+		this.main = main;
 		this.variables = variables;
 		// initializing form3
-		formGenerator = new FormGenerator();
-		formGenerator.generateForm3();
+		if(this.main.formGenerator == null)
+		{
+			this.main.formGenerator = new FormGenerator();
+		}
+		if(this.main.form3IsFirstTime)
+		{
+			this.main.formGenerator.generateForm3(form3XmlName);
+			this.formGenerator = this.main.formGenerator;
+			
+			this.main.form3LeftOperatorLeftPanelSelectedItem = (String) getLeftOperatorLeftAttributes()
+					.toArray()[0];
+        	this.main.form3LeftOperatorRightPanelSelectedItem = (String) getLeftOperatorRightAttributes()
+    				.toArray()[0];
+        	this.main.form3LeftOperatorSelectedItem = (String) getArithmaticOperators().toArray()[0];
+        	this.main.form3RightOperatorLeftPanelSelectedItem = (String) getRightOperatorLeftAttributes()
+    				.toArray()[0];
+        	this.main.form3RightOperatorRightPanelSelectedItem = (String) getRightOperatorRightAttributes()
+    				.toArray()[0];
+        	this.main.form3RightOperatorSelectedItem = (String) getArithmaticOperators().toArray()[0];
+        	this.main.form3ComparisonSelectedItem = (String) getOperators().toArray()[0];
+		}
+		else
+		{
+			this.formGenerator = this.main.formGenerator;
+		}
+		
+		this.leftOperatorLeftPanelSelectedItem = this.main.form3LeftOperatorLeftPanelSelectedItem;
+		this.leftOperatorRightPanelSelectedItem = this.main.form3LeftOperatorRightPanelSelectedItem;
+		this.leftOperatorSelectedItem = this.main.form3LeftOperatorSelectedItem;
+		this.rightOperatorLeftPanelSelectedItem = this.main.form3RightOperatorLeftPanelSelectedItem;
+		this.rightOperatorRightPanelSelectedItem = this.main.form3RightOperatorRightPanelSelectedItem;
+		this.rightOperatorSelectedItem = this.main.form3RightOperatorSelectedItem;
+		this.comparisonSelectedItem = this.main.form3ComparisonSelectedItem;
 		//initializing left operator panels, comparison panel and right operator panels initial selected item
-		leftOperatorLeftPanelSelectedItem = (String) getLeftOperatorLeftAttributes()
+		/*leftOperatorLeftPanelSelectedItem = (String) getLeftOperatorLeftAttributes()
 				.toArray()[0];
 		leftOperatorRightPanelSelectedItem = (String) getLeftOperatorRightAttributes()
 				.toArray()[0];
@@ -132,7 +165,7 @@ public class Form3Window extends JFrame {
 		rightOperatorRightPanelSelectedItem = (String) getRightOperatorRightAttributes()
 				.toArray()[0];
 		rightOperatorSelectedItem = (String) getArithmaticOperators().toArray()[0];
-		comparisonSelectedItem = (String) getOperators().toArray()[0];
+		comparisonSelectedItem = (String) getOperators().toArray()[0];*/
 
 		showForm3(language);
 	}
@@ -170,7 +203,16 @@ public class Form3Window extends JFrame {
 		addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent evt) {
             	//rolling back to the initial opening state of this form
-            	formGenerator = (FormGenerator) tempFormGenerator.clone();            	
+            	formGenerator = (FormGenerator) tempFormGenerator.clone();   
+            	
+            	Form3Window.this.main.formGenerator = formGenerator;
+            	Form3Window.this.main.form3LeftOperatorLeftPanelSelectedItem = leftOperatorLeftPanelSelectedItem;
+            	Form3Window.this.main.form3LeftOperatorRightPanelSelectedItem = leftOperatorRightPanelSelectedItem;
+            	Form3Window.this.main.form3LeftOperatorSelectedItem = leftOperatorSelectedItem;
+            	Form3Window.this.main.form3RightOperatorLeftPanelSelectedItem = rightOperatorLeftPanelSelectedItem;
+            	Form3Window.this.main.form3RightOperatorRightPanelSelectedItem = rightOperatorRightPanelSelectedItem;
+            	Form3Window.this.main.form3RightOperatorSelectedItem = rightOperatorSelectedItem;
+            	Form3Window.this.main.form3ComparisonSelectedItem = comparisonSelectedItem;
             }
         });
 		
@@ -223,6 +265,15 @@ public class Form3Window extends JFrame {
 				from3Output.setVisible(true);
 				from3Output.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 				Main.centreWindow(from3Output);
+				
+				Form3Window.this.main.formGenerator = formGenerator;
+            	Form3Window.this.main.form3LeftOperatorLeftPanelSelectedItem = leftOperatorLeftPanelSelectedItem;
+            	Form3Window.this.main.form3LeftOperatorRightPanelSelectedItem = leftOperatorRightPanelSelectedItem;
+            	Form3Window.this.main.form3LeftOperatorSelectedItem = leftOperatorSelectedItem;
+            	Form3Window.this.main.form3RightOperatorLeftPanelSelectedItem = rightOperatorLeftPanelSelectedItem;
+            	Form3Window.this.main.form3RightOperatorRightPanelSelectedItem = rightOperatorRightPanelSelectedItem;
+            	Form3Window.this.main.form3RightOperatorSelectedItem = rightOperatorSelectedItem;
+            	Form3Window.this.main.form3ComparisonSelectedItem = comparisonSelectedItem;
 			}
 		});
 
@@ -236,7 +287,7 @@ public class Form3Window extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// initializing form2
-				formGenerator = new FormGenerator();
+				/*formGenerator = new FormGenerator();
 				formGenerator.generateForm3();
 
 				leftOperatorLeftPanelSelectedItem = (String) getLeftOperatorLeftAttributes()
@@ -249,7 +300,7 @@ public class Form3Window extends JFrame {
 				rightOperatorRightPanelSelectedItem = (String) getRightOperatorRightAttributes()
 						.toArray()[0];
 				rightOperatorSelectedItem = (String) getArithmaticOperators().toArray()[0];
-				comparisonSelectedItem = (String) getOperators().toArray()[0];
+				comparisonSelectedItem = (String) getOperators().toArray()[0];*/
 				// hiding this window
 				buttonCancelPressed();
 			}
@@ -442,6 +493,14 @@ public class Form3Window extends JFrame {
 		rightOperatorSelectedItem = tempRightOperatorSelectedItem;
 		comparisonSelectedItem = tempComparisonSelectedItem;
 		
+		Form3Window.this.main.formGenerator = formGenerator;
+    	Form3Window.this.main.form3LeftOperatorLeftPanelSelectedItem = leftOperatorLeftPanelSelectedItem;
+    	Form3Window.this.main.form3LeftOperatorRightPanelSelectedItem = leftOperatorRightPanelSelectedItem;
+    	Form3Window.this.main.form3LeftOperatorSelectedItem = leftOperatorSelectedItem;
+    	Form3Window.this.main.form3RightOperatorLeftPanelSelectedItem = rightOperatorLeftPanelSelectedItem;
+    	Form3Window.this.main.form3RightOperatorRightPanelSelectedItem = rightOperatorRightPanelSelectedItem;
+    	Form3Window.this.main.form3RightOperatorSelectedItem = rightOperatorSelectedItem;
+    	Form3Window.this.main.form3ComparisonSelectedItem = comparisonSelectedItem;
 		// hiding this window
 		this.setVisible(false);
 	}

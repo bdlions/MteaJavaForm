@@ -171,6 +171,7 @@ public class Form3Output extends JFrame {
 		setRow(0);
 		// adding right arithmetic operator selected item to the output panel
 		addOperatorComponent("Right operator is: ", comboBoxOperatorRight.getSelectedItem().toString(), constraints, rightOperatorPanel);
+		
 	}
 	
 	/*

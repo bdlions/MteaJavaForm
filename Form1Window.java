@@ -13,6 +13,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.List;
 import javax.swing.AbstractButton;
@@ -37,6 +38,7 @@ import org.forms.languages.LanguageEntry;
 
 public class Form1Window extends JFrame {
 
+	private Main main;
 	private FormGenerator formGenerator;
 	private JPanel contentPane;
 	private JPanel panel;
@@ -63,11 +65,20 @@ public class Form1Window extends JFrame {
 	/*
 	 * Creating the frame.
 	 */
-	public Form1Window(String language, String[] variables) {
+	public Form1Window(String language, String[] variables,String form1XmlName, Main main) {
+		this.main = main;
 		this.variables = variables;
 		// initializing form1
-		formGenerator = new FormGenerator();
-		formGenerator.generateForm1();
+		if(this.main.formGenerator == null)
+		{
+			this.main.formGenerator = new FormGenerator();
+		}
+		if(this.main.form1IsFirstTime)
+		{
+			this.main.formGenerator.generateForm1(form1XmlName);
+		}
+		this.formGenerator = this.main.formGenerator;
+		
 		
 		showForm1(language);
 	}
@@ -76,7 +87,6 @@ public class Form1Window extends JFrame {
 	 * Rendering form1
 	 */
 	public void showForm1(String language) {
-		
 		//cloning initial object content to a temporary object
 		tempFormGenerator = (FormGenerator) formGenerator.clone();
 		
@@ -92,6 +102,7 @@ public class Form1Window extends JFrame {
             public void windowClosing(WindowEvent evt) {
             	//rolling back to the initial opening state of this form
             	formGenerator = (FormGenerator) tempFormGenerator.clone();
+            	Form1Window.this.main.formGenerator = formGenerator;
             }
         });
 		
@@ -161,6 +172,8 @@ public class Form1Window extends JFrame {
 				from1Output.setVisible(true);
 				from1Output.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 				Main.centreWindow(from1Output);
+				Form1Window.this.main.formGenerator = formGenerator;
+				printForm1();
 			}
 		});
 
@@ -192,7 +205,8 @@ public class Form1Window extends JFrame {
 
 	public void buttonCancelPressed() {
 		//rolling back to the initial opening state of this form
-		formGenerator = (FormGenerator) tempFormGenerator.clone();		
+		formGenerator = (FormGenerator) tempFormGenerator.clone();	
+		Form1Window.this.main.formGenerator = formGenerator;
 		// hiding this window
 		this.setVisible(false);
 	}
@@ -458,5 +472,41 @@ public class Form1Window extends JFrame {
 			}
 		}
 		pack();
+	}
+	
+	public void printForm1()
+	{
+		String tBlockName [] = new String[8];
+		int tBlockNameIndex = 0;
+		String tBlockDisplayBuilder [] = new String[8];
+		int tBlockDisplayBuilderIndex = 0;
+		String tBlockHelpBuilder [] = new String[8];
+		int tBlockHelpBuilderIndex = 0;
+		for(Option option : formGenerator.getForm1().getListOptions().getOption())
+		{
+			tBlockName [tBlockNameIndex++] = option.getName();
+			tBlockDisplayBuilder [tBlockDisplayBuilderIndex++] = option.getType();
+			tBlockHelpBuilder [tBlockHelpBuilderIndex++] = option.getDefaultOption();
+			if (option.getType().equalsIgnoreCase("dropdown") || option.getType().equalsIgnoreCase("spinner")) {
+				System.out.println("list of available options for "+option.getName()+Arrays.toString(getOptions(option.getName()).toArray()));
+			}
+			if (option.getListSubOptions().size() > 0) {
+				for (ListSubOptions listSuboption : option.getListSubOptions()) {
+					if (listSuboption.getName().equals(option.getDefaultOption())) {
+						for (Option subOption : listSuboption.getSubOption()) {
+							tBlockName [tBlockNameIndex++] = subOption.getName();
+							tBlockDisplayBuilder [tBlockDisplayBuilderIndex++] = subOption.getType();
+							tBlockHelpBuilder [tBlockHelpBuilderIndex++] = subOption.getDefaultOption();
+							if (subOption.getType().equalsIgnoreCase("dropdown") || subOption.getType().equalsIgnoreCase("spinner")) {
+								System.out.println("list of available options for "+subOption.getName()+Arrays.toString(getOptions(subOption.getName()).toArray()));
+							}
+						}
+					}
+				}
+			}
+		}
+		System.out.println(Arrays.toString(tBlockName));
+		System.out.println(Arrays.toString(tBlockDisplayBuilder));
+		System.out.println(Arrays.toString(tBlockHelpBuilder));
 	}
 }

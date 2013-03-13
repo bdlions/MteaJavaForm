@@ -41,6 +41,7 @@ import org.forms.languages.LanguageEntry;
 
 public class Form2Window extends JFrame {
 
+	private Main main;
 	private JPanel contentPane;
 	JPanel leftCardPanel;
 	private JPanel leftPanel;
@@ -84,15 +85,34 @@ public class Form2Window extends JFrame {
 	/*
 	 * Creating the frame.
 	 */
-	public Form2Window(String language, String[] variables) {
+	public Form2Window(String language, String[] variables,String form2XmlName, Main main) {
+		this.main = main;
 		this.variables = variables;
 		// initializing form2
-		formGenerator = new FormGenerator();
-		formGenerator.generateForm2();
+		if(this.main.formGenerator == null)
+		{
+			this.main.formGenerator = new FormGenerator();
+		}
+		if(this.main.form2IsFirstTime)
+		{
+			this.main.formGenerator.generateForm2(form2XmlName);
+			this.formGenerator = this.main.formGenerator;
+			
+			this.main.form2LeftPanelSelectedItem = (String) getLeftAttributes().toArray()[0];
+        	this.main.form2ComparisonSelectedItem = (String) getOperators().toArray()[0];
+        	this.main.form2RightPanelSelectedItem = (String) getRightAttributes().toArray()[0];
+		}		
+		else
+		{
+			this.formGenerator = this.main.formGenerator;			
+		}
+		this.leftPanelSelectedItem = this.main.form2LeftPanelSelectedItem;
+		this.comparisonSelectedItem = this.main.form2ComparisonSelectedItem;
+		this.rightPanelSelectedItem = this.main.form2RightPanelSelectedItem;
 		//initializing left panel, comparison panel and right panel initial selected item
-		leftPanelSelectedItem = (String) getLeftAttributes().toArray()[0];
+		/*leftPanelSelectedItem = (String) getLeftAttributes().toArray()[0];
 		comparisonSelectedItem = (String) getOperators().toArray()[0];
-		rightPanelSelectedItem = (String) getRightAttributes().toArray()[0];
+		rightPanelSelectedItem = (String) getRightAttributes().toArray()[0];*/
 
 		showForm2(language);
 	}
@@ -134,6 +154,11 @@ public class Form2Window extends JFrame {
             	leftPanelSelectedItem = tempLeftPanelSelectedItem;
             	comparisonSelectedItem = tempComparisonSelectedItem;
             	rightPanelSelectedItem = tempRightPanelSelectedItem;
+            	
+            	Form2Window.this.main.formGenerator = formGenerator;
+            	Form2Window.this.main.form2LeftPanelSelectedItem = leftPanelSelectedItem;
+            	Form2Window.this.main.form2ComparisonSelectedItem = comparisonSelectedItem;
+            	Form2Window.this.main.form2RightPanelSelectedItem = rightPanelSelectedItem;
             }
         });
 		
@@ -179,6 +204,11 @@ public class Form2Window extends JFrame {
 				from2Output.setVisible(true);
 				from2Output.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 				Main.centreWindow(from2Output);
+				
+				Form2Window.this.main.formGenerator = formGenerator;
+				Form2Window.this.main.form2LeftPanelSelectedItem = leftPanelSelectedItem;
+            	Form2Window.this.main.form2ComparisonSelectedItem = comparisonSelectedItem;
+            	Form2Window.this.main.form2RightPanelSelectedItem = rightPanelSelectedItem;
 			}
 		});
 
@@ -193,11 +223,11 @@ public class Form2Window extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				// initializing form2
-				formGenerator = new FormGenerator();
+				/*formGenerator = new FormGenerator();
 				formGenerator.generateForm2();
 				leftPanelSelectedItem = (String) getLeftAttributes().toArray()[0];
 				comparisonSelectedItem = (String) getOperators().toArray()[0];
-				rightPanelSelectedItem = (String) getRightAttributes().toArray()[0];
+				rightPanelSelectedItem = (String) getRightAttributes().toArray()[0];*/
 				// hiding this window
 				buttonCancelPressed();
 			}
@@ -293,6 +323,11 @@ public class Form2Window extends JFrame {
 		leftPanelSelectedItem = tempLeftPanelSelectedItem;
     	comparisonSelectedItem = tempComparisonSelectedItem;
     	rightPanelSelectedItem = tempRightPanelSelectedItem;
+    	
+    	Form2Window.this.main.formGenerator = formGenerator;
+    	Form2Window.this.main.form2LeftPanelSelectedItem = leftPanelSelectedItem;
+    	Form2Window.this.main.form2ComparisonSelectedItem = comparisonSelectedItem;
+    	Form2Window.this.main.form2RightPanelSelectedItem = rightPanelSelectedItem;
 		// hiding this window
 		this.setVisible(false);
 	}
