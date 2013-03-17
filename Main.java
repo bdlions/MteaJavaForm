@@ -93,29 +93,16 @@ public class Main {
 				{
 					language = "Francais";
 				}
-				//initializing form1
+				
+				String[] variables = {"var1","var2","var3"};
+				form1Window = new Form1Window(language,variables,"form1.xml", Main.this);
+				form1Window.setVisible(true);
+				form1Window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+				centreWindow(form1Window);
+				
 				if(form1IsFirstTime == true)
 				{
-					String[] variables = {"var1","var2","var3"};
-					form1Window = new Form1Window(language,variables,"form1.xml", Main.this);
-					form1Window.setVisible(true);
-					form1Window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-					centreWindow(form1Window);
 					form1IsFirstTime = false;
-				}
-				//reopening form1
-				else
-				{
-					String[] variables = {"var1","var2","var3"};
-					form1Window = new Form1Window(language,variables,"form1.xml", Main.this);
-					form1Window.setVisible(true);
-					form1Window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-					centreWindow(form1Window);
-					
-					/*form1Window.setVisible(true);
-					form1Window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-					form1Window.showForm1(language, Main.this);*/
-					
 				}
 				
 			}
@@ -133,29 +120,17 @@ public class Main {
 				{
 					language = "Francais";
 				}
-				//initializing form2
-				if(form2Window == null)
+				
+				String[] variables = {"var1","var2","var3"};
+				form2Window = new Form2Window(language, variables,"form2.xml", Main.this);
+				form2Window.setVisible(true);
+				form2Window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+				centreWindow(form2Window);
+				
+				if(form2IsFirstTime == true)
 				{
-					String[] variables = {"var1","var2","var3"};
-					form2Window = new Form2Window(language, variables,"form2.xml", Main.this);
-					form2Window.setVisible(true);
-					form2Window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-					centreWindow(form2Window);
 					form2IsFirstTime = false;
 				}
-				//reopening form1
-				else
-				{
-					String[] variables = {"var1","var2","var3"};
-					form2Window = new Form2Window(language, variables,"form2.xml", Main.this);
-					form2Window.setVisible(true);
-					form2Window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-					centreWindow(form2Window);
-					/*form2Window.setVisible(true);
-					form2Window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-					form2Window.showForm2(language);*/
-				}
-				
 			}
 		});
 		mnOpen.add(mntmForm_1);
@@ -171,29 +146,17 @@ public class Main {
 				{
 					language = "Francais";
 				}
-				//initializing form3
-				if(form3Window == null)
-				{
-					String[] variables = {"var1","var2","var3"};
-					form3Window = new Form3Window(language, variables,"form3.xml", Main.this);
-					form3Window.setVisible(true);
-					form3Window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-					centreWindow(form3Window);
-					form3IsFirstTime = false;
-				}
-				//reopening form1
-				else
-				{
-					String[] variables = {"var1","var2","var3"};
-					form3Window = new Form3Window(language, variables,"form3.xml", Main.this);
-					form3Window.setVisible(true);
-					form3Window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-					centreWindow(form3Window);
-					/*form3Window.setVisible(true);
-					form3Window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-					form3Window.showForm3(language);*/
-				}
 				
+				String[] variables = {"var1","var2","var3"};
+				form3Window = new Form3Window(language, variables,"form3.xml", Main.this);
+				form3Window.setVisible(true);
+				form3Window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+				centreWindow(form3Window);
+				
+				if(form3IsFirstTime == true)
+				{
+					form3IsFirstTime = false;
+				}				
 			}
 		});
 		mnOpen.add(mntmForm_3);
